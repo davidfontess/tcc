@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo com Biblioteca</title>
+    <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+    <script src="meu-desenho.js"></script>
+</head>
+<body>
+    <canvas id="demoCanvas" width="500" height="500" style="border: 1px solid black;"></canvas>
+
+    <script>
+        MeuDesenho.iniciar("demoCanvas"); // Inicializa o canvas
+        MeuDesenho.desenharCirculo(100, 100, 50, "red"); // Desenha um círculo
+        MeuDesenho.atualizar(); // Atualiza para renderizar as mudanças
+    </script>
+</body>
+</html>
