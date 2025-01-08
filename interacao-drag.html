@@ -28,12 +28,14 @@
 			dragger.addChild(circle, label);
 			stage.addChild(dragger);
 
+            // evento acionado quando o botão do mouse é pressionado sobre o objeto (o dragger)
 			dragger.on("mousedown", function (evt) {
 				// keep a record on the offset between the mouse position and the container
 				// position. currentTarget will be the container that the event listener was added to:
 				evt.currentTarget.offset = {x: this.x - evt.stageX, y: this.y - evt.stageY};
 			});
 			
+            /// acionado enquanto o mouse é pressionado e movido
 			dragger.on("pressmove",function(evt) {
 				// Calculate the new X and Y based on the mouse new position plus the offset.
 				evt.currentTarget.x = evt.stageX + evt.currentTarget.offset.x;
