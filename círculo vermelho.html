@@ -5,14 +5,29 @@
 	<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
 	<script>
 		function init() {
+			
+			// cria o stage, onde os objetos gráficos serão renderizados
 			var stage = new createjs.Stage("demoCanvas");
+
+			//cria objeto gráfico  circulo pra ser desenhado no stage
 			var circle = new createjs.Shape();
+
+			// configura o circulo com centro em (0,0) (canto superior esquerdo do canvas) e raio 50
 			circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+
+			// move o circulo 100 unidades pra a direita e para baixo
 			circle.x = 100;
 			circle.y = 100;
+
+			//adiciona o círculo ao palco, como filho deste
 			stage.addChild(circle);
+			
+			//todo o código acima porém compactado
 			// stage.addChild(new createjs.Shape()).setTransform(100,100).graphics.f("red").dc(0,0,50);
+
+			//atualiza o stage
 			stage.update();
+
 		}
 	</script>
 </head>
