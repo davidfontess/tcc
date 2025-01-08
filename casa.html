@@ -7,6 +7,11 @@
         function init() {
             var stage = new createjs.Stage("demoCanvas");
 
+            // background
+            var fundo = new createjs.Shape();
+            fundo.graphics.beginFill("darkGreen").dr(0,0,500,300);
+            stage.addChild(fundo);
+
             // Retângulo amarelo
             var rectangle = new createjs.Shape();
             rectangle.graphics.beginFill("yellow").drawRect(0, 0, 100, 75);
@@ -14,9 +19,9 @@
             rectangle.y = 150;
             stage.addChild(rectangle);
 
-            // Triângulo verde
+            // Triângulo vermelho
             var triangle = new createjs.Shape();
-            triangle.graphics.beginFill("green").moveTo(100, 50).lineTo(150, 150).lineTo(50, 150).closePath();
+            triangle.graphics.beginFill("red").moveTo(100, 50).lineTo(150, 150).lineTo(50, 150).closePath();
             stage.addChild(triangle);
 
             //janela
