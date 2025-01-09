@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movendo Círculo com Teclado - EaselJS</title>
+    <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+    <script>
+        var stage, circle;
+
+        function init() {
+            stage = new createjs.Stage("demoCanvas");
+
+            circle = new createjs.Shape();
+            circle.graphics.beginFill("blue").drawCircle(0, 0, 15);
+            circle.x = 100;
+            circle.y = 100;
+
+            stage.addChild(circle);
+            stage.update();
+
+            // ouvinte de eventos para o teclado
+            window.addEventListener("keydown", handleKeyDown);
+        }
+
+        function handleKeyDown(event) {
+            // movimento baseado nas teclas pressionadas
+            switch (event.key) {
+                case "ArrowUp":
+                    circle.y -= 5;
+                    break;
+                case "ArrowDown":
+                    circle.y += 5;
+                    break;
+                case "ArrowLeft":
+                    circle.x -= 5;
+                    break;
+                case "ArrowRight":
+                    circle.x += 5;
+                    break;
+            }
+            stage.update();
+        }
+    </script>
+</head>
+<body onload="init();">
+    <canvas id="demoCanvas" width="400" height="300" style="border:1px solid #000;"></canvas>
+</body>
+</html>
