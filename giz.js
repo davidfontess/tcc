@@ -45,6 +45,17 @@ const cores = {
     cor: traduzirCor(cor),
   });
   
+  const criarTriangulo = (x1, y1, x2, y2, x3, y3, cor) => ({
+    tipo: "triangulo",
+    x1,
+    y1,
+    x2,
+    y2,
+    x3,
+    y3,
+    cor: traduzirCor(cor),
+  });
+  
   const colorirFundo = (cor) => ({
     tipo: "fundo",
     cor: traduzirCor(cor),
@@ -81,6 +92,15 @@ const cores = {
           .moveTo(forma.x1, forma.y1)
           .lineTo(forma.x2, forma.y2);
         stage.addChild(linha);
+      } else if (forma.tipo === "triangulo") {
+        const triangulo = new createjs.Shape();
+        triangulo.graphics
+          .beginFill(forma.cor)
+          .moveTo(forma.x1, forma.y1)
+          .lineTo(forma.x2, forma.y2)
+          .lineTo(forma.x3, forma.y3)
+          .closePath();
+        stage.addChild(triangulo);
       }
     });
   
@@ -90,10 +110,10 @@ const cores = {
   // Código do usuário
   const programa = () => [
     colorirFundo("azulClaro"),
-    criarCirculo(50, 125, 125, "vermelho"),
-    criarRetangulo(100, 50, 200, 150, "verde"),
-    criarLinha(50, 50, 50, 250, 5, "preto"),
-    criarLinha(100, 50, 350, 50, 2, "amarelo"),
+    criarCirculo(50, 100, 300, "vermelho"),
+    criarRetangulo(100, 50, 250, 150, "verde"),
+    criarLinha(50, 50, 250, 250, 5, "preto"),
+    criarTriangulo(300, 280, 350, 350, 250, 350, "roxo"),
   ];
   
   // Inicializa o programa no canvas
