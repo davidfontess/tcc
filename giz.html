@@ -54,11 +54,28 @@
           }
         };
 
+        const cores = {
+          vermelho: "red",
+          azul: "blue",
+          verde: "green",
+          preto: "black",
+          branco: "white",
+          amarelo: "yellow",
+          roxo: "purple",
+          laranja: "orange",
+          cinza: "gray",
+          rosa: "pink",
+          marrom: "brown",
+          azulClaro: "lightblue",
+        };
+
+        const traduzirCor = (cor) => cores[cor] || cor;
+
 
         const criarCirculo = (raio) => (x, y, cor) => {
           const [cx, cy] = converterCoord(x, y);
           const shape = new createjs.Shape();
-          shape.graphics.beginFill(cor).drawCircle(0, 0, raio * step);
+          shape.graphics.beginFill(traduzirCor(cor)).drawCircle(0, 0, raio * step);
           shape.x = cx;
           shape.y = cy;
           return shape;
@@ -67,7 +84,7 @@
         const criarRetangulo = (largura, altura) => (x, y, cor) => {
           const [rx, ry] = converterCoord(x, y);
           const shape = new createjs.Shape();
-          shape.graphics.beginFill(cor).drawRect(-largura * step / 2, -altura * step / 2, largura * step, altura * step);
+          shape.graphics.beginFill(traduzirCor(cor)).drawRect(-largura * step / 2, -altura * step / 2, largura * step, altura * step);
           shape.x = rx;
           shape.y = ry;
           return shape;
@@ -75,7 +92,7 @@
 
         const criarPoligono = (pontos) => (x, y, cor) => {
           const shape = new createjs.Shape();
-          shape.graphics.beginFill(cor);
+          shape.graphics.beginFill(traduzirCor(cor));
           shape.graphics.moveTo(...converterCoord(pontos[0][0] + x, pontos[0][1] + y));
           pontos.slice(1).forEach(([px, py]) => {
             shape.graphics.lineTo(...converterCoord(px + x, py + y));
@@ -88,13 +105,13 @@
           const [x1c, y1c] = converterCoord(x1, y1);
           const [x2c, y2c] = converterCoord(x2, y2);
           const shape = new createjs.Shape();
-          shape.graphics.setStrokeStyle(2).beginStroke(cor).moveTo(x1c, y1c).lineTo(x2c, y2c);
+          shape.graphics.setStrokeStyle(2).beginStroke(traduzirCor(cor)).moveTo(x1c, y1c).lineTo(x2c, y2c);
           return shape;
         };
 
         const colorirFundo = (cor) => {
           const fundo = new createjs.Shape();
-          fundo.graphics.beginFill(cor).drawRect(0, 0, canvasSize, canvasSize);
+          fundo.graphics.beginFill(traduzirCor(cor)).drawRect(0, 0, canvasSize, canvasSize);
           stage.addChild(fundo);
         };
 
@@ -103,7 +120,7 @@
           stage.update();
         };
 
-        colorirFundo("green");
+        colorirFundo("verde");
         desenharPlanoCartesiano();
 
         /*
@@ -115,10 +132,10 @@
 
         //const planoCartesiano = desenharPlanoCartesiano();
 
-        const parede = criarRetangulo(12, 10)(0, -2, "yellow");
-        const teto = criarPoligono([[-8, 3], [0, 7], [8, 3]])(0, 0, "red");
-        const porta = criarRetangulo(4, 6)(-2, -3, "brown");
-        const janela = criarCirculo(2)(3, -1, "blue");
+        const parede = criarRetangulo(12, 10)(0, -2, "amarelo");
+        const teto = criarPoligono([[-8, 3], [0, 7], [8, 3]])(0, 0, "vermelho");
+        const porta = criarRetangulo(4, 6)(-2, -3, "marrom");
+        const janela = criarCirculo(2)(3, -1, "azul");
 
         //desenhar(parede, teto, porta, janela, planoCartesiano);
         desenhar(parede, teto, porta, janela);
