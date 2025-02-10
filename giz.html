@@ -71,7 +71,6 @@
 
         const traduzirCor = (cor) => cores[cor] || cor;
 
-
         const criarCirculo = (raio) => (x, y, cor) => {
           const [cx, cy] = converterCoord(x, y);
           const shape = new createjs.Shape();
@@ -115,6 +114,59 @@
           stage.addChild(fundo);
         };
 
+        /* a velocidade padrão do easel.js é muito rápida para os números que eu gostaria
+        de usar. portanto eu adicionei esse cálculo para os usuários usarem mais números
+        inteiros. */
+        const fatorVelocidade = 2;
+
+        const mover = (forma, dx, dy) => {
+            forma.x += dx / fatorVelocidade;
+            forma.y -= dy / fatorVelocidade;
+        };
+
+        const animar = (forma,dx,dy) => {
+            createjs.Ticker.framerate = 60;
+            createjs.Ticker.addEventListener("tick", () => {
+                mover(forma, dx, dy);
+                stage.update();
+            });
+        };
+
+        const interagirTeclado = (forma, teclasAssociadas) => {
+            const velocidade = 5; // ajustar para controlar a velocidade do movimento
+
+            document.addEventListener("keydown", (event) => {
+                switch (event.key) {
+                    case teclasAssociadas.cima:
+                        mover(forma, 0, velocidade);
+                        break;
+                    case teclasAssociadas.baixo:
+                        mover(forma, 0, -velocidade);
+                        break;
+                    case teclasAssociadas.esquerda:
+                        mover(forma, -velocidade, 0);
+                        break;
+                    case teclasAssociadas.direita:
+                        mover(forma, velocidade, 0);
+                        break;
+                }
+                stage.update();
+            });
+        };
+
+        const interagirMouse = (forma) => {
+            forma.on("mousedown", (event) => {
+                forma.offsetX = event.stageX - forma.x;
+                forma.offsetY = event.stageY - forma.y;
+            });
+
+            forma.on("pressmove", (event) => {
+                forma.x = event.stageX - forma.offsetX;
+                forma.y = event.stageY - forma.offsetY;
+                stage.update();
+            });
+        };
+
         const desenhar = (...elementos) => {
           elementos.forEach(el => stage.addChild(el));
           stage.update();
@@ -136,9 +188,30 @@
         const teto = criarPoligono([[-8, 3], [0, 7], [8, 3]])(0, 0, "vermelho");
         const porta = criarRetangulo(4, 6)(-2, -3, "marrom");
         const janela = criarCirculo(2)(3, -1, "azul");
+        const casa = [parede,teto,porta,janela];
+        
+        animar(janela, 10, 10);
+        stage.update();
 
-        //desenhar(parede, teto, porta, janela, planoCartesiano);
-        desenhar(parede, teto, porta, janela);
+        const pernaDir = criarLinha(1,-6,0,-4, "preto");
+        const pernaEsq = criarLinha(-1,-6,0,-4, "preto");
+        const braços = criarLinha(-1,-3,1,-3,"preto");
+        const tronco = criarLinha(0,-4,0,-2,"preto");
+        const cabeca = criarCirculo(1)(0,-1,"preto");
+        const pessoa = [pernaDir, pernaEsq, braços,tronco, cabeca];
+
+        const teclasCabeca = {
+            cima: "ArrowUp",
+            baixo: "ArrowDown",
+            esquerda: "ArrowLeft",
+            direita: "ArrowRight"
+        };
+
+        interagirTeclado(cabeca, teclasCabeca);
+        interagirMouse(cabeca);
+
+        //desenhar(parede, teto, porta, janela);
+        desenhar(...casa, cabeca);
         
     </script>
 </body>
