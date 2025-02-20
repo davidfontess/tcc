@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Desenho com EaselJS</title>
+    <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+</head>
+<body>
+    <canvas id="demoCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvasSize = 400;
+        const coordMax = 10;
+        const step = canvasSize / (2 * coordMax);
+
+        const stage = new createjs.Stage("demoCanvas");
+
+        // Função para converter coordenadas do sistema cartesiano para o canvas
+        const converterCoordenadas = (x, y) => [
+            canvasSize / 2 + x * step,
+            canvasSize / 2 - y * step
+        ];
+
+        // Função para desenhar o plano cartesiano
+        const desenharPlanoCartesiano = () => {
+            const eixo = new createjs.Shape();
+            eixo.graphics.setStrokeStyle(1).beginStroke("black");
+
+            // Eixo X
+            eixo.graphics.moveTo(0, canvasSize / 2).lineTo(canvasSize, canvasSize / 2);
+            // Eixo Y
+            eixo.graphics.moveTo(canvasSize / 2, 0).lineTo(canvasSize / 2, canvasSize);
+
+            // Linhas de grade
+            for (let i = -coordMax; i <= coordMax; i++) {
+                if (i !== 0) {
+                    let [x, y] = converterCoordenadas(i, 0);
+                    eixo.graphics.setStrokeStyle(0.3).moveTo(x, 0).lineTo(x, canvasSize);
+                    [x, y] = converterCoordenadas(0, i);
+                    eixo.graphics.moveTo(0, y).lineTo(canvasSize, y);
+                }
+            }
+
+            stage.addChild(eixo);
+
+            // Números nos eixos
+            const textFormat = "12px Arial";
+            for (let i = -coordMax; i <= coordMax; i++) {
+                if (i !== 0) {
+                    let [x, y] = converterCoordenadas(i, -0.3);
+                    let textX = new createjs.Text(i, textFormat, "black");
+                    textX.x = x - 6;
+                    textX.y = y;
+                    stage.addChild(textX);
+
+                    [x, y] = converterCoordenadas(0.3, i);
+                    let textY = new createjs.Text(i, textFormat, "black");
+                    textY.x = x;
+                    textY.y = y - 6;
+                    stage.addChild(textY);
+                }
+            }
+        };
+
+        // Classe base para figuras
+        class Figura {
+            constructor(cor = "black") {
+                this.x = 0;
+                this.y = 0;
+                this.cor = cor;
+            }
+            clone() {
+                return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+            }
+        }
+
+        // Classe para retângulos
+        class Retangulo extends Figura {
+            constructor(base, altura, cor = "black") {
+                super(cor);
+                this.base = base;
+                this.altura = altura;
+            }
+        }
+
+        // Classe para círculos
+        class Circulo extends Figura {
+            constructor(raio, cor = "black") {
+                super(cor);
+                this.raio = raio;
+            }
+        }
+
+        // Classe para figuras compostas
+        class FiguraComposta extends Figura {
+            constructor(figuras = []) {
+                super();
+                this.figuras = figuras;
+            }
+        }
+
+        // Função para compor figuras
+        const comporFiguras = (figs) => new FiguraComposta(figs);
+
+        // Função para transladar figuras
+        const transladar = (fig, dx, dy) => {
+            if (fig instanceof FiguraComposta) {
+                return new FiguraComposta(fig.figuras.map(f => transladar(f, dx, dy)));
+            } else {
+                let novaFigura = fig.clone();
+                novaFigura.x += dx;
+                novaFigura.y += dy;
+                return novaFigura;
+            }
+        };
+
+        // Função para colorir figuras
+        const colorir = (fig, cor) => {
+            let novaFigura = fig.clone();
+            novaFigura.cor = cor;
+            return novaFigura;
+        };
+
+        // Função para traduzir cores do português para o inglês
+const traduzirCor = (cor) => {
+    const cores = {
+        "preto": "black",
+        "branco": "white",
+        "vermelho": "red",
+        "verde": "green",
+        "azul": "blue",
+        "amarelo": "yellow",
+        "rosa": "pink",
+        "roxo": "purple",
+        "laranja": "orange",
+        "cinza": "gray",
+        "marrom": "brown"
+        // Adicione outras cores conforme necessário
+    };
+    return cores[cor.toLowerCase()] || cor;
+};
+
+// Método desenhar atualizado para centralizar figuras na origem (0,0)
+const desenhar = (figura, stage) => {
+    if (figura instanceof FiguraComposta) {
+        figura.figuras.forEach(f => desenhar(f, stage));
+    } else {
+        let shape = new createjs.Shape();
+        shape.graphics.beginFill(traduzirCor(figura.cor));
+        if (figura instanceof Retangulo) {
+            let [x, y] = converterCoordenadas(figura.x, figura.y);
+            shape.graphics.drawRect(
+                -figura.base * step / 2,
+                -figura.altura * step / 2,
+                figura.base * step,
+                figura.altura * step
+            );
+            shape.x = x;
+            shape.y = y;
+        } else if (figura instanceof Circulo) {
+            let [x, y] = converterCoordenadas(figura.x, figura.y);
+            shape.graphics.drawCircle(0, 0, figura.raio * step);
+            shape.x = x;
+            shape.y = y;
+        }
+        shape.graphics.endFill();
+        stage.addChild(shape);
+    }
+    stage.update();
+};
+
+
+        // Desenhar o plano cartesiano
+        desenharPlanoCartesiano();
+
+        // Exemplo de uso
+        const parede = colorir(new Retangulo(2, 2), "amarelo");
+        desenhar(parede, stage);
+    </script>
+</body>
+</html>
