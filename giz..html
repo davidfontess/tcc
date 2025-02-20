@@ -113,6 +113,7 @@
         };
 
         // Função para colorir figuras
+        /* TODO: fazer algo parecido com transladar para figuraComposta */
         const colorir = (fig, cor) => {
             let novaFigura = fig.clone();
             novaFigura.cor = cor;
@@ -173,6 +174,7 @@ const desenhar = (figura, stage) => {
 
         // Exemplo de uso
         const parede = colorir(new Retangulo(2, 2), "amarelo");
+
         desenhar(parede, stage);
     </script>
 </body>
