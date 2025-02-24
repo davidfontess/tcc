@@ -43,7 +43,7 @@
 
             // Números nos eixos
             const textFormat = "12px Arial";
-            for (let i = -coordMax; i <= coordMax; i++) {
+            for (let i = -coordMax+1; i < coordMax; i++) {
                 if (i !== 0) {
                     let [x, y] = converterCoordenadas(i, -0.3);
                     let textX = new createjs.Text(i, textFormat, "black");
@@ -117,6 +117,30 @@
                 this.pontos = pontos;
             }
         }
+
+        const retangulo = (largura, altura) => {
+          return new Retangulo(largura, altura);
+        };
+
+        /*
+        const criarCirculo = (raio) => {
+          return new Circulo(raio);
+        };
+
+        const criarPoligono = (pontos) => {
+            return new Poligono(pontos);
+        };
+
+        const criarLinha = (x1, y1, x2, y2) => {
+            return new Linha(x1,y1,x2,y2);
+        };
+
+        const colorirFundo = (cor) => {
+          const fundo = new createjs.Shape();
+          fundo.graphics.beginFill(traduzirCor(cor)).drawRect(0, 0, canvasSize, canvasSize);
+          stage.addChild(fundo);
+        };
+        */
 
         class Texto extends Figura {
             constructor(conteudo, tamanho = "12px", cor = "black") {
@@ -269,12 +293,13 @@
         // Exemplo de uso
         const janela = transladar(colorir(new Circulo(2), "azul"),5,5);
         const parede = transladar(rotacionar(colorir(new Retangulo(2, 2), "amarelo"),45), 5,-5);
+        const parede2 = retangulo(3,1); // USANDO FUNÇÃO, EM VEZ DE OBJ DIRETAMENTE
         const linha = new Linha(-5, 5, "red");
         const polilinha = new Polilinha([[-3, -3], [0, 3], [3, -3]], "green");
         const poligono = new Poligono([[-5, -5], [-2, -2], [0, -5]], "purple");
         const poligonoRotacionado = rotacionar(poligono, 30);
         const texto = new Texto("Olá, mundo!", "16px", "black");
-        const casa = comporFiguras([linha, poligono, polilinha, janela, parede, texto]);
+        const casa = comporFiguras([linha, poligono, polilinha, janela, parede, parede2, texto]);
 
         desenhar(casa, stage);
     </script>
