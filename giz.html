@@ -122,25 +122,31 @@
           return new Retangulo(largura, altura);
         };
 
-        /*
-        const criarCirculo = (raio) => {
+        const circulo = (raio) => {
           return new Circulo(raio);
         };
 
-        const criarPoligono = (pontos) => {
+        const poligono = (pontos) => {
             return new Poligono(pontos);
         };
 
-        const criarLinha = (x1, y1, x2, y2) => {
+        const polilinha = (pontos) => {
+            return new Polilinha(pontos);
+        }
+
+        const linha = (x1, y1, x2, y2) => {
             return new Linha(x1,y1,x2,y2);
         };
+
+        const texto = (conteudo, tamanho, cor) => {
+            return new Texto(conteudo, tamanho, cor);
+        }
 
         const colorirFundo = (cor) => {
           const fundo = new createjs.Shape();
           fundo.graphics.beginFill(traduzirCor(cor)).drawRect(0, 0, canvasSize, canvasSize);
           stage.addChild(fundo);
         };
-        */
 
         class Texto extends Figura {
             constructor(conteudo, tamanho = "12px", cor = "black") {
@@ -291,15 +297,17 @@
         desenharPlanoCartesiano();
 
         // Exemplo de uso
-        const janela = transladar(colorir(new Circulo(2), "azul"),5,5);
-        const parede = transladar(rotacionar(colorir(new Retangulo(2, 2), "amarelo"),45), 5,-5);
+        const janela = transladar(colorir(circulo(2), "azul"),5,5);
+        const janela2 = circulo(2);
+        const parede = transladar(rotacionar(colorir(retangulo(2, 2), "amarelo"),45), 5,-5);
         const parede2 = retangulo(3,1); // USANDO FUNÇÃO, EM VEZ DE OBJ DIRETAMENTE
-        const linha = new Linha(-5, 5, "red");
-        const polilinha = new Polilinha([[-3, -3], [0, 3], [3, -3]], "green");
-        const poligono = new Poligono([[-5, -5], [-2, -2], [0, -5]], "purple");
-        const poligonoRotacionado = rotacionar(poligono, 30);
-        const texto = new Texto("Olá, mundo!", "16px", "black");
-        const casa = comporFiguras([linha, poligono, polilinha, janela, parede, parede2, texto]);
+        const traço = linha(-5, 5);
+        const traços = polilinha([[-3, -3], [0, 3], [3, -3]]);
+        //const traços = polilinha([[-3, -3], [0, 3], [3, -3]]);
+        const triangulo = poligono([[-5, -5], [-2, -2], [0, -5]], "purple");
+        //const poligonoRotacionado = rotacionar(poligono, 30);
+        const ola = texto("Olá, mundo!", "16px", "black");
+        const casa = comporFiguras([traço, triangulo, traços, janela, janela2, parede, parede2, ola]);
 
         desenhar(casa, stage);
     </script>
