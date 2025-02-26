@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Desenho com EaselJS</title>
+    <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+    <script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
+</head>
+<body>
+    <canvas id="demoCanvas" width="400" height="400"></canvas>
+    <script>
+      const canvasSize = 400;
+            const coordMax = 10;
+            const step = canvasSize / (2 * coordMax);
+
+            const stage = new createjs.Stage("demoCanvas");
+
+            // Função para converter coordenadas do sistema cartesiano para o canvas
+            const converterCoordenadas = (x, y) => [
+                canvasSize / 2 + x * step,
+                canvasSize / 2 - y * step
+            ];
+
+            // Função para desenhar o plano cartesiano
+            const desenharPlanoCartesiano = () => {
+                const eixo = new createjs.Shape();
+                eixo.graphics.setStrokeStyle(1).beginStroke("black");
+
+                // Eixo X
+                eixo.graphics.moveTo(0, canvasSize / 2).lineTo(canvasSize, canvasSize / 2);
+                // Eixo Y
+                eixo.graphics.moveTo(canvasSize / 2, 0).lineTo(canvasSize / 2, canvasSize);
+
+                // Linhas de grade
+                for (let i = -coordMax; i <= coordMax; i++) {
+                    if (i !== 0) {
+                        let [x, y] = converterCoordenadas(i, 0);
+                        eixo.graphics.setStrokeStyle(0.3).moveTo(x, 0).lineTo(x, canvasSize);
+                        [x, y] = converterCoordenadas(0, i);
+                        eixo.graphics.moveTo(0, y).lineTo(canvasSize, y);
+                    }
+                }
+
+                stage.addChild(eixo);
+
+                // Números nos eixos
+                const textFormat = "12px Arial";
+                for (let i = -coordMax+1; i < coordMax; i++) {
+                    if (i !== 0) {
+                        let [x, y] = converterCoordenadas(i, -0.3);
+                        let textX = new createjs.Text(i, textFormat, "black");
+                        textX.x = x - 6;
+                        textX.y = y;
+                        stage.addChild(textX);
+
+                        [x, y] = converterCoordenadas(0.3, i);
+                        let textY = new createjs.Text(i, textFormat, "black");
+                        textY.x = x;
+                        textY.y = y - 6;
+                        stage.addChild(textY);
+                    }
+                }
+            };
+
+            // Classe base para figuras
+            class Figura {
+                constructor(cor = "black") {
+                    this.x = 0;
+                    this.y = 0;
+                    this.cor = cor;
+                    this.angulo = 0;
+                }
+                clone() {
+                    return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+                }
+            }
+
+            // Classe para retângulos
+            class Retangulo extends Figura {
+                constructor(base, altura, cor = "black") {
+                    super(cor);
+                    this.base = base;
+                    this.altura = altura;
+                }
+            }
+
+            // Classe para círculos
+            class Circulo extends Figura {
+                constructor(raio, cor = "black") {
+                    super(cor);
+                    this.raio = raio;
+                }
+            }
+
+            class PlanoCartesiano extends Figura {
+                constructor(cor = "gray") {
+                    super(cor);
+                }
+            }
+
+            class Linha extends Figura {
+                constructor(x2, y2, cor = "black") {
+                    super(cor);
+                    this.x2 = x2;
+                    this.y2 = y2;
+                }
+            }
+
+            class Polilinha extends Figura {
+                constructor(pontos, cor = "black") {
+                    super(cor);
+                    this.pontos = pontos;
+                }
+            }
+
+            class Poligono extends Figura {
+                constructor(pontos, cor = "black") {
+                    super(cor);
+                    this.pontos = pontos;
+                }
+            }
+
+            const retangulo = (largura, altura) => {
+            return new Retangulo(largura, altura);
+            };
+
+            const circulo = (raio) => {
+            return new Circulo(raio);
+            };
+
+            const poligono = (pontos) => {
+                return new Poligono(pontos);
+            };
+
+            const polilinha = (pontos) => {
+                return new Polilinha(pontos);
+            }
+
+            const linha = (x1, y1, x2, y2) => {
+                return new Linha(x1,y1,x2,y2);
+            };
+
+            const texto = (conteudo, tamanho, cor) => {
+                return new Texto(conteudo, tamanho, cor);
+            }
+
+            const colorirFundo = (cor) => {
+            const fundo = new createjs.Shape();
+            fundo.graphics.beginFill(traduzirCor(cor)).drawRect(0, 0, canvasSize, canvasSize);
+            stage.addChild(fundo);
+            };
+
+            class Texto extends Figura {
+                constructor(conteudo, tamanho = "12px", cor = "black") {
+                    super(cor);
+                    this.conteudo = conteudo;
+                    this.tamanho = tamanho;
+                }
+            }
+
+            // Classe para figuras compostas
+            class FiguraComposta extends Figura {
+                constructor(figuras = []) {
+                    super();
+                    this.figuras = figuras;
+                }
+            }
+
+            // Função para compor figuras
+            const comporFiguras = (figs) => new FiguraComposta(figs);
+
+            // Função para transladar figuras
+            const transladar = (fig, dx, dy) => {
+                if (fig instanceof FiguraComposta) {
+                    return new FiguraComposta(fig.figuras.map(f => transladar(f, dx, dy)));
+                } else {
+                    let novaFigura = fig.clone();
+                    novaFigura.x += dx;
+                    novaFigura.y += dy;
+                    return novaFigura;
+                }
+            };
+
+            const calcularCentro = (pontos) => {
+            let xSum = 0, ySum = 0;
+            pontos.forEach(([x, y]) => {
+                xSum += x;
+                ySum += y;
+            });
+            return [xSum / pontos.length, ySum / pontos.length];
+        };
+
+        const rotacionarPonto = (x, y, cx, cy, angulo) => {
+            let rad = (Math.PI / 180) * angulo;
+            let cos = Math.cos(rad);
+            let sin = Math.sin(rad);
+            let nx = cos * (x - cx) - sin * (y - cy) + cx;
+            let ny = sin * (x - cx) + cos * (y - cy) + cy;
+            return [nx, ny];
+        };
+
+        const rotacionar = (figura, angulo) => {
+            if (figura instanceof FiguraComposta) {
+                return new FiguraComposta(figura.figuras.map(f => rotacionar(f, angulo)));
+            } else {
+                let novaFigura = figura.clone();
+                novaFigura.angulo += angulo;
+                
+                if (figura instanceof Linha) {
+                    let centro = [(figura.x + figura.x2) / 2, (figura.y + figura.y2) / 2];
+                    [novaFigura.x, novaFigura.y] = rotacionarPonto(figura.x, figura.y, ...centro, angulo);
+                    [novaFigura.x2, novaFigura.y2] = rotacionarPonto(figura.x2, figura.y2, ...centro, angulo);
+                } else if (figura instanceof Polilinha || figura instanceof Poligono) {
+                    let centro = calcularCentro(figura.pontos);
+                    novaFigura.pontos = figura.pontos.map(p => rotacionarPonto(p[0], p[1], ...centro, angulo));
+                } else if (figura instanceof Texto) {
+                    let centro = [figura.x, figura.y];
+                    [novaFigura.x, novaFigura.y] = rotacionarPonto(figura.x, figura.y, ...centro, angulo);
+                }
+                
+                return novaFigura;
+            }
+        };
+            // Função para colorir figuras
+            /* TODO: fazer algo parecido com transladar para figuraComposta */
+            const colorir = (fig, cor) => {
+                let novaFigura = fig.clone();
+                novaFigura.cor = cor;
+                return novaFigura;
+            };
+
+            // Função para traduzir cores do português para o inglês
+            const traduzirCor = (cor) => {
+                const cores = {
+                    "preto": "black",
+                    "branco": "white",
+                    "vermelho": "red",
+                    "verde": "green",
+                    "azul": "blue",
+                    "amarelo": "yellow",
+                    "rosa": "pink",
+                    "roxo": "purple",
+                    "laranja": "orange",
+                    "cinza": "gray",
+                    "marrom": "brown"
+                    // Adicione outras cores conforme necessário
+                };
+                return cores[cor.toLowerCase()] || cor;
+            };
+            const animar = (figura, propriedade, valorFinal, duracao = 1000) => {
+              createjs.Tween.get(figura)
+                  .to({ [propriedade]: valorFinal }, duracao) // Define a propriedade e o valor final
+                  .call(() => console.log("Animação concluída!")); // Callback ao final da animação
+          };
+
+          // configura o ticker para atualizar o palco continuamente
+          createjs.Ticker.addEdventListener("tick", () => {
+            stage.update(); //atualiza o palco
+            createjs.Tween.tick(); // atualiza as animações do TweenJS
+          });
+            // Método desenhar atualizado para centralizar figuras na origem (0,0)
+            const desenhar = (figura, stage) => {
+                if (figura instanceof FiguraComposta) {
+                    figura.figuras.forEach(f => desenhar(f, stage));
+                } else {
+                    let shape = new createjs.Shape();
+                    if (figura instanceof Retangulo) {
+                        shape.graphics.beginFill(traduzirCor(figura.cor));
+                        let [x, y] = converterCoordenadas(figura.x, figura.y);
+                        shape.graphics.drawRect(
+                            -figura.base * step / 2,
+                            -figura.altura * step / 2,
+                            figura.base * step,
+                            figura.altura * step
+                        );
+                        shape.x = x;
+                        shape.y = y;
+                        shape.graphics.endFill();
+                    } else if (figura instanceof Circulo) {
+                        shape.graphics.beginFill(traduzirCor(figura.cor));
+                        let [x, y] = converterCoordenadas(figura.x, figura.y);
+                        shape.graphics.drawCircle(0, 0, figura.raio * step);
+                        shape.x = x;
+                        shape.y = y;
+                        shape.graphics.endFill();
+                    } else if (figura instanceof Linha) {
+                        let [x1, y1] = converterCoordenadas(figura.x, figura.y);
+                        let [x2, y2] = converterCoordenadas(figura.x2, figura.y2);
+                        shape.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
+                        shape.graphics.moveTo(x1, y1).lineTo(x2, y2);
+                        shape.graphics.endStroke();
+                    } else if (figura instanceof Polilinha) {
+                        shape.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
+                        shape.graphics.moveTo(...converterCoordenadas(...figura.pontos[0]));
+                        figura.pontos.slice(1).forEach(p => shape.graphics.lineTo(...converterCoordenadas(...p)));
+                        const centro = calcularCentro(figura.pontos);
+                        //shape.regX = centro[0] * step; // Ajusta o centro de rotação
+                        //shape.regY = centro[1] * step; // Ajusta o centro de rotação
+                        shape.graphics.endStroke();
+                    } else if (figura instanceof Poligono) {
+                        shape.graphics.beginFill(traduzirCor(figura.cor));
+                        shape.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
+                        shape.graphics.moveTo(...converterCoordenadas(...figura.pontos[0]));
+                        figura.pontos.slice(1).forEach(p => shape.graphics.lineTo(...converterCoordenadas(...p)));
+                        shape.graphics.lineTo(...converterCoordenadas(...figura.pontos[0]));
+                        const centro = calcularCentro(figura.pontos);
+                        //shape.regX = centro[0] * step; // Ajusta o centro de rotação
+                        //shape.regY = centro[1] * step; // Ajusta o centro de rotação
+                        shape.graphics.endFill();
+                        shape.graphics.endStroke();
+                    } else if (figura instanceof Texto) {
+                        let [x, y] = converterCoordenadas(figura.x, figura.y);
+                        let text = new createjs.Text(figura.conteudo, figura.tamanho + " Arial", figura.cor);
+                        text.x = x;
+                        text.y = y;
+                        stage.addChild(text);
+                        stage.update();
+                        return;
+                    }
+
+                    // Aplica a rotação à figura
+                    shape.rotation = figura.angulo; // Define o ângulo de rotação
+                    stage.addChild(shape);
+                }
+                stage.update();
+            };
+
+        // Desenhar o plano cartesiano
+        desenharPlanoCartesiano();
+
+        // Exemplo de uso
+        const janela = transladar(colorir(circulo(2), "azul"),5,5);
+        const janela2 = circulo(2);
+        const parede = transladar(rotacionar(colorir(retangulo(2, 2), "amarelo"),45), 5,-5);
+        const parede2 = retangulo(3,1); // USANDO FUNÇÃO, EM VEZ DE OBJ DIRETAMENTE
+        const traço = linha(-5, 5);
+        const traços = polilinha([[-3, -3], [0, 3], [3, -3]]);
+        //const traços = polilinha([[-3, -3], [0, 3], [3, -3]]);
+        const triangulo = poligono([[-5, -5], [-2, -2], [0, -5]], "purple");
+        //const poligonoRotacionado = rotacionar(poligono, 30);
+        const ola = texto("Olá, mundo!", "16px", "black");
+        const casa = comporFiguras([traço, triangulo, traços, janela, janela2, parede, parede2, ola]);
+        const retanguloAnimado = retanulo(2,2)(0,0, "azul");
+        /*
+        interagir(
+            { x: 0, y: 0 },
+            { "ArrowRight": { x: 1 }, "ArrowLeft": { x: -1 }, "ArrowUp": { y: 1 }, "ArrowDown": { y: -1 } },
+            circulo
+        ); 
+            */
+        desenhar(retanguloAnimado, stage);
+    </script>
+</body>
+</html>
