@@ -129,6 +129,42 @@
                 this.figuras = figuras;
             }
         }
+		
+		class PlanoCartesiano extends Figura {
+            constructor(cor = "gray") {
+                super(cor);
+            }
+        }
+		
+		const retangulo = (largura, altura) => {
+          return new Retangulo(largura, altura);
+        };
+
+        const circulo = (raio) => {
+          return new Circulo(raio);
+        };
+
+        const poligono = (pontos) => {
+            return new Poligono(pontos);
+        };
+
+        const polilinha = (pontos) => {
+            return new Polilinha(pontos);
+        }
+
+        const linha = (x1, y1, x2, y2) => {
+            return new Linha(x1,y1,x2,y2);
+        };
+
+        const texto = (conteudo, tamanho, cor) => {
+            return new Texto(conteudo, tamanho, cor);
+        }
+
+        const colorirFundo = (cor) => {
+          const fundo = new createjs.Shape();
+          fundo.graphics.beginFill(traduzirCor(cor)).drawRect(0, 0, canvasSize, canvasSize);
+          stage.addChild(fundo);
+        };
 
         // Função para compor figuras
         const comporFiguras = (figs) => new FiguraComposta(figs);
@@ -276,12 +312,12 @@
         desenharPlanoCartesiano();
 
         // Exemplo de uso
-        const janela = transladar(colorir(new Circulo(2), "azul"), 5, 5);
-        const parede = transladar(colorir(new Retangulo(2, 2), "amarelo"), 5, -5);
-        const traço = rotacionar(new Linha(-5, 5, -3, 5),45);
-        const traços = rotacionar(new Polilinha([[-3, -3], [0, 3], [3, -3]]),45);
-        const triangulo = rotacionar(new Poligono([[-5, -5], [-2, -2], [0, -5]], "purple"),45);
-        const ola = new Texto("Olá, mundo!", "16px", "black");
+        const janela = transladar(colorir(circulo(2), "azul"), 5, 5);
+        const parede = transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5);
+        const traço = rotacionar(linha(-5, 5, -3, 5),45);
+        const traços = rotacionar(polilinha([[-3, -3], [0, 3], [3, -3]]),45);
+        const triangulo = rotacionar(poligono([[-5, -5], [-2, -2], [0, -5]], "purple"),45);
+        const ola = texto("Olá, mundo!", "16px", "black");
         const casa = comporFiguras([traço, triangulo, traços, janela, parede, ola]);
 
         desenhar(casa, stage);
