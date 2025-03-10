@@ -71,26 +71,34 @@
             clone() {
                 return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
             }
+            redimensionar(fator) {
+                // Método genérico que será sobrescrito pelas classes filhas
+            }
         }
 
         // Classe para retângulos
         class Retangulo extends Figura {
             constructor(x, y, largura, altura, cor = "black") {
                 super(cor);
-                this.x = x; // Centro do retângulo
+                this.x = x;
                 this.y = y;
                 this.largura = largura;
                 this.altura = altura;
-                this.angulo = 0; // Ângulo inicial
+                this.angulo = 0;
+            }
+            redimensionar(fator) {
+                this.largura *= fator;
+                this.altura *= fator;
             }
         }
 
-
-        // Classe para círculos
         class Circulo extends Figura {
             constructor(raio, cor = "black") {
                 super(cor);
                 this.raio = raio;
+            }
+            redimensionar(fator) {
+                this.raio *= fator;
             }
         }
 
@@ -102,6 +110,12 @@
                 this.x2 = x2;
                 this.y2 = y2;
             }
+            redimensionar(fator) {
+                this.x1 *= fator;
+                this.y1 *= fator;
+                this.x2 *= fator;
+                this.y2 *= fator;
+            }
         }
 
         class Polilinha extends Figura {
@@ -109,12 +123,18 @@
                 super(cor);
                 this.pontos = pontos;
             }
+            redimensionar(fator) {
+                this.pontos = this.pontos.map(([x, y]) => [x * fator, y * fator]);
+            }
         }
 
         class Poligono extends Figura {
             constructor(pontos, cor = "black") {
                 super(cor);
                 this.pontos = pontos;
+            }
+            redimensionar(fator) {
+                this.pontos = this.pontos.map(([x, y]) => [x * fator, y * fator]);
             }
         }
 
@@ -124,13 +144,20 @@
                 this.conteudo = conteudo;
                 this.tamanho = tamanho;
             }
+            redimensionar(fator) {
+                const tamanhoNumerico = parseFloat(this.tamanho);
+                const unidade = this.tamanho.replace(tamanhoNumerico, '');
+                this.tamanho = `${tamanhoNumerico * fator}${unidade}`;
+            }
         }
 
-        // Classe para figuras compostas
         class FiguraComposta extends Figura {
             constructor(figuras = []) {
                 super();
                 this.figuras = figuras;
+            }
+            redimensionar(fator) {
+                this.figuras.forEach(figura => figura.redimensionar(fator));
             }
         }
 		
@@ -213,6 +240,16 @@
             }
 
             return figura;
+        };
+
+        const redimensionar = (figura, fator) => {
+            if (figura instanceof FiguraComposta) {
+                return new FiguraComposta(figura.figuras.map(f => redimensionar(f, fator)));
+            } else {
+                let novaFigura = figura.clone();
+                novaFigura.redimensionar(fator);
+                return novaFigura;
+            }
         };
 
         // Função para colorir figuras
@@ -317,8 +354,9 @@
         desenharPlanoCartesiano();
 
         // Exemplo de uso
+        //REDIMENSIONAR FUNCIONA PARA TODAS AS FIGURAS MENOS PARA LINHAS
         const janela = transladar(colorir(circulo(2), "azul"), 5, 5);
-        const parede = rotacionar(transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5),45);
+        const parede = redimensionar(rotacionar(transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5),45),2);
         const traço = rotacionar(linha(-5, 5, -3, 5),45);
         const traços = rotacionar(polilinha([[-3, -3], [0, 3], [3, -3]]),45);
         const triangulo = rotacionar(poligono([[-5, -5], [-2, -2], [0, -5]], "purple"),45);
