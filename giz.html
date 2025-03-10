@@ -75,12 +75,16 @@
 
         // Classe para retângulos
         class Retangulo extends Figura {
-            constructor(base, altura, cor = "black") {
+            constructor(x, y, largura, altura, cor = "black") {
                 super(cor);
-                this.base = base;
+                this.x = x; // Centro do retângulo
+                this.y = y;
+                this.largura = largura;
                 this.altura = altura;
+                this.angulo = 0; // Ângulo inicial
             }
         }
+
 
         // Classe para círculos
         class Circulo extends Figura {
@@ -136,9 +140,10 @@
             }
         }
 		
-		const retangulo = (largura, altura) => {
-          return new Retangulo(largura, altura);
+		const retangulo = (largura, altura, x = 0, y = 0) => {
+            return new Retangulo(x, y, largura, altura);
         };
+
 
         const circulo = (raio) => {
           return new Circulo(raio);
@@ -203,6 +208,8 @@
                 figura.pontos = figura.pontos.map(([x, y]) => rotacionarPonto(x, y, cx, cy));
             } else if (figura instanceof Texto) {
                 figura.angulo += angulo;
+            } else if (figura instanceof Retangulo) {
+                figura.angulo += angulo; // Atualiza o ângulo de rotação
             }
 
             return figura;
@@ -253,17 +260,14 @@
             } else {
                 let shape = new createjs.Shape();
                 if (figura instanceof Retangulo) {
+                    let shape = new createjs.Shape();
+                    let [cx, cy] = converterCoordenadas(figura.x, figura.y);
                     shape.graphics.beginFill(traduzirCor(figura.cor));
-                    let [x, y] = converterCoordenadas(figura.x, figura.y);
-                    shape.graphics.drawRect(
-                        -figura.base * step / 2,
-                        -figura.altura * step / 2,
-                        figura.base * step,
-                        figura.altura * step
-                    );
-                    shape.x = x;
-                    shape.y = y;
+                    shape.setTransform(cx, cy, 1, 1, figura.angulo); // Aplica rotação
+                    shape.graphics.drawRect(-figura.largura * step / 2, -figura.altura * step / 2, 
+                                            figura.largura * step, figura.altura * step);
                     shape.graphics.endFill();
+                    stage.addChild(shape);
                 } else if (figura instanceof Circulo) {
                     shape.graphics.beginFill(traduzirCor(figura.cor));
                     let [x, y] = converterCoordenadas(figura.x, figura.y);
@@ -313,7 +317,7 @@
 
         // Exemplo de uso
         const janela = transladar(colorir(circulo(2), "azul"), 5, 5);
-        const parede = transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5);
+        const parede = rotacionar(transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5),45);
         const traço = rotacionar(linha(-5, 5, -3, 5),45);
         const traços = rotacionar(polilinha([[-3, -3], [0, 3], [3, -3]]),45);
         const triangulo = rotacionar(poligono([[-5, -5], [-2, -2], [0, -5]], "purple"),45);
