@@ -295,15 +295,16 @@
                     shape.graphics.endFill();
                     shape.graphics.endStroke();
                 } else if (figura instanceof Texto) {
+                    let text = new createjs.Text(figura.conteudo, figura.tamanho + " Arial", traduzirCor(figura.cor));
                     let [x, y] = converterCoordenadas(figura.x, figura.y);
-                    let text = new createjs.Text(figura.conteudo, figura.tamanho + " Arial", figura.cor);
                     text.x = x;
                     text.y = y;
-                    text.rotation = figura.angulo;
+                    text.textAlign = "center"; // Para centralizar o texto no ponto
+                    text.textBaseline = "middle";
+                    text.rotation = figura.angulo; // Aplica rotação ao texto
                     stage.addChild(text);
-                    stage.update();
-                    return;
                 }
+
 
                 // Aplica a rotação à figura
                 shape.rotation = figura.angulo; // Define o ângulo de rotação
@@ -321,7 +322,7 @@
         const traço = rotacionar(linha(-5, 5, -3, 5),45);
         const traços = rotacionar(polilinha([[-3, -3], [0, 3], [3, -3]]),45);
         const triangulo = rotacionar(poligono([[-5, -5], [-2, -2], [0, -5]], "purple"),45);
-        const ola = texto("Olá, mundo!", "16px", "black");
+        const ola = rotacionar(texto("Olá, mundo!", "16px", "black"),45);
         const casa = comporFiguras([traço, triangulo, traços, janela, parede, ola]);
 
         desenhar(casa, stage);
