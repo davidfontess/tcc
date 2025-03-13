@@ -160,20 +160,13 @@
                 this.figuras.forEach(figura => figura.redimensionar(fator));
             }
         }
-		
-		class PlanoCartesiano extends Figura {
-            constructor(cor = "gray") {
-                super(cor);
-            }
-        }
-		
-		const retangulo = (largura, altura, x = 0, y = 0) => {
+
+        const retangulo = (largura, altura, x = 0, y = 0) => {
             return new Retangulo(x, y, largura, altura);
         };
 
-
         const circulo = (raio) => {
-          return new Circulo(raio);
+            return new Circulo(raio);
         };
 
         const poligono = (pontos) => {
@@ -182,20 +175,20 @@
 
         const polilinha = (pontos) => {
             return new Polilinha(pontos);
-        }
+        };
 
         const linha = (x1, y1, x2, y2) => {
-            return new Linha(x1,y1,x2,y2);
+            return new Linha(x1, y1, x2, y2);
         };
 
         const texto = (conteudo, tamanho, cor) => {
             return new Texto(conteudo, tamanho, cor);
-        }
+        };
 
         const colorirFundo = (cor) => {
-          const fundo = new createjs.Shape();
-          fundo.graphics.beginFill(traduzirCor(cor)).drawRect(0, 0, canvasSize, canvasSize);
-          stage.addChild(fundo);
+            const fundo = new createjs.Shape();
+            fundo.graphics.beginFill(traduzirCor(cor)).drawRect(0, 0, canvasSize, canvasSize);
+            stage.addChild(fundo);
         };
 
         // Função para compor figuras
@@ -215,7 +208,7 @@
 
         // Função para rotacionar figuras
         const rotacionar = (figura, angulo) => {
-            const rad = (Math.PI / 180) * angulo; // Converte o ângulo para radianos
+            const rad = (Math.PI / 180) * -angulo; // Inverte o ângulo para rotação horária
 
             const rotacionarPonto = (x, y, cx, cy) => {
                 const cos = Math.cos(rad);
@@ -226,30 +219,80 @@
                 ];
             };
 
-            if (figura instanceof Linha) {
-                const [cx, cy] = [(figura.x1 + figura.x2) / 2, (figura.y1 + figura.y2) / 2];
-                [figura.x1, figura.y1] = rotacionarPonto(figura.x1, figura.y1, cx, cy);
-                [figura.x2, figura.y2] = rotacionarPonto(figura.x2, figura.y2, cx, cy);
-            } else if (figura instanceof Polilinha || figura instanceof Poligono) {
-                const [cx, cy] = calcularCentro(figura.pontos);
-                figura.pontos = figura.pontos.map(([x, y]) => rotacionarPonto(x, y, cx, cy));
-            } else if (figura instanceof Texto) {
-                figura.angulo += angulo;
-            } else if (figura instanceof Retangulo) {
-                figura.angulo += angulo; // Atualiza o ângulo de rotação
-            }
+            if (figura instanceof FiguraComposta) {
+                // Calcula o centro da figura composta
+                const centro = calcularCentroFiguraComposta(figura);
 
-            return figura;
+                // Rotaciona cada figura em relação ao centro da figura composta
+                const novasFiguras = figura.figuras.map(f => {
+                    const novaFigura = f.clone();
+
+                    // Rotaciona a figura em relação ao centro da figura composta
+                    if (novaFigura instanceof Linha) {
+                        [novaFigura.x1, novaFigura.y1] = rotacionarPonto(novaFigura.x1, novaFigura.y1, centro[0], centro[1]);
+                        [novaFigura.x2, novaFigura.y2] = rotacionarPonto(novaFigura.x2, novaFigura.y2, centro[0], centro[1]);
+                    } else if (novaFigura instanceof Polilinha || novaFigura instanceof Poligono) {
+                        novaFigura.pontos = novaFigura.pontos.map(([x, y]) => rotacionarPonto(x, y, centro[0], centro[1]));
+                    } else if (novaFigura instanceof Texto || novaFigura instanceof Retangulo || novaFigura instanceof Circulo) {
+                        // Para figuras com posição (x, y), rotacionamos a posição em relação ao centro
+                        [novaFigura.x, novaFigura.y] = rotacionarPonto(novaFigura.x, novaFigura.y, centro[0], centro[1]);
+                        novaFigura.angulo += angulo; // Atualiza o ângulo de rotação
+                    }
+
+                    return novaFigura;
+                });
+
+                return new FiguraComposta(novasFiguras);
+            } else {
+                // Rotaciona figuras individuais
+                if (figura instanceof Linha) {
+                    const [cx, cy] = [(figura.x1 + figura.x2) / 2, (figura.y1 + figura.y2) / 2];
+                    [figura.x1, figura.y1] = rotacionarPonto(figura.x1, figura.y1, cx, cy);
+                    [figura.x2, figura.y2] = rotacionarPonto(figura.x2, figura.y2, cx, cy);
+                } else if (figura instanceof Polilinha || figura instanceof Poligono) {
+                    const [cx, cy] = calcularCentro(figura.pontos);
+                    figura.pontos = figura.pontos.map(([x, y]) => rotacionarPonto(x, y, cx, cy));
+                } else if (figura instanceof Texto || figura instanceof Retangulo || figura instanceof Circulo) {
+                    figura.angulo += angulo; // Atualiza o ângulo de rotação
+                }
+
+                return figura;
+            }
         };
 
         const redimensionar = (figura, fator) => {
             if (figura instanceof FiguraComposta) {
-                return new FiguraComposta(figura.figuras.map(f => redimensionar(f, fator)));
+                // Calcula o centro da figura composta
+                const centro = calcularCentroFiguraComposta(figura);
+
+                // Redimensiona cada figura em relação ao centro da figura composta
+                const novasFiguras = figura.figuras.map(f => {
+                    const novaFigura = f.clone();
+                    novaFigura.redimensionar(fator);
+
+                    // Ajusta a posição da figura para manter a proporção em relação ao centro
+                    novaFigura.x = centro[0] + (f.x - centro[0]) * fator;
+                    novaFigura.y = centro[1] + (f.y - centro[1]) * fator;
+
+                    return novaFigura;
+                });
+
+                return new FiguraComposta(novasFiguras);
             } else {
                 let novaFigura = figura.clone();
                 novaFigura.redimensionar(fator);
                 return novaFigura;
             }
+        };
+
+        // Função para calcular o centro de uma figura composta
+        const calcularCentroFiguraComposta = (figuraComposta) => {
+            let somaX = 0, somaY = 0;
+            figuraComposta.figuras.forEach(f => {
+                somaX += f.x || 0; // Se a figura não tiver x, usa 0
+                somaY += f.y || 0; // Se a figura não tiver y, usa 0
+            });
+            return [somaX / figuraComposta.figuras.length, somaY / figuraComposta.figuras.length];
         };
 
         // Função para colorir figuras
@@ -289,6 +332,39 @@
             };
             return cores[cor.toLowerCase()] || cor;
         };
+
+        // Função para atualizar o stage (limpa e redesenha tudo)
+        const atualizarStage = (figura) => {
+            stage.removeAllChildren(); // Limpa o stage
+            desenharPlanoCartesiano(); // Redesenha o plano cartesiano
+            desenhar(figura, stage); // Redesenha a figura
+        };
+
+        // Função para animar uma figura com base no tempo
+		const animar = (figura, duracaoSegundos, callback, velocidade = 1) => {
+			const inicio = Date.now(); // Tempo inicial da animação
+			const duracaoMs = duracaoSegundos * 1000; // Converte segundos para milissegundos
+
+			const atualizar = () => {
+				const agora = Date.now();
+				const tempoDecorrido = (agora - inicio) * velocidade; // Ajusta o tempo decorrido pela velocidade
+				const progresso = Math.min(tempoDecorrido / duracaoMs, 1); // Progresso normalizado (0 a 1)
+
+				// Executa o callback com o progresso
+				figura = callback(figura, progresso);
+
+				// Atualiza o stage (limpa e redesenha tudo)
+				atualizarStage(figura);
+
+				// Se a animação não terminou, continua
+				if (progresso < 1) {
+					requestAnimationFrame(atualizar); // Usa requestAnimationFrame para animação suave
+				}
+			};
+
+			// Inicia a animação
+			requestAnimationFrame(atualizar);
+		};
 
         // Método desenhar atualizado para centralizar figuras na origem (0,0)
         const desenhar = (figura, stage) => {
@@ -342,28 +418,59 @@
                     stage.addChild(text);
                 }
 
-
                 // Aplica a rotação à figura
                 shape.rotation = figura.angulo; // Define o ângulo de rotação
                 stage.addChild(shape);
             }
             stage.update();
         };
+		
+		// Configura o Ticker para atualizar o stage continuamente
+		// Isso tem que ficar no final do código
+		createjs.Ticker.addEventListener("tick", () => {
+			stage.update();
+		});
 
         // Desenhar o plano cartesiano
         desenharPlanoCartesiano();
 
         // Exemplo de uso
         //REDIMENSIONAR FUNCIONA PARA TODAS AS FIGURAS MENOS PARA LINHAS
+        //redimensionar funcionando com figurasCompostas
         const janela = transladar(colorir(circulo(2), "azul"), 5, 5);
-        const parede = redimensionar(rotacionar(transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5),45),2);
-        const traço = rotacionar(linha(-5, 5, -3, 5),45);
-        const traços = rotacionar(polilinha([[-3, -3], [0, 3], [3, -3]]),45);
-        const triangulo = rotacionar(poligono([[-5, -5], [-2, -2], [0, -5]], "purple"),45);
-        const ola = rotacionar(texto("Olá, mundo!", "16px", "black"),45);
+        const parede = redimensionar(rotacionar(transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5), 45), 2);
+        const traço = rotacionar(linha(-5, 5, -3, 5), 45);
+        const traços = rotacionar(polilinha([[-3, -3], [0, 3], [3, -3]]), 45);
+        const triangulo = rotacionar(poligono([[-5, -5], [-2, -2], [0, -5]], "purple"), 45);
+        const ola = rotacionar(texto("Olá, mundo!", "16px", "black"), 45);
         const casa = comporFiguras([traço, triangulo, traços, janela, parede, ola]);
 
         desenhar(casa, stage);
+
+        // Cria uma figura composta (um quadrado e um círculo)
+        const quadrado = transladar(retangulo(2, 2), 1, 0);
+        const bola = transladar(circulo(1), -1, 0);
+        const figuraComposta = comporFiguras([quadrado, bola]);
+		
+		// Exemplo de animação: rotacionar uma figura composta continuamente
+		const rotacionarContinuamente = (figura, progresso, velocidade) => {
+			const anguloTotal = 360; // 1 volta completa
+			const anguloAtual = anguloTotal * progresso; // Aplica a velocidade ao ângulo
+			return rotacionar(figura, anguloAtual);
+		};
+		//TALVEZ NÃO ESTEJA FUNCIONANDO POR CONTA DA FUNCÃO ROTACIONAR
+
+        // Inicia a animação com duração de 10s na velocidade 1
+        //animar(figuraComposta, 10, rotacionarContinuamente, 1);
+		
+		const moverParaDireita = (figura, progresso) => {
+			const distanciaMaxima = 10; // Distância máxima no eixo X (de 0 a 10)
+			figura.x = distanciaMaxima * progresso; // Move o círculo ao longo do eixo X
+			return figura;
+		};
+		const bola2 = circulo(1);
+		animar(bola2, 5, moverParaDireita, 1);
+
     </script>
 </body>
 </html>
