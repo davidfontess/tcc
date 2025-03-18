@@ -341,30 +341,30 @@
         };
 
         // Função para animar uma figura com base no tempo
-		const animar = (figura, duracaoSegundos, callback, velocidade = 1) => {
-			const inicio = Date.now(); // Tempo inicial da animação
-			const duracaoMs = duracaoSegundos * 1000; // Converte segundos para milissegundos
+        const animar = (figura, duracaoSegundos, callback, velocidade = 1) => {
+            const inicio = Date.now(); // Tempo inicial da animação
+            const duracaoMs = duracaoSegundos * 1000; // Converte segundos para milissegundos
 
-			const atualizar = () => {
-				const agora = Date.now();
-				const tempoDecorrido = (agora - inicio) * velocidade; // Ajusta o tempo decorrido pela velocidade
-				const progresso = Math.min(tempoDecorrido / duracaoMs, 1); // Progresso normalizado (0 a 1)
+            const atualizar = () => {
+                const agora = Date.now();
+                const tempoDecorrido = (agora - inicio) * velocidade; // Ajusta o tempo decorrido pela velocidade
+                const progresso = Math.min(tempoDecorrido / duracaoMs, 1); // Progresso normalizado (0 a 1)
 
-				// Executa o callback com o progresso
-				figura = callback(figura, progresso);
+                // Executa o callback com o progresso
+                figura = callback(figura, progresso);
 
-				// Atualiza o stage (limpa e redesenha tudo)
-				atualizarStage(figura);
+                // Atualiza o stage (limpa e redesenha tudo)
+                atualizarStage(figura);
 
-				// Se a animação não terminou, continua
-				if (progresso < 1) {
-					requestAnimationFrame(atualizar); // Usa requestAnimationFrame para animação suave
-				}
-			};
+                // Se a animação não terminou, continua
+                if (progresso < 1) {
+                    requestAnimationFrame(atualizar); // Usa requestAnimationFrame para animação suave
+                }
+            };
 
-			// Inicia a animação
-			requestAnimationFrame(atualizar);
-		};
+            // Inicia a animação
+            requestAnimationFrame(atualizar);
+        };
 
         // Método desenhar atualizado para centralizar figuras na origem (0,0)
         const desenhar = (figura, stage) => {
@@ -424,53 +424,37 @@
             }
             stage.update();
         };
-		
-		// Configura o Ticker para atualizar o stage continuamente
-		// Isso tem que ficar no final do código
-		createjs.Ticker.addEventListener("tick", () => {
-			stage.update();
-		});
+
+        // Configura o Ticker para atualizar o stage continuamente
+        // Isso tem que ficar no final do código
+        createjs.Ticker.addEventListener("tick", () => {
+            stage.update();
+        });
 
         // Desenhar o plano cartesiano
         desenharPlanoCartesiano();
 
-        // Exemplo de uso
-        //REDIMENSIONAR FUNCIONA PARA TODAS AS FIGURAS MENOS PARA LINHAS
-        //redimensionar funcionando com figurasCompostas
-        const janela = transladar(colorir(circulo(2), "azul"), 5, 5);
-        const parede = redimensionar(rotacionar(transladar(colorir(retangulo(2, 2), "amarelo"), 5, -5), 45), 2);
-        const traço = rotacionar(linha(-5, 5, -3, 5), 45);
-        const traços = rotacionar(polilinha([[-3, -3], [0, 3], [3, -3]]), 45);
-        const triangulo = rotacionar(poligono([[-5, -5], [-2, -2], [0, -5]], "purple"), 45);
-        const ola = rotacionar(texto("Olá, mundo!", "16px", "black"), 45);
-        const casa = comporFiguras([traço, triangulo, traços, janela, parede, ola]);
+        // Função wheel(t) que define a posição do círculo ao longo do tempo
+        const wheel = (t) => {
+            // t - 10: move o círculo ao longo do eixo X com base no tempo
+            // 3: posição fixa no eixo Y
+            return transladar(circulo(1), t - 10, 3);
+        };
 
-        desenhar(casa, stage);
+        // Função de callback para a animação
+        const animarWheel = (figura, progresso) => {
+            // progresso varia de 0 a 1 ao longo da duração da animação
+            // Mapeia o progresso para um valor de tempo (t) que varia de 0 a 20
+            const t = progresso * 20; // Ajuste o intervalo de tempo conforme necessário
+            return wheel(t); // Atualiza a posição do círculo
+        };
 
-        // Cria uma figura composta (um quadrado e um círculo)
-        const quadrado = transladar(retangulo(2, 2), 1, 0);
-        const bola = transladar(circulo(1), -1, 0);
-        const figuraComposta = comporFiguras([quadrado, bola]);
+        // Cria o círculo inicial
+        const circuloAnimado = wheel(0); // Começa em t = 0
+
+        // Inicia a animação com duração de 10 segundos
+        animar(circuloAnimado, 10, animarWheel, 1);
 		
-		// Exemplo de animação: rotacionar uma figura composta continuamente
-		const rotacionarContinuamente = (figura, progresso, velocidade) => {
-			const anguloTotal = 360; // 1 volta completa
-			const anguloAtual = anguloTotal * progresso; // Aplica a velocidade ao ângulo
-			return rotacionar(figura, anguloAtual);
-		};
-		//TALVEZ NÃO ESTEJA FUNCIONANDO POR CONTA DA FUNCÃO ROTACIONAR
-
-        // Inicia a animação com duração de 10s na velocidade 1
-        //animar(figuraComposta, 10, rotacionarContinuamente, 1);
-		
-		const moverParaDireita = (figura, progresso) => {
-			const distanciaMaxima = 10; // Distância máxima no eixo X (de 0 a 10)
-			figura.x = distanciaMaxima * progresso; // Move o círculo ao longo do eixo X
-			return figura;
-		};
-		const bola2 = circulo(1);
-		animar(bola2, 5, moverParaDireita, 1);
-
     </script>
 </body>
 </html>
