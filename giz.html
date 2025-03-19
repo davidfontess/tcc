@@ -13,23 +13,23 @@
 
         const stage = new createjs.Stage("demoCanvas");
 
-        // Função para converter coordenadas do sistema cartesiano para o canvas
+        // função para converter coordenadas do sistema cartesiano para o canvas
         const converterCoordenadas = (x, y) => [
             canvasSize / 2 + x * step,
             canvasSize / 2 - y * step
         ];
 
-        // Função para desenhar o plano cartesiano
+        // função para desenhar o plano cartesiano
         const desenharPlanoCartesiano = () => {
             const eixo = new createjs.Shape();
             eixo.graphics.setStrokeStyle(1).beginStroke("black");
 
-            // Eixo X
+            // eixo X
             eixo.graphics.moveTo(0, canvasSize / 2).lineTo(canvasSize, canvasSize / 2);
-            // Eixo Y
+            // eixo Y
             eixo.graphics.moveTo(canvasSize / 2, 0).lineTo(canvasSize / 2, canvasSize);
 
-            // Linhas de grade
+            // linhas de grade
             for (let i = -coordMax; i <= coordMax; i++) {
                 if (i !== 0) {
                     let [x, y] = converterCoordenadas(i, 0);
@@ -41,7 +41,7 @@
 
             stage.addChild(eixo);
 
-            // Números nos eixos
+            // números nos eixos
             const textFormat = "12px Arial";
             for (let i = -coordMax + 1; i < coordMax; i++) {
                 if (i !== 0) {
@@ -60,7 +60,7 @@
             }
         };
 
-        // Classe base para figuras
+        // classe base para figuras
         class Figura {
             constructor(cor = "black") {
                 this.x = 0;
@@ -72,11 +72,11 @@
                 return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
             }
             redimensionar(fator) {
-                // Método genérico que será sobrescrito pelas classes filhas
+                // método genérico que será sobrescrito pelas classes filhas
             }
         }
 
-        // Classe para retângulos
+        // classe para retângulos
         class Retangulo extends Figura {
             constructor(x, y, largura, altura, cor = "black") {
                 super(cor);
@@ -191,10 +191,10 @@
             stage.addChild(fundo);
         };
 
-        // Função para compor figuras
+        //função para compor figuras
         const comporFiguras = (figs) => new FiguraComposta(figs);
 
-        // Função para transladar figuras
+        // função para transladar figuras
         const transladar = (fig, dx, dy) => {
             if (fig instanceof FiguraComposta) {
                 return new FiguraComposta(fig.figuras.map(f => transladar(f, dx, dy)));
@@ -206,9 +206,9 @@
             }
         };
 
-        // Função para rotacionar figuras
+        // função para rotacionar figuras
         const rotacionar = (figura, angulo) => {
-            const rad = (Math.PI / 180) * -angulo; // Inverte o ângulo para rotação horária
+            const rad = (Math.PI / 180) * -angulo; // inverte o ângulo para rotação horária
 
             const rotacionarPonto = (x, y, cx, cy) => {
                 const cos = Math.cos(rad);
@@ -220,23 +220,23 @@
             };
 
             if (figura instanceof FiguraComposta) {
-                // Calcula o centro da figura composta
+                // calcula o centro da figura composta
                 const centro = calcularCentroFiguraComposta(figura);
 
-                // Rotaciona cada figura em relação ao centro da figura composta
+                // rotaciona cada figura em relação ao centro da figura composta
                 const novasFiguras = figura.figuras.map(f => {
                     const novaFigura = f.clone();
 
-                    // Rotaciona a figura em relação ao centro da figura composta
+                    // rotaciona a figura em relação ao centro da figura composta
                     if (novaFigura instanceof Linha) {
                         [novaFigura.x1, novaFigura.y1] = rotacionarPonto(novaFigura.x1, novaFigura.y1, centro[0], centro[1]);
                         [novaFigura.x2, novaFigura.y2] = rotacionarPonto(novaFigura.x2, novaFigura.y2, centro[0], centro[1]);
                     } else if (novaFigura instanceof Polilinha || novaFigura instanceof Poligono) {
                         novaFigura.pontos = novaFigura.pontos.map(([x, y]) => rotacionarPonto(x, y, centro[0], centro[1]));
                     } else if (novaFigura instanceof Texto || novaFigura instanceof Retangulo || novaFigura instanceof Circulo) {
-                        // Para figuras com posição (x, y), rotacionamos a posição em relação ao centro
+                        // para figuras com posição (x, y), rotacionamos a posição em relação ao centro
                         [novaFigura.x, novaFigura.y] = rotacionarPonto(novaFigura.x, novaFigura.y, centro[0], centro[1]);
-                        novaFigura.angulo += angulo; // Atualiza o ângulo de rotação
+                        novaFigura.angulo += angulo; // atualiza o ângulo de rotação
                     }
 
                     return novaFigura;
@@ -244,7 +244,7 @@
 
                 return new FiguraComposta(novasFiguras);
             } else {
-                // Rotaciona figuras individuais
+                // rotaciona figuras individuais
                 if (figura instanceof Linha) {
                     const [cx, cy] = [(figura.x1 + figura.x2) / 2, (figura.y1 + figura.y2) / 2];
                     [figura.x1, figura.y1] = rotacionarPonto(figura.x1, figura.y1, cx, cy);
@@ -253,7 +253,7 @@
                     const [cx, cy] = calcularCentro(figura.pontos);
                     figura.pontos = figura.pontos.map(([x, y]) => rotacionarPonto(x, y, cx, cy));
                 } else if (figura instanceof Texto || figura instanceof Retangulo || figura instanceof Circulo) {
-                    figura.angulo += angulo; // Atualiza o ângulo de rotação
+                    figura.angulo += angulo; // atualiza o ângulo de rotação
                 }
 
                 return figura;
@@ -262,15 +262,15 @@
 
         const redimensionar = (figura, fator) => {
             if (figura instanceof FiguraComposta) {
-                // Calcula o centro da figura composta
+                // calcula o centro da figura composta
                 const centro = calcularCentroFiguraComposta(figura);
 
-                // Redimensiona cada figura em relação ao centro da figura composta
+                // rdimensiona cada figura em relação ao centro da figura composta
                 const novasFiguras = figura.figuras.map(f => {
                     const novaFigura = f.clone();
                     novaFigura.redimensionar(fator);
 
-                    // Ajusta a posição da figura para manter a proporção em relação ao centro
+                    // ajusta a posição da figura para manter a proporção em relação ao centro
                     novaFigura.x = centro[0] + (f.x - centro[0]) * fator;
                     novaFigura.y = centro[1] + (f.y - centro[1]) * fator;
 
@@ -285,17 +285,17 @@
             }
         };
 
-        // Função para calcular o centro de uma figura composta
+        //dunção para calcular o centro de uma figura composta
         const calcularCentroFiguraComposta = (figuraComposta) => {
             let somaX = 0, somaY = 0;
             figuraComposta.figuras.forEach(f => {
-                somaX += f.x || 0; // Se a figura não tiver x, usa 0
-                somaY += f.y || 0; // Se a figura não tiver y, usa 0
+                somaX += f.x || 0; // se a figura não tiver x, usa 0
+                somaY += f.y || 0; // se a figura não tiver y, usa 0
             });
             return [somaX / figuraComposta.figuras.length, somaY / figuraComposta.figuras.length];
         };
 
-        // Função para colorir figuras
+        //função para colorir figuras
         const colorir = (fig, cor) => {
             if (fig instanceof FiguraComposta) {
                 return new FiguraComposta(fig.figuras.map(f => colorir(f, cor)));
@@ -315,7 +315,7 @@
             return [somaX / pontos.length, somaY / pontos.length];
         };
 
-        // Função para traduzir cores do português para o inglês
+        // função para traduzir cores do português para o inglês
         const traduzirCor = (cor) => {
             const cores = {
                 "preto": "black",
@@ -333,40 +333,40 @@
             return cores[cor.toLowerCase()] || cor;
         };
 
-        // Função para atualizar o stage (limpa e redesenha tudo)
-        const atualizarStage = (figura) => {
-            stage.removeAllChildren(); // Limpa o stage
-            desenharPlanoCartesiano(); // Redesenha o plano cartesiano
-            desenhar(figura, stage); // Redesenha a figura
-        };
+        //função para atualizar o stage (limpa e redesenha tudo)
+        const atualizarStage = (figuras) => {
+			stage.removeAllChildren(); // limpa o stage
+			desenharPlanoCartesiano(); //redesenha o plano cartesiano
+			figuras.forEach(figura => desenhar(figura, stage)); // redesenha todas as figuras
+		};
 
-        // Função para animar uma figura com base no tempo
-        const animar = (figura, duracaoSegundos, callback, velocidade = 1) => {
-            const inicio = Date.now(); // Tempo inicial da animação
-            const duracaoMs = duracaoSegundos * 1000; // Converte segundos para milissegundos
+        // função para animar uma figura com base no tempo
+        const animar = (figuras, duracaoSegundos, callbacks, velocidade = 1) => {
+			const inicio = Date.now(); // tempo inicial da animação
+			const duracaoMs = duracaoSegundos * 1000; //converte segundos para milissegundos
 
-            const atualizar = () => {
-                const agora = Date.now();
-                const tempoDecorrido = (agora - inicio) * velocidade; // Ajusta o tempo decorrido pela velocidade
-                const progresso = Math.min(tempoDecorrido / duracaoMs, 1); // Progresso normalizado (0 a 1)
+			const atualizar = () => {
+				const agora = Date.now();
+				const tempoDecorrido = (agora - inicio) * velocidade; // ajusta o tempo decorrido pela velocidade
+				const progresso = Math.min(tempoDecorrido / duracaoMs, 1); //progresso normalizado (0 a 1)
 
-                // Executa o callback com o progresso
-                figura = callback(figura, progresso);
+				//executa os callbacks com o progresso para cada figura
+				const novasFiguras = figuras.map((figura, index) => callbacks[index](figura, progresso));
 
-                // Atualiza o stage (limpa e redesenha tudo)
-                atualizarStage(figura);
+				// atualiza o stage (limpa e redesenha tudo)
+				atualizarStage(novasFiguras);
 
-                // Se a animação não terminou, continua
-                if (progresso < 1) {
-                    requestAnimationFrame(atualizar); // Usa requestAnimationFrame para animação suave
-                }
-            };
+				// se a animação não terminou, continua
+				if (progresso < 1) {
+					requestAnimationFrame(atualizar); //usa requestAnimationFrame para animação suave
+				}
+			};
 
-            // Inicia a animação
-            requestAnimationFrame(atualizar);
-        };
+			//inicia a animação
+			requestAnimationFrame(atualizar);
+		};
 
-        // Método desenhar atualizado para centralizar figuras na origem (0,0)
+        //método desenhar atualizado para centralizar figuras na origem (0,0)
         const desenhar = (figura, stage) => {
             if (figura instanceof FiguraComposta) {
                 figura.figuras.forEach(f => desenhar(f, stage));
@@ -376,7 +376,7 @@
                     let shape = new createjs.Shape();
                     let [cx, cy] = converterCoordenadas(figura.x, figura.y);
                     shape.graphics.beginFill(traduzirCor(figura.cor));
-                    shape.setTransform(cx, cy, 1, 1, figura.angulo); // Aplica rotação
+                    shape.setTransform(cx, cy, 1, 1, figura.angulo); //aplica rotação
                     shape.graphics.drawRect(-figura.largura * step / 2, -figura.altura * step / 2, 
                                             figura.largura * step, figura.altura * step);
                     shape.graphics.endFill();
@@ -412,48 +412,57 @@
                     let [x, y] = converterCoordenadas(figura.x, figura.y);
                     text.x = x;
                     text.y = y;
-                    text.textAlign = "center"; // Para centralizar o texto no ponto
+                    text.textAlign = "center"; // para centralizar o texto no ponto
                     text.textBaseline = "middle";
-                    text.rotation = figura.angulo; // Aplica rotação ao texto
+                    text.rotation = figura.angulo; // aplica rotação ao texto
                     stage.addChild(text);
                 }
 
-                // Aplica a rotação à figura
-                shape.rotation = figura.angulo; // Define o ângulo de rotação
+                // aplica a rotação à figura
+                shape.rotation = figura.angulo; // define o ângulo de rotação
                 stage.addChild(shape);
             }
             stage.update();
         };
 
-        // Configura o Ticker para atualizar o stage continuamente
+        //configura o Ticker para atualizar o stage continuamente
         // Isso tem que ficar no final do código
         createjs.Ticker.addEventListener("tick", () => {
             stage.update();
         });
 
-        // Desenhar o plano cartesiano
+        //desenha o plano cartesiano
         desenharPlanoCartesiano();
 
-        // Função wheel(t) que define a posição do círculo ao longo do tempo
+        // função wheel(t) que define a posição do círculo ao longo do tempo
         const wheel = (t) => {
             // t - 10: move o círculo ao longo do eixo X com base no tempo
             // 3: posição fixa no eixo Y
             return transladar(circulo(1), t - 10, 3);
         };
 
-        // Função de callback para a animação
+        // função de callback para a animação
         const animarWheel = (figura, progresso) => {
             // progresso varia de 0 a 1 ao longo da duração da animação
             // Mapeia o progresso para um valor de tempo (t) que varia de 0 a 20
-            const t = progresso * 20; // Ajuste o intervalo de tempo conforme necessário
-            return wheel(t); // Atualiza a posição do círculo
+            const t = progresso * 20; // ajuste o intervalo de tempo conforme necessário
+            return wheel(t); // atualiza a posição do círculo
         };
 
-        // Cria o círculo inicial
+        //cria o círculo inicial
         const circuloAnimado = wheel(0); // Começa em t = 0
+		
+		// ffunção para animar um retângulo ao longo do tempo
+		const animarRetangulo = (figura, progresso) => {
+			const t = progresso * 20; // ajuste o intervalo de tempo conforme necessário
+			return transladar(retangulo(2, 1), t - 10, -3); // move o retângulo ao longo do eixo X e Y
+		};
 
-        // Inicia a animação com duração de 10 segundos
-        animar(circuloAnimado, 10, animarWheel, 1);
+		// cria o retângulo inicial
+		const retanguloAnimado = transladar(retangulo(2, 1), -10, -3); //começa em t = 0
+
+		//inicia a animação do retângulo e a animação do circulo com duração de 10 segundos
+		animar([circuloAnimado, retanguloAnimado], 10, [animarWheel, animarRetangulo], 1);
 		
     </script>
 </body>
