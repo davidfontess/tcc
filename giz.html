@@ -13,13 +13,13 @@
 
         const stage = new createjs.Stage("demoCanvas");
 
-        // função para converter coordenadas do sistema cartesiano para o canvas
+        // função pra converter coordenadas do sistema cartesiano para o canvas
         const converterCoordenadas = (x, y) => [
             canvasSize / 2 + x * step,
             canvasSize / 2 - y * step
         ];
 
-        // função para desenhar o plano cartesiano
+        // função pra desenhar o plano cartesiano
         const desenharPlanoCartesiano = () => {
             const eixo = new createjs.Shape();
             eixo.graphics.setStrokeStyle(1).beginStroke("black");
@@ -29,7 +29,7 @@
             // eixo Y
             eixo.graphics.moveTo(canvasSize / 2, 0).lineTo(canvasSize / 2, canvasSize);
 
-            // linhas de grade
+            // linhas da grade do plano cartesiano
             for (let i = -coordMax; i <= coordMax; i++) {
                 if (i !== 0) {
                     let [x, y] = converterCoordenadas(i, 0);
@@ -60,7 +60,7 @@
             }
         };
 
-        // classe base para figuras
+        // classe base das figuras
         class Figura {
             constructor(cor = "black") {
                 this.x = 0;
@@ -191,13 +191,13 @@
             stage.addChild(fundo);
         };
 
-        //função para compor figuras
+        //função para compor as figuras em uma figura composta
         const comporFiguras = (figs) => new FiguraComposta(figs);
 
-        // função para transladar figuras
-        const transladar = (fig, dx, dy) => {
+        // função pra mover figuras (antigo transladar)
+        const mover = (fig, dx, dy) => {
             if (fig instanceof FiguraComposta) {
-                return new FiguraComposta(fig.figuras.map(f => transladar(f, dx, dy)));
+                return new FiguraComposta(fig.figuras.map(f => mover(f, dx, dy)));
             } else {
                 let novaFigura = fig.clone();
                 novaFigura.x += dx;
@@ -206,7 +206,7 @@
             }
         };
 
-        // função para rotacionar figuras
+        // função pra rotacionar figuras
         const rotacionar = (figura, angulo) => {
             const rad = (Math.PI / 180) * -angulo; // inverte o ângulo para rotação horária
 
@@ -236,7 +236,7 @@
                     } else if (novaFigura instanceof Texto || novaFigura instanceof Retangulo || novaFigura instanceof Circulo) {
                         // para figuras com posição (x, y), rotacionamos a posição em relação ao centro
                         [novaFigura.x, novaFigura.y] = rotacionarPonto(novaFigura.x, novaFigura.y, centro[0], centro[1]);
-                        novaFigura.angulo += angulo; // atualiza o ângulo de rotação
+                        novaFigura.angulo += angulo; // atualizando o ângulo de rotação
                     }
 
                     return novaFigura;
@@ -316,6 +316,8 @@
         };
 
         // função para traduzir cores do português para o inglês
+		// TODO: mudar as cores para cores mais bonitas e adicionar cores escuras e claras.
+		// talvez adicinar função pra isso? escurescer(); e clarear();?
         const traduzirCor = (cor) => {
             const cores = {
                 "preto": "black",
@@ -366,12 +368,12 @@
 			requestAnimationFrame(atualizar);
 		};
 		
-		// Função genérica para interagir com uma figura
+		// função genérica para interagir com uma figura
 		const interagir = (figura, handlers) => {
 			let selectedShape = null;
 			let offset = { x: 0, y: 0 };
 
-			// Captura eventos de teclado
+			// pega eventos do teclado
 			document.addEventListener("keydown", (event) => {
 				if (handlers.onKeyDown) {
 					handlers.onKeyDown(event, figura);
@@ -379,7 +381,7 @@
 				}
 			});
 
-			// Captura eventos de clique do mouse
+			// pega events de clique de mouse
 			stage.on("stagemousedown", (event) => {
 				const { stageX, stageY } = event;
 				const [x, y] = converterCoordenadas(figura.x, figura.y);
@@ -389,7 +391,7 @@
 					atualizarStage([figura]);
 				}
 
-				// Inicia o arrasto se o clique foi sobre a figura
+				// começa o arrasto se o clique foi sobre a figura
 				if (Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
 					selectedShape = figura;
 					offset.x = stageX - x;
@@ -397,12 +399,12 @@
 				}
 			});
 
-			// Finaliza o arrasto quando o mouse é solto
+			// termina o arrasto quando o mouse é solto
 			stage.on("stagemouseup", () => {
 				selectedShape = null;
 			});
 
-			// Atualiza a posição da figura durante o arrasto
+			// atualizando a posição da figura durante o arrasto
 			stage.on("stagemousemove", (event) => {
 				if (selectedShape && handlers.onDrag) {
 					const { stageX, stageY } = event;
@@ -460,21 +462,21 @@
                     let [x, y] = converterCoordenadas(figura.x, figura.y);
                     text.x = x;
                     text.y = y;
-                    text.textAlign = "center"; // para centralizar o texto no ponto
+                    text.textAlign = "center"; // pra centralizar o texto no ponto
                     text.textBaseline = "middle";
                     text.rotation = figura.angulo; // aplica rotação ao texto
                     stage.addChild(text);
                 }
 
                 // aplica a rotação à figura
-                shape.rotation = figura.angulo; // define o ângulo de rotação
+                shape.rotation = figura.angulo; // define o angulo de rotação
                 stage.addChild(shape);
             }
             stage.update();
         };
 
         //configura o Ticker para atualizar o stage continuamente
-        // Isso tem que ficar no final do código
+        // isso tem que ficar no final do código!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         createjs.Ticker.addEventListener("tick", () => {
             stage.update();
         });
@@ -482,43 +484,43 @@
         //desenha o plano cartesiano
         desenharPlanoCartesiano();
 
-        // Cria uma figura (um retângulo, por exemplo)
-	const meuRetangulo = retangulo(2, 1, 0, 0);
+        // cria uma figura (um retângulo, por exemplo)
+		const meuRetangulo = retangulo(2, 1, 0, 0);
 
-	// Define os manipuladores (handlers) para as interações
-	const manipuladores = {
-		onKeyDown: (event, figura) => {
-			// Move o retângulo com as setas do teclado
-			switch (event.key) {
-				case "ArrowUp":
-					figura.y -= 1;
-					break;
-				case "ArrowDown":
-					figura.y += 1;
-					break;
-				case "ArrowLeft":
-					figura.x -= 1;
-					break;
-				case "ArrowRight":
-					figura.x += 1;
-					break;
+		// define os manipuladores (handlers) para as interações
+		const manipuladores = {
+			onKeyDown: (event, figura) => {
+				// move o retângulo com as setas do teclado
+				switch (event.key) {
+					case "ArrowUp":
+						figura.y += 1;
+						break;
+					case "ArrowDown":
+						figura.y -= 1;
+						break;
+					case "ArrowLeft":
+						figura.x -= 1;
+						break;
+					case "ArrowRight":
+						figura.x += 1;
+						break;
+				}
+			},
+			onClick: (event, figura) => {
+				// muda a cor do retângulo ao clicar nele
+				figura.cor = `hsl(${Math.random() * 360}, 75%, 50%)`;
+			},
+			onDrag: (event, figura) => {
+				// a posição do retângulo é atualizada automaticamente durante o arrasto
+				console.log("Arrastando figura para:", figura.x, figura.y);
 			}
-		},
-		onClick: (event, figura) => {
-			// Muda a cor do retângulo ao clicar nele
-			figura.cor = `hsl(${Math.random() * 360}, 75%, 50%)`;
-		},
-		onDrag: (event, figura) => {
-			// A posição do retângulo é atualizada automaticamente durante o arrasto
-			console.log("Arrastando figura para:", figura.x, figura.y);
-		}
-	};
+		};
 
-	// Aplica a função interagir ao retângulo
-	interagir(meuRetangulo, manipuladores);
+		// aplica a função interagir ao retângulo
+		interagir(meuRetangulo, manipuladores);
 
-	// Adiciona o retângulo ao stage
-	atualizarStage([meuRetangulo]);
+		// adiciona o retângulo ao stage
+		atualizarStage([meuRetangulo]);
 		
     </script>
 </body>
