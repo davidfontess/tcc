@@ -343,78 +343,88 @@
 		};
 
         // função para animar uma figura com base no tempo
-        const animar = (figuras, duracaoSegundos, callbacks, velocidade = 1) => {
-			const inicio = Date.now(); // tempo inicial da animação
-			const duracaoMs = duracaoSegundos * 1000; //converte segundos para milissegundos
+        const animar = (funcaoDeAnimacao) => {
+            const inicio = Date.now(); // tempo inicial da animação
 
-			const atualizar = () => {
-				const agora = Date.now();
-				const tempoDecorrido = (agora - inicio) * velocidade; // ajusta o tempo decorrido pela velocidade
-				const progresso = Math.min(tempoDecorrido / duracaoMs, 1); //progresso normalizado (0 a 1)
+            const atualizar = () => {
+                const agora = Date.now();
+                const tempoDecorrido = (agora - inicio) / 1000; // tempo em segundos
 
-				//executa os callbacks com o progresso para cada figura
-				const novasFiguras = figuras.map((figura, index) => callbacks[index](figura, progresso));
+                // chama a função de animação com o tempo decorrido
+                const figuraAnimada = funcaoDeAnimacao(tempoDecorrido);
 
-				// atualiza o stage (limpa e redesenha tudo)
-				atualizarStage(novasFiguras);
+                // atualiza o stage (limpa e redesenha tudo)
+                atualizarStage([figuraAnimada]);
 
-				// se a animação não terminou, continua
-				if (progresso < 1) {
-					requestAnimationFrame(atualizar); //usa requestAnimationFrame para animação suave
-				}
-			};
+                // continua a animação
+                requestAnimationFrame(atualizar);
+            };
 
-			//inicia a animação
-			requestAnimationFrame(atualizar);
-		};
-		
+            // inicia a animação
+            requestAnimationFrame(atualizar);
+        };
+
 		// função genérica para interagir com uma figura
-		const interagir = (figura, handlers) => {
-			let selectedShape = null;
-			let offset = { x: 0, y: 0 };
+        // correções do professor
+		// função genérica para interagir com uma figura
+        const interagir = (mundoInicial, mudaTempo, mudaEventos, visualizar) => {
+            let mundo = mundoInicial;
+            let selectedShape = null;
+            let offset = { x: 0, y: 0 };
 
-			// pega eventos do teclado
-			document.addEventListener("keydown", (event) => {
-				if (handlers.onKeyDown) {
-					handlers.onKeyDown(event, figura);
-					atualizarStage([figura]);
-				}
-			});
+            // função para atualizar o mundo com base no tempo
+            const atualizarTempo = (tempo) => {
+                mundo = mudaTempo(tempo, mundo);
+                atualizarStage([visualizar(mundo)]);
+            };
 
-			// pega events de clique de mouse
-			stage.on("stagemousedown", (event) => {
-				const { stageX, stageY } = event;
-				const [x, y] = converterCoordenadas(figura.x, figura.y);
+            // função para atualizar o mundo com base em eventos
+            const atualizarEventos = (evento) => {
+                mundo = mudaEventos(evento, mundo);
+                atualizarStage([visualizar(mundo)]);
+            };
 
-				if (handlers.onClick && Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
-					handlers.onClick(event, figura);
-					atualizarStage([figura]);
-				}
+            // captura eventos de teclado
+            document.addEventListener("keydown", (event) => {
+                atualizarEventos(event.key);
+            });
 
-				// começa o arrasto se o clique foi sobre a figura
-				if (Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
-					selectedShape = figura;
-					offset.x = stageX - x;
-					offset.y = stageY - y;
-				}
-			});
+            // captura eventos de clique do mouse
+            stage.on("stagemousedown", (event) => {
+                const { stageX, stageY } = event;
+                const [x, y] = converterCoordenadas(mundo[0], mundo[1]);
 
-			// termina o arrasto quando o mouse é solto
-			stage.on("stagemouseup", () => {
-				selectedShape = null;
-			});
+                if (Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
+                    selectedShape = mundo;
+                    offset.x = stageX - x;
+                    offset.y = stageY - y;
+                }
+            });
 
-			// atualizando a posição da figura durante o arrasto
-			stage.on("stagemousemove", (event) => {
-				if (selectedShape && handlers.onDrag) {
-					const { stageX, stageY } = event;
-					selectedShape.x = (stageX - offset.x - canvasSize / 2) / step;
-					selectedShape.y = (canvasSize / 2 - (stageY - offset.y)) / step;
-					handlers.onDrag(event, selectedShape);
-					atualizarStage([figura]);
-				}
-			});
-		};
+            // finaliza o arrasto quando o mouse é solto
+            stage.on("stagemouseup", () => {
+                selectedShape = null;
+            });
+
+            // atualiza a posição da figura durante o arrasto
+            stage.on("stagemousemove", (event) => {
+                if (selectedShape) {
+                    const { stageX, stageY } = event;
+                    mundo = [
+                        (stageX - offset.x - canvasSize / 2) / step,
+                        (canvasSize / 2 - (stageY - offset.y)) / step
+                    ];
+                    atualizarStage([visualizar(mundo)]);
+                }
+            });
+
+            // inicia a animação do tempo
+            createjs.Ticker.addEventListener("tick", () => {
+                const tempo = Date.now() / 1000; // tempo em segundos
+                atualizarTempo(tempo);
+            });
+        };
+
 
         //método desenhar atualizado para centralizar figuras na origem (0,0)
         const desenhar = (figura, stage) => {
@@ -481,6 +491,8 @@
             stage.update();
         });
 
+        // CÓDIGO DO USUÁRIO
+
         //desenha o plano cartesiano
         desenharPlanoCartesiano();
 
@@ -516,8 +528,34 @@
 			}
 		};
 
-		// aplica a função interagir ao retângulo
-		interagir(meuRetangulo, manipuladores);
+        const mundoInicial = [0, 0];
+        const mudaTempo = (t, mundo) => mundo; // não muda com o tempo
+        const mudaEventos = (evento, mundo) => {
+            const [x, y] = mundo;
+            switch (evento) {
+                case "ArrowRight":
+                    return [x + 1, y];
+                case "ArrowLeft":
+                    return [x - 1, y];
+                default:
+                    return [x, y];
+            }
+        };
+        const visualizar = (mundo) => {
+            const [x, y] = mundo;
+            return mover(retangulo(3, 1), x, y);
+        };
+
+        // aplica a função interagir ao mundo inicial
+        interagir(mundoInicial, mudaTempo, mudaEventos, visualizar);
+
+        // código do usuário
+        const funcaoDeAnimacao = (t) => {
+            return rotacionar(retangulo(3, 3), 30 * t); // 30 graus por segundo (t = 1000ms)
+        };
+
+        // aplica a função animar
+        animar(funcaoDeAnimacao);
 
 		// adiciona o retângulo ao stage
 		atualizarStage([meuRetangulo]);
