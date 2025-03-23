@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css">
     <!-- codemirror javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
-    <!-- codemirror mode javascript (pro suporte a javascript) -->
+    <!-- codemirror mode javascript pro suporte a javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/javascript/javascript.min.js"></script>
-    <!-- Tema do codemirror (opcional) -->
+    <!-- tema do codemirror (opcional) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/dracula.min.css">
 </head>
 <body>
@@ -34,20 +34,32 @@
             lineNumbers: true   // mostrar números das linhas
         });
 
-        // Função para executar o código digitado
+        // adicionando um exemplo de código no editor
+        editor.setValue(`// Exemplo de código para desenhar um círculo
+const circ = circulo(2); // Cria um círculo de raio 2
+desenhar(circ); // Desenha o círculo no canvas`);
+
+        //função pra executar o código digitado
         function executarCodigo() {
-            const codigo = editor.getValue(); // Pega o código do editor
+            const codigo = editor.getValue(); // pega o código do editor
             try {
-                // Executa o código
-                eval(codigo);
+                // cria uma função com o código do usuário
+                const funcaoUsuario = new Function(codigo);
+                // executa a função
+                const resultado = funcaoUsuario();
+                // desenha o resultado no canvas
+                if (resultado) {
+                    desenhar(resultado, stage);
+                }
             } catch (error) {
                 console.error("Erro ao executar o código:", error);
             }
         }
     </script>
 
-    <!-- resto do código JavaScript do EaselJS -->
+    <!-- resto do código javascript do EaselJS -->
     <script>
+        
         const canvasSize = 400;
         const coordMax = 10;
         const step = canvasSize / (2 * coordMax);
@@ -468,20 +480,36 @@
 
 
         //método desenhar atualizado para centralizar figuras na origem (0,0)
-        const desenhar = (figura, stage) => {
+        const desenhar = (figuraOuLista) => {
+            // limpa o stage e redesenha o plano cartesiano
+            stage.removeAllChildren();
+            desenharPlanoCartesiano();
+
+            if (Array.isArray(figuraOuLista)) {
+                // se for uma lista de figuras, desenha cada uma
+                figuraOuLista.forEach(figura => desenharFigura(figura));
+            } else {
+                // se for uma única figura
+                desenharFigura(figuraOuLista);
+            }
+            stage.update(); // atualiza o stage dps de desenhar
+        };
+
+        // função auxiliar para desenhar uma única figura
+        const desenharFigura = (figura) => {
             if (figura instanceof FiguraComposta) {
-                figura.figuras.forEach(f => desenhar(f, stage));
+                // se for uma figura composta, desenha cada subfigura
+                figura.figuras.forEach(f => desenharFigura(f));
             } else {
                 let shape = new createjs.Shape();
                 if (figura instanceof Retangulo) {
-                    let shape = new createjs.Shape();
                     let [cx, cy] = converterCoordenadas(figura.x, figura.y);
                     shape.graphics.beginFill(traduzirCor(figura.cor));
-                    shape.setTransform(cx, cy, 1, 1, figura.angulo); //aplica rotação
+                    shape.setTransform(cx, cy, 1, 1, figura.angulo); //aplicando a rotação
                     shape.graphics.drawRect(-figura.largura * step / 2, -figura.altura * step / 2, 
                                             figura.largura * step, figura.altura * step);
                     shape.graphics.endFill();
-                    stage.addChild(shape);
+                    stage.addChild(shape); //adiciona no stage
                 } else if (figura instanceof Circulo) {
                     shape.graphics.beginFill(traduzirCor(figura.cor));
                     let [x, y] = converterCoordenadas(figura.x, figura.y);
@@ -489,17 +517,20 @@
                     shape.x = x;
                     shape.y = y;
                     shape.graphics.endFill();
+                    stage.addChild(shape); //adiciona no stage
                 } else if (figura instanceof Linha) {
                     let [x1, y1] = converterCoordenadas(figura.x1, figura.y1);
                     let [x2, y2] = converterCoordenadas(figura.x2, figura.y2);
                     shape.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
                     shape.graphics.moveTo(x1, y1).lineTo(x2, y2);
                     shape.graphics.endStroke();
+                    stage.addChild(shape); //adiciona no stage
                 } else if (figura instanceof Polilinha) {
                     shape.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
                     shape.graphics.moveTo(...converterCoordenadas(...figura.pontos[0]));
                     figura.pontos.slice(1).forEach(p => shape.graphics.lineTo(...converterCoordenadas(...p)));
                     shape.graphics.endStroke();
+                    stage.addChild(shape); //adiciona no stage
                 } else if (figura instanceof Poligono) {
                     shape.graphics.beginFill(traduzirCor(figura.cor));
                     shape.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
@@ -508,22 +539,23 @@
                     shape.graphics.lineTo(...converterCoordenadas(...figura.pontos[0]));
                     shape.graphics.endFill();
                     shape.graphics.endStroke();
+                    stage.addChild(shape); //adiciona no stage
                 } else if (figura instanceof Texto) {
                     let text = new createjs.Text(figura.conteudo, figura.tamanho + " Arial", traduzirCor(figura.cor));
                     let [x, y] = converterCoordenadas(figura.x, figura.y);
                     text.x = x;
                     text.y = y;
-                    text.textAlign = "center"; // pra centralizar o texto no ponto
+                    text.textAlign = "center"; // centraliza o texto no ponto
                     text.textBaseline = "middle";
                     text.rotation = figura.angulo; // aplica rotação ao texto
-                    stage.addChild(text);
+                    stage.addChild(text); // adiciona ao stage
                 }
 
-                // aplica a rotação à figura
-                shape.rotation = figura.angulo; // define o angulo de rotação
-                stage.addChild(shape);
+                // aplica a rotação na figura
+                if (shape) {
+                    shape.rotation = figura.angulo; // define o ângulo de rotação
+                }
             }
-            stage.update();
         };
 
         //configura o Ticker para atualizar o stage continuamente
