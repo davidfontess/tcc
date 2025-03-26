@@ -26,7 +26,8 @@
         <div style="width: 50%; padding: 10px;">
             <textarea id="codeEditor" style="width: 100%; height: 400px;"></textarea>
             <button onclick="executarCodigo()" style="margin-top: 10px;">Executar</button>
-        </div>
+			<button onclick="pararAnimacao()" style="margin-top: 10px; margin-left: 10px;">Parar</button>
+		</div>
 
         <!-- canvas do easeljs -->
         <div style="width: 50%; padding: 10px;">
@@ -49,20 +50,33 @@ desenhar(circ); // Desenha o círculo no canvas`);
 
         //função pra executar o código digitado
         function executarCodigo() {
-            const codigo = editor.getValue(); // pega o código do editor
-            try {
-                // cria uma função com o código do usuário
-                const funcaoUsuario = new Function(codigo);
-                // executa a função
-                const resultado = funcaoUsuario();
-                // desenha o resultado no canvas
-                if (resultado) {
-                    desenhar(resultado, stage);
-                }
-            } catch (error) {
-                console.error("Erro ao executar o código:", error);
-            }
-        }
+			const codigo = editor.getValue();
+			try {
+				// para a animação atual antes de executar novo código
+				if (animacaoAtual) {
+					pararAnimacao();
+				}
+				
+				const funcaoUsuario = new Function(codigo);
+				const resultado = funcaoUsuario();
+				if (resultado) {
+					desenhar(resultado);
+				}
+			} catch (error) {
+				console.error("Erro ao executar o código:", error);
+			}
+		}
+		
+		// função para parar a animação e limpar o canvas
+		function pararAnimacao() {
+			// cancela a animação atual se existir
+			if (animacaoAtual) {
+				cancelAnimationFrame(animacaoAtual);
+				animacaoAtual = null;
+			}
+			
+			// não limpa o canvas aqui - isso será feito pelas funções de desenho
+		}
     </script>
 
     <!-- resto do código javascript do EaselJS -->
@@ -73,6 +87,7 @@ desenhar(circ); // Desenha o círculo no canvas`);
         const step = canvasSize / (2 * coordMax);
 
         const stage = new createjs.Stage("demoCanvas");
+		let animacaoAtual = null;
 
         // função pra converter coordenadas do sistema cartesiano para o canvas
         const converterCoordenadas = (x, y) => [
@@ -411,25 +426,20 @@ desenhar(circ); // Desenha o círculo no canvas`);
 
         // função para animar uma figura com base no tempo
         const animar = (funcaoDeAnimacao) => {
-            const inicio = Date.now(); // tempo inicial da animação
+			pararAnimacao(); // para qualquer animação existente primeiro
 
-            const atualizar = () => {
-                const agora = Date.now();
-                const tempoDecorrido = (agora - inicio) / 1000; // tempo em segundos
+			const inicio = Date.now();
+			
+			const atualizar = () => {
+				const agora = Date.now();
+				const tempoDecorrido = (agora - inicio) / 1000;
+				const figuraAnimada = funcaoDeAnimacao(tempoDecorrido);
+				atualizarStage([figuraAnimada]);
+				animacaoAtual = requestAnimationFrame(atualizar); // armazena a referência
+			};
 
-                // chama a função de animação com o tempo decorrido
-                const figuraAnimada = funcaoDeAnimacao(tempoDecorrido);
-
-                // atualiza o stage (limpa e redesenha tudo)
-                atualizarStage([figuraAnimada]);
-
-                // continua a animação
-                requestAnimationFrame(atualizar);
-            };
-
-            // inicia a animação
-            requestAnimationFrame(atualizar);
-        };
+			animacaoAtual = requestAnimationFrame(atualizar); // armazena a referência
+		};
 
 		// função genérica para interagir com uma figura
         // correções do professor
@@ -495,32 +505,19 @@ desenhar(circ); // Desenha o círculo no canvas`);
 
         //método desenhar atualizado para centralizar figuras na origem (0,0)
         const desenhar = (figuraOuLista) => {
-			stage.removeAllChildren();
+			stage.removeAllChildren(); // limpa o canvas uma vez
 			
-			// Converte para array se for uma única figura
+			// converte para array se for uma única figura
 			const figuras = Array.isArray(figuraOuLista) ? figuraOuLista : [figuraOuLista];
 			
-			// Verifica se o plano cartesiano está na lista de figuras
-			const deveDesenharPlano = figuras.some(figura => 
-				figura instanceof PlanoCartesiano || 
-				(figura instanceof FiguraComposta && 
-				 figura.figuras.some(f => f instanceof PlanoCartesiano))
-			);
+			// sempre desenha o plano cartesiano
+			desenharPlanoCartesiano();
 			
-			// Desenha o plano cartesiano se estiver na lista
-			if (deveDesenharPlano) {
-				desenharPlanoCartesiano();
-			}
-			
-			// Desenha todas as figuras (o plano cartesiano real não será redesenhado)
+			// desenha todas as figuras
 			figuras.forEach(figura => {
 				if (figura instanceof FiguraComposta) {
-					figura.figuras.forEach(f => {
-						if (!(f instanceof PlanoCartesiano)) {
-							desenharFigura(f);
-						}
-					});
-				} else if (!(figura instanceof PlanoCartesiano)) {
+					figura.figuras.forEach(f => desenharFigura(f));
+				} else {
 					desenharFigura(figura);
 				}
 			});
@@ -641,9 +638,8 @@ desenhar(circ); // Desenha o círculo no canvas`);
         createjs.Ticker.addEventListener("tick", () => {
             stage.update();
         });
-		const ret = retangulo(2,2);
-		const circ = colorir(circulo(0.5),"vermelho");
-		desenhar([planoCartesiano, ret, circ])
+		
+		
 		
     </script>
 </body>
