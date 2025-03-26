@@ -11,6 +11,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/javascript/javascript.min.js"></script>
     <!-- tema do codemirror (opcional) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/dracula.min.css">
+	<style>
+	        #demoCanvas {
+	            border: 1px solid #333;
+	            border-radius: 5px;
+	            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+	            background-color: white; /* Adiciona fundo branco */
+	        }
+    </style>
 </head>
 <body>
     <div style="display: flex;">
@@ -71,8 +79,8 @@ desenhar(circ); // Desenha o círculo no canvas`);
             canvasSize / 2 + x * step,
             canvasSize / 2 - y * step
         ];
-
-        // função pra desenhar o plano cartesiano
+		
+		// função pra desenhar o plano cartesiano
         const desenharPlanoCartesiano = () => {
             const eixo = new createjs.Shape();
             eixo.graphics.setStrokeStyle(1).beginStroke("black");
@@ -128,6 +136,12 @@ desenhar(circ); // Desenha o círculo no canvas`);
                 // método genérico que será sobrescrito pelas classes filhas
             }
         }
+		
+		class PlanoCartesiano extends Figura {
+			constructor(cor = "black") {
+				super(cor);
+			}
+		}
 
         // classe para retângulos
         class Retangulo extends Figura {
@@ -481,19 +495,39 @@ desenhar(circ); // Desenha o círculo no canvas`);
 
         //método desenhar atualizado para centralizar figuras na origem (0,0)
         const desenhar = (figuraOuLista) => {
-            // limpa o stage e redesenha o plano cartesiano
-            stage.removeAllChildren();
-            desenharPlanoCartesiano();
+			stage.removeAllChildren();
+			
+			// Converte para array se for uma única figura
+			const figuras = Array.isArray(figuraOuLista) ? figuraOuLista : [figuraOuLista];
+			
+			// Verifica se o plano cartesiano está na lista de figuras
+			const deveDesenharPlano = figuras.some(figura => 
+				figura instanceof PlanoCartesiano || 
+				(figura instanceof FiguraComposta && 
+				 figura.figuras.some(f => f instanceof PlanoCartesiano))
+			);
+			
+			// Desenha o plano cartesiano se estiver na lista
+			if (deveDesenharPlano) {
+				desenharPlanoCartesiano();
+			}
+			
+			// Desenha todas as figuras (o plano cartesiano real não será redesenhado)
+			figuras.forEach(figura => {
+				if (figura instanceof FiguraComposta) {
+					figura.figuras.forEach(f => {
+						if (!(f instanceof PlanoCartesiano)) {
+							desenharFigura(f);
+						}
+					});
+				} else if (!(figura instanceof PlanoCartesiano)) {
+					desenharFigura(figura);
+				}
+			});
+			
+			stage.update();
+		};
 
-            if (Array.isArray(figuraOuLista)) {
-                // se for uma lista de figuras, desenha cada uma
-                figuraOuLista.forEach(figura => desenharFigura(figura));
-            } else {
-                // se for uma única figura
-                desenharFigura(figuraOuLista);
-            }
-            stage.update(); // atualiza o stage dps de desenhar
-        };
 
         // função auxiliar para desenhar uma única figura
         const desenharFigura = (figura) => {
@@ -549,20 +583,67 @@ desenhar(circ); // Desenha o círculo no canvas`);
                     text.textBaseline = "middle";
                     text.rotation = figura.angulo; // aplica rotação ao texto
                     stage.addChild(text); // adiciona ao stage
-                }
+                } else if (figura instanceof PlanoCartesiano) {
+					// Código para desenhar o plano cartesiano
+					const eixo = new createjs.Shape();
+					eixo.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
+
+					// eixo X
+					eixo.graphics.moveTo(0, canvasSize / 2).lineTo(canvasSize, canvasSize / 2);
+					// eixo Y
+					eixo.graphics.moveTo(canvasSize / 2, 0).lineTo(canvasSize / 2, canvasSize);
+
+					// linhas da grade
+					for (let i = -coordMax; i <= coordMax; i++) {
+						if (i !== 0) {
+							let [x, y] = converterCoordenadas(i, 0);
+							eixo.graphics.setStrokeStyle(0.3).moveTo(x, 0).lineTo(x, canvasSize);
+							[x, y] = converterCoordenadas(0, i);
+							eixo.graphics.moveTo(0, y).lineTo(canvasSize, y);
+						}
+					}
+
+					stage.addChild(eixo);
+
+					// números nos eixos
+					const textFormat = "12px Arial";
+					for (let i = -coordMax + 1; i < coordMax; i++) {
+						if (i !== 0) {
+							let [x, y] = converterCoordenadas(i, -0.3);
+							let textX = new createjs.Text(i, textFormat, traduzirCor(figura.cor));
+							textX.x = x - 6;
+							textX.y = y;
+							stage.addChild(textX);
+
+							[x, y] = converterCoordenadas(0.3, i);
+							let textY = new createjs.Text(i, textFormat, traduzirCor(figura.cor));
+							textY.x = x;
+							textY.y = y - 6;
+							stage.addChild(textY);
+						}
+					}
+            
+				}
 
                 // aplica a rotação na figura
                 if (shape) {
                     shape.rotation = figura.angulo; // define o ângulo de rotação
                 }
             }
+			
+			stage.update();
         };
+
+		const planoCartesiano = new PlanoCartesiano("black");
 
         //configura o Ticker para atualizar o stage continuamente
         // isso tem que ficar no final do código!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         createjs.Ticker.addEventListener("tick", () => {
             stage.update();
         });
+		const ret = retangulo(2,2);
+		const circ = colorir(circulo(0.5),"vermelho");
+		desenhar([planoCartesiano, ret, circ])
 		
     </script>
 </body>
