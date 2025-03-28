@@ -290,57 +290,53 @@ desenhar(circ); // Desenha o círculo no canvas`);
 
         // função pra rotacionar figuras
         const rotacionar = (figura, angulo) => {
-            const rad = (Math.PI / 180) * -angulo; // inverte o ângulo para rotação horária
+			const rad = (Math.PI / 180) * -angulo; // Converte para radianos e inverte para sentido horário
+			
+			const rotacionarPonto = (x, y, cx, cy) => {
+				const cos = Math.cos(rad);
+				const sin = Math.sin(rad);
+				return [
+					cos * (x - cx) - sin * (y - cy) + cx,
+					sin * (x - cx) + cos * (y - cy) + cy
+				];
+			};
 
-            const rotacionarPonto = (x, y, cx, cy) => {
-                const cos = Math.cos(rad);
-                const sin = Math.sin(rad);
-                return [
-                    cos * (x - cx) - sin * (y - cy) + cx,
-                    sin * (x - cx) + cos * (y - cy) + cy
-                ];
-            };
-
-            if (figura instanceof FiguraComposta) {
-                // calcula o centro da figura composta
-                const centro = calcularCentroFiguraComposta(figura);
-
-                // rotaciona cada figura em relação ao centro da figura composta
-                const novasFiguras = figura.figuras.map(f => {
-                    const novaFigura = f.clone();
-
-                    // rotaciona a figura em relação ao centro da figura composta
-                    if (novaFigura instanceof Linha) {
-                        [novaFigura.x1, novaFigura.y1] = rotacionarPonto(novaFigura.x1, novaFigura.y1, centro[0], centro[1]);
-                        [novaFigura.x2, novaFigura.y2] = rotacionarPonto(novaFigura.x2, novaFigura.y2, centro[0], centro[1]);
-                    } else if (novaFigura instanceof Polilinha || novaFigura instanceof Poligono) {
-                        novaFigura.pontos = novaFigura.pontos.map(([x, y]) => rotacionarPonto(x, y, centro[0], centro[1]));
-                    } else if (novaFigura instanceof Texto || novaFigura instanceof Retangulo || novaFigura instanceof Circulo) {
-                        // para figuras com posição (x, y), rotacionamos a posição em relação ao centro
-                        [novaFigura.x, novaFigura.y] = rotacionarPonto(novaFigura.x, novaFigura.y, centro[0], centro[1]);
-                        novaFigura.angulo += angulo; // atualizando o ângulo de rotação
-                    }
-
-                    return novaFigura;
-                });
-
-                return new FiguraComposta(novasFiguras);
-            } else {
-                // rotaciona figuras individuais
-                if (figura instanceof Linha) {
-                    const [cx, cy] = [(figura.x1 + figura.x2) / 2, (figura.y1 + figura.y2) / 2];
-                    [figura.x1, figura.y1] = rotacionarPonto(figura.x1, figura.y1, cx, cy);
-                    [figura.x2, figura.y2] = rotacionarPonto(figura.x2, figura.y2, cx, cy);
-                } else if (figura instanceof Polilinha || figura instanceof Poligono) {
-                    const [cx, cy] = calcularCentro(figura.pontos);
-                    figura.pontos = figura.pontos.map(([x, y]) => rotacionarPonto(x, y, cx, cy));
-                } else if (figura instanceof Texto || figura instanceof Retangulo || figura instanceof Circulo) {
-                    figura.angulo += angulo; // atualiza o ângulo de rotação
-                }
-
-                return figura;
-            }
-        };
+			if (figura instanceof FiguraComposta) {
+				const centro = calcularCentroFiguraComposta(figura);
+				const novasFiguras = figura.figuras.map(f => {
+					const novaFigura = f.clone();
+					
+					if (novaFigura instanceof Linha) {
+						[novaFigura.x1, novaFigura.y1] = rotacionarPonto(novaFigura.x1, novaFigura.y1, centro[0], centro[1]);
+						[novaFigura.x2, novaFigura.y2] = rotacionarPonto(novaFigura.x2, novaFigura.y2, centro[0], centro[1]);
+					} else if (novaFigura instanceof Polilinha || novaFigura instanceof Poligono) {
+						novaFigura.pontos = novaFigura.pontos.map(([x, y]) => rotacionarPonto(x, y, centro[0], centro[1]));
+					} else {
+						[novaFigura.x, novaFigura.y] = rotacionarPonto(novaFigura.x, novaFigura.y, centro[0], centro[1]);
+						novaFigura.angulo = angulo; // Ângulo absoluto, não acumulado
+					}
+					
+					return novaFigura;
+				});
+				
+				return new FiguraComposta(novasFiguras);
+			} else {
+				const novaFigura = figura.clone();
+				
+				if (novaFigura instanceof Linha) {
+					const centro = [(novaFigura.x1 + novaFigura.x2)/2, (novaFigura.y1 + novaFigura.y2)/2];
+					[novaFigura.x1, novaFigura.y1] = rotacionarPonto(novaFigura.x1, novaFigura.y1, ...centro);
+					[novaFigura.x2, novaFigura.y2] = rotacionarPonto(novaFigura.x2, novaFigura.y2, ...centro);
+				} else if (novaFigura instanceof Polilinha || novaFigura instanceof Poligono) {
+					const centro = calcularCentro(novaFigura.pontos);
+					novaFigura.pontos = novaFigura.pontos.map(p => rotacionarPonto(...p, ...centro));
+				} else {
+					novaFigura.angulo = angulo; // Ângulo absoluto
+				}
+				
+				return novaFigura;
+			}
+		};
 
         const redimensionar = (figura, fator) => {
             if (figura instanceof FiguraComposta) {
