@@ -64,3 +64,44 @@ const visualizar = (mundo) => {
 // aplica a função interagir ao mundo inicial
 interagir(mundoInicial, mudaTempo, mudaEventos, visualizar);
 //FIM DE INTERAÇÃO #1
+
+------------------------------------------------------------------------------------------
+
+//EXEMPLOS DE FÍSICA
+
+//INTERAÇÃO FÍSICA #1
+let mundo = {
+    bola: { x: 0, y: 0, vx: 0, vy: 0 },
+    aceleracao: 0.02  // Valor da aceleração constante
+};
+
+animar((tempo) => {
+    // atualiza posição continuamente com a velocidade atual
+    mundo.bola.x += mundo.bola.vx;
+    mundo.bola.y += mundo.bola.vy;
+    
+    return mover(
+        colorir(circulo(0.8), "vermelho"),
+        mundo.bola.x,
+        mundo.bola.y
+    );
+});
+
+// controles com a aceleração contínua
+document.addEventListener("keydown", (e) => {
+    switch(e.key) {
+        case "ArrowRight":
+            mundo.bola.vx += mundo.aceleracao;
+            break;
+        case "ArrowLeft":
+            mundo.bola.vx -= mundo.aceleracao;
+            break;
+        case "ArrowUp":
+            mundo.bola.vy -= mundo.aceleracao;
+            break;
+        case "ArrowDown":
+            mundo.bola.vy += mundo.aceleracao;
+            break;
+    }
+});
+//FIM DA INTERAÇÃO FÍSICA #1
