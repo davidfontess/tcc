@@ -6,12 +6,10 @@ desenhar([quadrado,losangulo,bola]);
 
 
 // ANIMAÇÃO #1
-// // código do usuário
-const funcaoDeAnimacao = (t) => {
-    return rotacionar(retangulo(3, 3), 30 * t); // 30 graus por segundo (t = 1000ms)
-};
-// aplica a função animar
-animar(funcaoDeAnimacao);
+const quadrado = retangulo(2, 2);
+animar((tempo) => {
+    return rotacionar(quadrado, tempo * 90); // roda um retangulo 90°/s
+});
 
 // INTERAÇÃO #1
 // cria uma figura (um retângulo, por exemplo)
