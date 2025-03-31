@@ -61,7 +61,31 @@ animar((tempo) => {
 });
 
 // 15. INTERAGIR COM FIGURAS
-// TODO : ADICIONAR INTERAGIR
+// cria um retangulo e o movimenta para os lados, para cima e para baixo ao pressionar as setas.
+const meuRetangulo = retangulo(2, 1, 0, 0);
+const mundoInicial = [0, 0];
+const mudaTempo = (t, mundo) => mundo; // não muda com o tempo
+const mudaEventos = (evento, mundo) => {
+    const [x, y] = mundo;
+    switch (evento) {
+        case "ArrowRight":
+            return [x + 1, y];
+        case "ArrowLeft":
+            return [x - 1, y];
+        case "ArrowUp":
+            return [x, y + 1];
+        case "ArrowDown":
+            return [x, y - 1];
+        default:
+            return [x, y];
+    }
+};
+const visualizar = (mundo) => {
+    const [x, y] = mundo;
+    return mover(retangulo(3, 1), x, y);
+};
+// aplica a função interagir ao mundo inicial
+interagir(mundoInicial, mudaTempo, mudaEventos, visualizar);
 
 // ==================================================
 // EXEMPLO COMPLETO: DESENHA UM CÍRCULO, MOVE-O E O ANIMA
