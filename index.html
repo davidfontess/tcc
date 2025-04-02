@@ -386,89 +386,118 @@ desenhar(circ); // Desenha o círculo no canvas`);
 		};
 
         // função para animar uma figura com base no tempo
-        const animar = (funcaoDeAnimacao) => {
-			pararAnimacao(); // para qualquer animação existente primeiro
-
+        // versão com controle opcional de mostrar ou não o plano
+		const animar = (funcaoDeAnimacao, mostrarPlano = false) => {
+			pararAnimacao();
+			
 			const inicio = Date.now();
 			
 			const atualizar = () => {
-				const agora = Date.now();
-				const tempoDecorrido = (agora - inicio) / 1000;
+				const tempoDecorrido = (Date.now() - inicio) / 1000;
 				const figuraAnimada = funcaoDeAnimacao(tempoDecorrido);
-				atualizarStage([figuraAnimada]);
-				animacaoAtual = requestAnimationFrame(atualizar); // armazena a referência
+				
+				// cria um array com as figuras a serem desenhadas
+				const figuras = [];
+				
+				// adiciona o plano primeiro (como fundo)
+				if(mostrarPlano) {
+					figuras.push(planoCartesiano);
+				}
+				
+				// adiciona a figura animada
+				figuras.push(figuraAnimada);
+				
+				// desenha tudo
+				desenhar(figuras);
+				
+				animacaoAtual = requestAnimationFrame(atualizar);
 			};
 
-			animacaoAtual = requestAnimationFrame(atualizar); // armazena a referência
+			animacaoAtual = requestAnimationFrame(atualizar);
 		};
 
         // correções do professor
-	// função genérica para interagir com uma figura
-        const interagir = (mundoInicial, idTempo, mudEvt, apresentaMundo) => {
-	    let mundo = mundoInicial;
-	    let selectedShape = null;
-	    let offset = { x: 0, y: 0 };
-	
-	    // função para atualizar o mundo com base no tempo
-	    const atualizarTempo = (tempo) => {
-	        mundo = idTempo(tempo, mundo);
-	        atualizarStage([apresentaMundo(mundo)]);
-	    };
-	
-	    // função para atualizar o mundo com base em eventos
-	    const atualizarEventos = (evento) => {
-	        mundo = mudEvt(evento, mundo);
-	        atualizarStage([apresentaMundo(mundo)]);
-	    };
-	
-	    // captura eventos de teclado
-	    document.addEventListener("keydown", (event) => {
-	        atualizarEventos(event.key);
-	    });
-	
-	    // captura eventos de clique do mouse
-	    stage.on("stagemousedown", (event) => {
-	        const { stageX, stageY } = event;
-	        
-	        if (event.nativeEvent.button === 2) { // botão direito
-	            atualizarEventos("clikRight");
-	        } else if (event.nativeEvent.button === 0) { // botão esquerdo
-	            atualizarEventos("clickLeft");
-	        }
-	        
-	        // verifica se clicou no objeto para arrastar
-	        const [x, y] = converterCoordenadas(mundo.x, mundo.y);
-	        if (Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
-	            selectedShape = mundo;
-	            offset.x = stageX - x;
-	            offset.y = stageY - y;
-	        }
-	    });
-	
-	    // finaliza o arrasto quando o mouse é solto
-	    stage.on("stagemouseup", () => {
-	        selectedShape = null;
-	    });
-	
-	    // atualiza a posição da figura durante o arrasto
-	    stage.on("stagemousemove", (event) => {
-	        if (selectedShape) {
-	            const { stageX, stageY } = event;
-	            mundo = {
-	                ...mundo,
-	                x: (stageX - offset.x - canvasSize / 2) / step,
-	                y: (canvasSize / 2 - (stageY - offset.y)) / step
-	            };
-	            atualizarStage([apresentaMundo(mundo)]);
-	        }
-	    });
-	
-	    // inicia a animação do tempo
-	    createjs.Ticker.addEventListener("tick", () => {
-	        const tempo = Date.now() / 1000; // tempo em segundos
-	        atualizarTempo(tempo);
-	    });
-	};
+		// função genérica para interagir com uma figura
+        const interagir = (mundoInicial, idTempo, mudEvt, apresentaMundo, mostrarPlano = false) => {
+			let mundo = mundoInicial;
+			let selectedShape = null;
+			let offset = { x: 0, y: 0 };
+
+			// função para renderizar o mundo
+			const renderizar = () => {
+				const figuras = [];
+				
+				// adiciona o plano se necessário
+				if(mostrarPlano) {
+					figuras.push(planoCartesiano);
+				}
+				
+				// adiciona a representação do mundo
+				figuras.push(apresentaMundo(mundo));
+				
+				// desenha tudo
+				desenhar(figuras);
+			};
+
+			// atualiza com base no tempo
+			const atualizarTempo = (tempo) => {
+				mundo = idTempo(tempo, mundo);
+				renderizar();
+			};
+
+			// atualiza com base em eventos
+			const atualizarEventos = (evento) => {
+				mundo = mudEvt(evento, mundo);
+				renderizar();
+			};
+
+			// configura os listeners (mantidos iguais)
+			document.addEventListener("keydown", (event) => {
+				atualizarEventos(event.key);
+			});
+
+			stage.on("stagemousedown", (event) => {
+				const { stageX, stageY } = event;
+				
+				if (event.nativeEvent.button === 2) {
+					atualizarEventos("clikRight");
+				} else if (event.nativeEvent.button === 0) {
+					atualizarEventos("clickLeft");
+				}
+				
+				const [x, y] = converterCoordenadas(mundo.x, mundo.y);
+				if (Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
+					selectedShape = mundo;
+					offset.x = stageX - x;
+					offset.y = stageY - y;
+				}
+			});
+
+			stage.on("stagemouseup", () => {
+				selectedShape = null;
+			});
+
+			stage.on("stagemousemove", (event) => {
+				if (selectedShape) {
+					const { stageX, stageY } = event;
+					mundo = {
+						...mundo,
+						x: (stageX - offset.x - canvasSize / 2) / step,
+						y: (canvasSize / 2 - (stageY - offset.y)) / step
+					};
+					renderizar();
+				}
+			});
+
+			// inicia a animação
+			createjs.Ticker.addEventListener("tick", () => {
+				const tempo = Date.now() / 1000;
+				atualizarTempo(tempo);
+			});
+			
+			// renderiza inicialmente
+			renderizar();
+		};
 
 
         //método desenhar atualizado para centralizar figuras na origem (0,0)
@@ -486,8 +515,6 @@ desenhar(circ); // Desenha o círculo no canvas`);
 					desenharFigura(figura);
 				}
 			});
-			
-			stage.update();
 		};
 
 
@@ -602,8 +629,6 @@ desenhar(circ); // Desenha o círculo no canvas`);
                     shape.rotation = figura.angulo; // define o ângulo de rotação
                 }
             }
-			
-			stage.update();
         };
 
         //configura o Ticker para atualizar o stage continuamente
