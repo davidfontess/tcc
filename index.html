@@ -437,66 +437,73 @@ desenhar(circ); // Desenha o círculo no canvas`);
 			animacaoAtual = requestAnimationFrame(atualizar); // armazena a referência
 		};
 
-		// função genérica para interagir com uma figura
         // correções do professor
-		// função genérica para interagir com uma figura
-        const interagir = (mundoInicial, mudaTempo, mudaEventos, visualizar) => {
-            let mundo = mundoInicial;
-            let selectedShape = null;
-            let offset = { x: 0, y: 0 };
-
-            // função para atualizar o mundo com base no tempo
-            const atualizarTempo = (tempo) => {
-                mundo = mudaTempo(tempo, mundo);
-                atualizarStage([visualizar(mundo)]);
-            };
-
-            // função para atualizar o mundo com base em eventos
-            const atualizarEventos = (evento) => {
-                mundo = mudaEventos(evento, mundo);
-                atualizarStage([visualizar(mundo)]);
-            };
-
-            // captura eventos de teclado
-            document.addEventListener("keydown", (event) => {
-                atualizarEventos(event.key);
-            });
-
-            // captura eventos de clique do mouse
-            stage.on("stagemousedown", (event) => {
-                const { stageX, stageY } = event;
-                const [x, y] = converterCoordenadas(mundo[0], mundo[1]);
-
-                if (Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
-                    selectedShape = mundo;
-                    offset.x = stageX - x;
-                    offset.y = stageY - y;
-                }
-            });
-
-            // finaliza o arrasto quando o mouse é solto
-            stage.on("stagemouseup", () => {
-                selectedShape = null;
-            });
-
-            // atualiza a posição da figura durante o arrasto
-            stage.on("stagemousemove", (event) => {
-                if (selectedShape) {
-                    const { stageX, stageY } = event;
-                    mundo = [
-                        (stageX - offset.x - canvasSize / 2) / step,
-                        (canvasSize / 2 - (stageY - offset.y)) / step
-                    ];
-                    atualizarStage([visualizar(mundo)]);
-                }
-            });
-
-            // inicia a animação do tempo
-            createjs.Ticker.addEventListener("tick", () => {
-                const tempo = Date.now() / 1000; // tempo em segundos
-                atualizarTempo(tempo);
-            });
-        };
+	// função genérica para interagir com uma figura
+        const interagir = (mundoInicial, idTempo, mudEvt, apresentaMundo) => {
+	    let mundo = mundoInicial;
+	    let selectedShape = null;
+	    let offset = { x: 0, y: 0 };
+	
+	    // função para atualizar o mundo com base no tempo
+	    const atualizarTempo = (tempo) => {
+	        mundo = idTempo(tempo, mundo);
+	        atualizarStage([apresentaMundo(mundo)]);
+	    };
+	
+	    // função para atualizar o mundo com base em eventos
+	    const atualizarEventos = (evento) => {
+	        mundo = mudEvt(evento, mundo);
+	        atualizarStage([apresentaMundo(mundo)]);
+	    };
+	
+	    // captura eventos de teclado
+	    document.addEventListener("keydown", (event) => {
+	        atualizarEventos(event.key);
+	    });
+	
+	    // captura eventos de clique do mouse
+	    stage.on("stagemousedown", (event) => {
+	        const { stageX, stageY } = event;
+	        
+	        if (event.nativeEvent.button === 2) { // botão direito
+	            atualizarEventos("clikRight");
+	        } else if (event.nativeEvent.button === 0) { // botão esquerdo
+	            atualizarEventos("clickLeft");
+	        }
+	        
+	        // verifica se clicou no objeto para arrastar
+	        const [x, y] = converterCoordenadas(mundo.x, mundo.y);
+	        if (Math.abs(stageX - x) < 10 && Math.abs(stageY - y) < 10) {
+	            selectedShape = mundo;
+	            offset.x = stageX - x;
+	            offset.y = stageY - y;
+	        }
+	    });
+	
+	    // finaliza o arrasto quando o mouse é solto
+	    stage.on("stagemouseup", () => {
+	        selectedShape = null;
+	    });
+	
+	    // atualiza a posição da figura durante o arrasto
+	    stage.on("stagemousemove", (event) => {
+	        if (selectedShape) {
+	            const { stageX, stageY } = event;
+	            mundo = {
+	                ...mundo,
+	                x: (stageX - offset.x - canvasSize / 2) / step,
+	                y: (canvasSize / 2 - (stageY - offset.y)) / step
+	            };
+	            atualizarStage([apresentaMundo(mundo)]);
+	        }
+	    });
+	
+	    // inicia a animação do tempo
+	    createjs.Ticker.addEventListener("tick", () => {
+	        const tempo = Date.now() / 1000; // tempo em segundos
+	        atualizarTempo(tempo);
+	    });
+	};
 
 
         //método desenhar atualizado para centralizar figuras na origem (0,0)
