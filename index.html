@@ -18,6 +18,7 @@
 	            box-shadow: 0 0 10px rgba(0,0,0,0.3);
 	            background-color: white; /* Adiciona fundo branco */
 	        }
+            
     </style>
 </head>
 <body>
@@ -36,6 +37,12 @@
     </div>
 
     <script>
+
+        function preprocessarCodigo(codigo) {
+            // remove declarações const/let/var mantendo o padrão original
+            return codigo.replace(/(const|let|var)\s+(\w+)\s*=/g, '$2 =');
+        }
+
         // inicializa o codemirror
         const editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
             mode: 'javascript', // modo de linguagem (JavaScript)
@@ -50,22 +57,23 @@ desenhar(circ); // Desenha o círculo no canvas`);
 
         //função pra executar o código digitado
         function executarCodigo() {
-			const codigo = editor.getValue();
-			try {
-				// para a animação atual antes de executar novo código
-				if (animacaoAtual) {
-					pararAnimacao();
-				}
-				
-				const funcaoUsuario = new Function(codigo);
-				const resultado = funcaoUsuario();
-				if (resultado) {
-					desenhar(resultado);
-				}
-			} catch (error) {
-				console.error("Erro ao executar o código:", error);
-			}
-		}
+            const codigo = editor.getValue();
+            try {
+                if (animacaoAtual) {
+                    pararAnimacao();
+                }
+                
+                const codigoProcessado = preprocessarCodigo(codigo);
+                const funcaoUsuario = new Function(codigoProcessado);
+                const resultado = funcaoUsuario();
+                
+                if (resultado) {
+                    desenhar(resultado);
+                }
+            } catch (error) {
+                console.error("Erro ao executar o código:", error);
+            }
+        }
 		
 		// função para parar a animação e limpar o canvas
 		function pararAnimacao() {
