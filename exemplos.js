@@ -73,31 +73,35 @@ animar((tempo) => {
 });
 
 // INTERAÇÃO #1
-// cria uma figura (um retângulo, por exemplo)
 const meuRetangulo = retangulo(2, 1, 0, 0);
-const mundoInicial = [0, 0];
-const mudaTempo = (t, mundo) => mundo; // não muda com o tempo
-const mudaEventos = (evento, mundo) => {
-    const [x, y] = mundo;
-    switch (evento) {
+
+// define o tipo de mundo (agora como objeto com propriedades)
+const mundoInicial = { x: 0, y: 0 };
+
+// função de atualização por tempo (não muda com o tempo)
+const idTempo = (t, mundo) => mundo;
+
+// função de atualização por eventos
+const mudEvt = (evt, mundo) => {
+    switch (evt) {
         case "ArrowRight":
-            return [x + 1, y];
+            return { ...mundo, x: mundo.x + 1 };
         case "ArrowLeft":
-            return [x - 1, y];
+            return { ...mundo, x: mundo.x - 1 };
         case "ArrowUp":
-            return [x, y + 1];
+            return { ...mundo, y: mundo.y + 1 };
         case "ArrowDown":
-            return [x, y - 1];
+            return { ...mundo, y: mundo.y - 1 };
         default:
-            return [x, y];
+            return mundo;
     }
 };
-const visualizar = (mundo) => {
-    const [x, y] = mundo;
-    return mover(retangulo(3, 1), x, y);
+
+const apresentaMundo = (mundo) => {
+    return mover(retangulo(3, 1), mundo.x, mundo.y);
 };
-// aplica a função interagir ao mundo inicial
-interagir(mundoInicial, mudaTempo, mudaEventos, visualizar);
+
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);
 //FIM DE INTERAÇÃO #1
 
 ------------------------------------------------------------------------------------------
@@ -105,38 +109,46 @@ interagir(mundoInicial, mudaTempo, mudaEventos, visualizar);
 //EXEMPLOS DE FÍSICA
 
 //INTERAÇÃO FÍSICA #1
-let mundo = {
-    bola: { x: 0, y: 0, vx: 0, vy: 0 },
-    aceleracao: 0.02  // Valor da aceleração constante
+const mundoInicial = {
+    x: 0, 
+    y: 0,
+    vx: 0,
+    vy: 0,
+    aceleracao: 0.02  // valor da aceleração constante
 };
 
-animar((tempo) => {
-    // atualiza posição continuamente com a velocidade atual
-    mundo.bola.x += mundo.bola.vx;
-    mundo.bola.y += mundo.bola.vy;
-    
+// função de atualização por tempo (física)
+const idTempo = (t, mundo) => {
+    return {
+        ...mundo,
+        x: mundo.x + mundo.vx,
+        y: mundo.y + mundo.vy
+    };
+};
+
+// função de atualização por eventos
+const mudEvt = (evt, mundo) => {
+    switch(evt) {
+        case "ArrowLeft":
+            return { ...mundo, vx: mundo.vx - mundo.aceleracao };
+        case "ArrowRight":
+            return { ...mundo, vx: mundo.vx + mundo.aceleracao }; 
+        case "ArrowUp":
+            return { ...mundo, vy: mundo.vy + mundo.aceleracao };
+        case "ArrowDown":
+            return { ...mundo, vy: mundo.vy - mundo.aceleracao };
+        default:
+            return mundo;
+    }
+};
+
+const apresentaMundo = (mundo) => {
     return mover(
         colorir(circulo(0.8), "vermelho"),
-        mundo.bola.x,
-        mundo.bola.y
+        mundo.x,
+        mundo.y
     );
-});
+};
 
-// controles com a aceleração contínua
-document.addEventListener("keydown", (e) => {
-    switch(e.key) {
-        case "ArrowRight":
-            mundo.bola.vx += mundo.aceleracao;
-            break;
-        case "ArrowLeft":
-            mundo.bola.vx -= mundo.aceleracao;
-            break;
-        case "ArrowUp":
-            mundo.bola.vy -= mundo.aceleracao;
-            break;
-        case "ArrowDown":
-            mundo.bola.vy += mundo.aceleracao;
-            break;
-    }
-});
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);
 //FIM DA INTERAÇÃO FÍSICA #1
