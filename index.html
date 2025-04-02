@@ -95,46 +95,6 @@ desenhar(circ); // Desenha o círculo no canvas`);
             canvasSize / 2 - y * step
         ];
 		
-		// função pra desenhar o plano cartesiano
-        const desenharPlanoCartesiano = () => {
-            const eixo = new createjs.Shape();
-            eixo.graphics.setStrokeStyle(1).beginStroke("black");
-
-            // eixo X
-            eixo.graphics.moveTo(0, canvasSize / 2).lineTo(canvasSize, canvasSize / 2);
-            // eixo Y
-            eixo.graphics.moveTo(canvasSize / 2, 0).lineTo(canvasSize / 2, canvasSize);
-
-            // linhas da grade do plano cartesiano
-            for (let i = -coordMax; i <= coordMax; i++) {
-                if (i !== 0) {
-                    let [x, y] = converterCoordenadas(i, 0);
-                    eixo.graphics.setStrokeStyle(0.3).moveTo(x, 0).lineTo(x, canvasSize);
-                    [x, y] = converterCoordenadas(0, i);
-                    eixo.graphics.moveTo(0, y).lineTo(canvasSize, y);
-                }
-            }
-
-            stage.addChild(eixo);
-
-            // números nos eixos
-            const textFormat = "12px Arial";
-            for (let i = -coordMax + 1; i < coordMax; i++) {
-                if (i !== 0) {
-                    let [x, y] = converterCoordenadas(i, -0.3);
-                    let textX = new createjs.Text(i, textFormat, "black");
-                    textX.x = x - 6;
-                    textX.y = y;
-                    stage.addChild(textX);
-
-                    [x, y] = converterCoordenadas(0.3, i);
-                    let textY = new createjs.Text(i, textFormat, "black");
-                    textY.x = x;
-                    textY.y = y - 6;
-                    stage.addChild(textY);
-                }
-            }
-        };
 
         // classe base das figuras
         class Figura {
@@ -153,8 +113,11 @@ desenhar(circ); // Desenha o círculo no canvas`);
         }
 		
 		class PlanoCartesiano extends Figura {
-			constructor(cor = "black") {
-				super(cor);
+			constructor() {
+				super("gray");  // Cor padrão
+			}
+			redimensionar() {
+				// não faz nada, mantém apenas por compatibilidade
 			}
 		}
 
@@ -242,6 +205,9 @@ desenhar(circ); // Desenha o círculo no canvas`);
                 this.figuras.forEach(figura => figura.redimensionar(fator));
             }
         }
+
+	// agora como instancia constante, e não função
+	const planoCartesiano = new PlanoCartesiano();
 
         const retangulo = (largura, altura, x = 0, y = 0) => {
             return new Retangulo(x, y, largura, altura);
@@ -416,7 +382,6 @@ desenhar(circ); // Desenha o círculo no canvas`);
         //função para atualizar o stage (limpa e redesenha tudo)
         const atualizarStage = (figuras) => {
 			stage.removeAllChildren(); // limpa o stage
-			desenharPlanoCartesiano(); //redesenha o plano cartesiano
 			figuras.forEach(figura => desenhar(figura, stage)); // redesenha todas as figuras
 		};
 
@@ -513,9 +478,6 @@ desenhar(circ); // Desenha o círculo no canvas`);
 			// converte para array se for uma única figura
 			const figuras = Array.isArray(figuraOuLista) ? figuraOuLista : [figuraOuLista];
 			
-			// sempre desenha o plano cartesiano
-			desenharPlanoCartesiano();
-			
 			// desenha todas as figuras
 			figuras.forEach(figura => {
 				if (figura instanceof FiguraComposta) {
@@ -584,45 +546,55 @@ desenhar(circ); // Desenha o círculo no canvas`);
                     text.rotation = figura.angulo; // aplica rotação ao texto
                     stage.addChild(text); // adiciona ao stage
                 } else if (figura instanceof PlanoCartesiano) {
-					// Código para desenhar o plano cartesiano
-					const eixo = new createjs.Shape();
-					eixo.graphics.setStrokeStyle(1).beginStroke(traduzirCor(figura.cor));
-
-					// eixo X
-					eixo.graphics.moveTo(0, canvasSize / 2).lineTo(canvasSize, canvasSize / 2);
-					// eixo Y
-					eixo.graphics.moveTo(canvasSize / 2, 0).lineTo(canvasSize / 2, canvasSize);
-
-					// linhas da grade
-					for (let i = -coordMax; i <= coordMax; i++) {
-						if (i !== 0) {
-							let [x, y] = converterCoordenadas(i, 0);
-							eixo.graphics.setStrokeStyle(0.3).moveTo(x, 0).lineTo(x, canvasSize);
-							[x, y] = converterCoordenadas(0, i);
-							eixo.graphics.moveTo(0, y).lineTo(canvasSize, y);
+					const shape = new createjs.Shape();
+					const cor = traduzirCor(figura.cor || "gray");
+					const textoSize = "13px Arial";
+					
+					// linhas de grade (-10 a 10)
+					for (let x = -10; x <= 10; x++) {
+						const [canvasX, canvasY1] = converterCoordenadas(x, -10);
+						const [_, canvasY2] = converterCoordenadas(x, 10);
+						shape.graphics.setStrokeStyle(0.7).beginStroke(cor)
+							.moveTo(canvasX, canvasY1)
+							.lineTo(canvasX, canvasY2);
+						
+						// números no eixo X (-9 a 9, exceto zero)
+						if (x >= -9 && x <= 9 && x !== 0) {
+							const text = new createjs.Text(x.toString(), textoSize, "black");
+							text.x = canvasX;
+							text.y = canvasSize/2 + 8;
+							text.textAlign = "center";
+							text.textBaseline = "top";
+							stage.addChild(text);
 						}
 					}
-
-					stage.addChild(eixo);
-
-					// números nos eixos
-					const textFormat = "12px Arial";
-					for (let i = -coordMax + 1; i < coordMax; i++) {
-						if (i !== 0) {
-							let [x, y] = converterCoordenadas(i, -0.3);
-							let textX = new createjs.Text(i, textFormat, traduzirCor(figura.cor));
-							textX.x = x - 6;
-							textX.y = y;
-							stage.addChild(textX);
-
-							[x, y] = converterCoordenadas(0.3, i);
-							let textY = new createjs.Text(i, textFormat, traduzirCor(figura.cor));
-							textY.x = x;
-							textY.y = y - 6;
-							stage.addChild(textY);
+					
+					for (let y = -10; y <= 10; y++) {
+						const [canvasX1, canvasY] = converterCoordenadas(-10, y);
+						const [canvasX2, _] = converterCoordenadas(10, y);
+						shape.graphics.setStrokeStyle(0.7).beginStroke(cor)
+							.moveTo(canvasX1, canvasY)
+							.lineTo(canvasX2, canvasY);
+						
+						// números no eixo Y (-9 a 9, exceto zero) - AGORA À DIREITA
+						if (y >= -9 && y <= 9 && y !== 0) {
+							const text = new createjs.Text(y.toString(), textoSize, "black");
+							text.x = canvasSize/2 + 8;  // Posição à direita do eixo Y
+							text.y = canvasY;
+							text.textAlign = "left";  // Alinhado à esquerda (para ficar à direita do eixo)
+							text.textBaseline = "middle";
+							stage.addChild(text);
 						}
 					}
-            
+					
+					// eixos X e Y
+					shape.graphics.setStrokeStyle(1.2).beginStroke("black")
+						.moveTo(canvasSize/2, 0)
+						.lineTo(canvasSize/2, canvasSize)
+						.moveTo(0, canvasSize/2)
+						.lineTo(canvasSize, canvasSize/2);
+					
+					stage.addChild(shape);
 				}
 
                 // aplica a rotação na figura
@@ -633,8 +605,6 @@ desenhar(circ); // Desenha o círculo no canvas`);
 			
 			stage.update();
         };
-
-		const planoCartesiano = new PlanoCartesiano("black");
 
         //configura o Ticker para atualizar o stage continuamente
         // isso tem que ficar no final do código!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
