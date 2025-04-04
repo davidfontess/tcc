@@ -35,6 +35,19 @@ desenhar(circ); // Desenha o circulo no canvas`);
 			console.error("Erro ao executar o código:", error);
 		}
 	}
+	
+	function toggleGuide() {// GUIA
+		document.getElementById("guide-panel").classList.toggle("active");
+	}
+	
+	// pra os exemplos do guia serem clicáveis
+	function loadExample(code) {
+		// limpa o editor e insere o novo código
+		editor.setValue(code);
+		
+		// opcional: fecha o painel do guia após seleção
+		document.getElementById("guide-panel").classList.remove("active");
+	}
 		
 	// função para parar a animação e limpar o canvas
 	function pararAnimacao() {
