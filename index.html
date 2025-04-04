@@ -16,8 +16,80 @@
 	            border: 1px solid #333;
 	            border-radius: 5px;
 	            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-	            background-color: white; /* Adiciona fundo branco */
+	            background-color: white;
 	        }
+			#guide-panel {
+				position: fixed;
+				top: 0;
+				right: -400px;
+				width: 400px;
+				height: 100vh;
+				background: white;
+				box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+				transition: right 0.3s ease;
+				padding: 20px;
+				overflow-y: auto;
+				z-index: 900;
+			}
+			#guide-panel.active {
+				right: 0;
+			}
+			#guide-toggle {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				z-index: 1000;
+				padding: 8px 16px;
+				background: #4CAF50;
+				color: white;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+			.code-example {
+				cursor: pointer;
+				padding: 8px;
+				margin: 8px 0;
+				background: #f5f5f5;
+				border-radius: 4px;
+				transition: background 0.2s;
+			}
+			.code-example:hover {
+				background: #e0e0e0;
+			}
+			.code-example pre {
+				margin: 0;
+			}
+			.guide-section {
+				margin-bottom: 20px;
+			}
+
+			.guide-section h3 {
+				margin: 10px 0 5px 0;
+				color: #333;
+				font-size: 16px;
+			}
+
+			.code-example {
+				cursor: pointer;
+				padding: 8px;
+				margin: 5px 0;
+				background: #f8f8f8;
+				border-left: 3px solid #4CAF50;
+				border-radius: 3px;
+				transition: background 0.2s;
+			}
+
+			.code-example:hover {
+				background: #e8f5e9;
+			}
+
+			.code-example pre {
+				margin: 0;
+				white-space: pre-wrap;
+				font-family: 'Courier New', monospace;
+				font-size: 14px;
+			}
             
     </style>
 </head>
@@ -35,8 +107,65 @@
             <canvas id="demoCanvas" width="400" height="400"></canvas>
         </div>
     </div>
+	
+	<!-- botão pra abrir/fechar o guia -->
+    <button id="guide-toggle" onclick="toggleGuide()">Guia</button>
+
+    <!-- painel do guia (inicialmente oculto) -->
+    <div id="guide-panel">
+		<h2>Guia de Programação</h2>
+		<p>Clique em um exemplo para carregá-lo no editor:</p>
+		
+		<div class="guide-section">
+			<h3>1. Figuras Básicas</h3>
+			<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\ndesenhar(ret);')">
+				<pre><code>// Retângulo
+	const ret = retangulo(4, 2);
+	desenhar(ret);</code></pre>
+			</div>
+			
+			<div class="code-example" onclick="loadExample('const circ = circulo(3);\ndesenhar(circ);')">
+				<pre><code>// Círculo
+	const circ = circulo(3);
+	desenhar(circ);</code></pre>
+			</div>
+		</div>
+		
+		<div class="guide-section">
+			<h3>2. Transformações</h3>
+			<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retMovido = mover(ret, 2, 3);\ndesenhar(retMovido);')">
+				<pre><code>// Mover figura
+	const ret = retangulo(4, 2);
+	const retMovido = mover(ret, 2, 3);
+	desenhar(retMovido);</code></pre>
+			</div>
+			
+			<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRot = rotacionar(ret, 45);\ndesenhar(retRot);')">
+				<pre><code>// Rotacionar figura
+	const ret = retangulo(4, 2);
+	const retRot = rotacionar(ret, 45);
+	desenhar(retRot);</code></pre>
+			</div>
+		</div>
+		
+		<div class="guide-section">
+			<h3>3. Animações</h3>
+			<div class="code-example" onclick="loadExample('const circ = circulo(2);\nanimar((tempo) => {\n  const x = Math.sin(tempo) * 5;\n  const y = Math.cos(tempo) * 5;\n  return mover(circ, x, y);\n});')">
+				<pre><code>// Animação circular
+	const circ = circulo(2);
+	animar((tempo) => {
+	  const x = Math.sin(tempo) * 5;
+	  const y = Math.cos(tempo) * 5;
+	  return mover(circ, x, y);
+	});</code></pre>
+			</div>
+		</div>
+		
+		<div class="guide-section">
+			<h3>4. Interação</h3>
+		</div>
+	</div>
 
     <script src="script.js"></script>
-	
 </body>
 </html>
