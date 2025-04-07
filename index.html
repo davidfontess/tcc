@@ -7,164 +7,219 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css">
     <!-- codemirror javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
-    <!-- codemirror mode javascript pro suporte a javascript -->
+    <!-- codemirror mode javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/javascript/javascript.min.js"></script>
-    <!-- tema do codemirror (opcional) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/dracula.min.css">
-	<style>
-	        #demoCanvas {
-	            border: 1px solid #333;
-	            border-radius: 5px;
-	            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-	            background-color: white;
-	        }
-			#guide-panel {
-				position: fixed;
-				top: 0;
-				right: -400px;
-				width: 400px;
-				height: 100vh;
-				background: white;
-				box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-				transition: right 0.3s ease;
-				padding: 20px;
-				overflow-y: auto;
-				z-index: 900;
-			}
-			#guide-panel.active {
-				right: 0;
-			}
-			#guide-toggle {
-				position: fixed;
-				top: 20px;
-				right: 20px;
-				z-index: 1000;
-				padding: 8px 16px;
-				background: #4CAF50;
-				color: white;
-				border: none;
-				border-radius: 4px;
-				cursor: pointer;
-			}
-			.code-example {
-				cursor: pointer;
-				padding: 8px;
-				margin: 8px 0;
-				background: #f5f5f5;
-				border-radius: 4px;
-				transition: background 0.2s;
-			}
-			.code-example:hover {
-				background: #e0e0e0;
-			}
-			.code-example pre {
-				margin: 0;
-			}
-			.guide-section {
-				margin-bottom: 20px;
-			}
 
-			.guide-section h3 {
-				margin: 10px 0 5px 0;
-				color: #333;
-				font-size: 16px;
-			}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-			.code-example {
-				cursor: pointer;
-				padding: 8px;
-				margin: 5px 0;
-				background: #f8f8f8;
-				border-left: 3px solid #4CAF50;
-				border-radius: 3px;
-				transition: background 0.2s;
-			}
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+        }
 
-			.code-example:hover {
-				background: #e8f5e9;
-			}
+        .main-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            padding: 16px;
+            gap: 16px;
+        }
 
-			.code-example pre {
-				margin: 0;
-				white-space: pre-wrap;
-				font-family: 'Courier New', monospace;
-				font-size: 14px;
-			}
-            
+        .editor-container {
+            width: 50%;
+            height: calc(100% - 32px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .button-container {
+            margin-bottom: 8px;
+        }
+
+        .buttons {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #botao-executar {
+            background: #4CAF50;
+            color: white;
+        }
+
+        #botao-parar {
+            background: #CC0000;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #editorWrapper {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+        }
+
+        .CodeMirror {
+            height: 100%;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .canvas-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            height: 100%;
+			padding-top: 40px;
+        }
+
+        canvas {
+            border: 1px solid black;
+			border-radius: 8px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        #guide-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 900;
+        }
+
+        #guide-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #guide-panel.active {
+            right: 0;
+        }
+
+        .guide-section {
+            margin-bottom: 20px;
+        }
+
+        .guide-section h3 {
+            margin: 10px 0 5px 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .code-example {
+            cursor: pointer;
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f8f8;
+            border-left: 3px solid #4CAF50;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .code-example:hover {
+            background: #e8f5e9;
+        }
+
+        .code-example pre {
+            margin: 0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div style="display: flex;">
+    <div class="main-container">
         <!-- editor de código -->
-        <div style="width: 50%; padding: 10px;">
-            <textarea id="codeEditor" style="width: 100%; height: 400px;"></textarea>
-            <button onclick="executarCodigo()" style="margin-top: 10px;">Executar</button>
-			<button onclick="pararAnimacao()" style="margin-top: 10px; margin-left: 10px;">Parar</button>
-		</div>
+        <div class="editor-container">
+            <div class="button-container">
+                <button id="botao-executar" class="buttons" onclick="executarCodigo()">Executar</button>
+                <button id="botao-parar" class="buttons" onclick="pararAnimacao()">Parar</button>
+            </div>
+            <div id="editorWrapper">
+                <textarea id="codeEditor"></textarea>
+            </div>
+        </div>
 
-        <!-- canvas do easeljs -->
-        <div style="width: 50%; padding: 10px;">
+        <!-- canvas -->
+        <div class="canvas-container">
             <canvas id="demoCanvas" width="400" height="400"></canvas>
         </div>
     </div>
-	
-	<!-- botão pra abrir/fechar o guia -->
-    <button id="guide-toggle" onclick="toggleGuide()">Guia</button>
 
-    <!-- painel do guia (inicialmente oculto) -->
+    <!-- botão do guia -->
+    <button id="guide-toggle" class="buttons" onclick="toggleGuide()">Guia</button>
+
+    <!-- painel do guia -->
     <div id="guide-panel">
-		<h2>Guia de Programação</h2>
-		<p>Clique em um exemplo para carregá-lo no editor:</p>
-		
-		<div class="guide-section">
-			<h3>1. Figuras Básicas</h3>
-			<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\ndesenhar(ret);')">
-				<pre><code>// Retângulo
-	const ret = retangulo(4, 2);
-	desenhar(ret);</code></pre>
-			</div>
-			
-			<div class="code-example" onclick="loadExample('const circ = circulo(3);\ndesenhar(circ);')">
-				<pre><code>// Círculo
-	const circ = circulo(3);
-	desenhar(circ);</code></pre>
-			</div>
-		</div>
-		
-		<div class="guide-section">
-			<h3>2. Transformações</h3>
-			<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retMovido = mover(ret, 2, 3);\ndesenhar(retMovido);')">
-				<pre><code>// Mover figura
-	const ret = retangulo(4, 2);
-	const retMovido = mover(ret, 2, 3);
-	desenhar(retMovido);</code></pre>
-			</div>
-			
-			<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRot = rotacionar(ret, 45);\ndesenhar(retRot);')">
-				<pre><code>// Rotacionar figura
-	const ret = retangulo(4, 2);
-	const retRot = rotacionar(ret, 45);
-	desenhar(retRot);</code></pre>
-			</div>
-		</div>
-		
-		<div class="guide-section">
-			<h3>3. Animações</h3>
-			<div class="code-example" onclick="loadExample('const circ = circulo(2);\nanimar((tempo) => {\n  const x = Math.sin(tempo) * 5;\n  const y = Math.cos(tempo) * 5;\n  return mover(circ, x, y);\n});')">
-				<pre><code>// Animação circular
-	const circ = circulo(2);
-	animar((tempo) => {
-	  const x = Math.sin(tempo) * 5;
-	  const y = Math.cos(tempo) * 5;
-	  return mover(circ, x, y);
-	});</code></pre>
-			</div>
-		</div>
-		
-		<div class="guide-section">
-			<h3>4. Interação</h3>
-		</div>
-	</div>
+        <h2>Guia de Programação</h2>
+        <p>Clique em um exemplo para carregá-lo no editor:</p>
+
+        <div class="guide-section">
+            <h3>1. Figuras Básicas</h3>
+            <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\ndesenhar(ret);')">
+                <pre><code>// Retângulo
+const ret = retangulo(4, 2);
+desenhar(ret);</code></pre>
+            </div>
+            <div class="code-example" onclick="loadExample('const circ = circulo(3);\ndesenhar(circ);')">
+                <pre><code>// Círculo
+const circ = circulo(3);
+desenhar(circ);</code></pre>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h3>2. Transformações</h3>
+            <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retMovido = mover(ret, 2, 3);\ndesenhar(retMovido);')">
+                <pre><code>// Mover figura
+const ret = retangulo(4, 2);
+const retMovido = mover(ret, 2, 3);
+desenhar(retMovido);</code></pre>
+            </div>
+            <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRot = rotacionar(ret, 45);\ndesenhar(retRot);')">
+                <pre><code>// Rotacionar figura
+const ret = retangulo(4, 2);
+const retRot = rotacionar(ret, 45);
+desenhar(retRot);</code></pre>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h3>3. Animações</h3>
+            <div class="code-example" onclick="loadExample('const circ = circulo(2);\nanimar((tempo) => {\n  const x = Math.sin(tempo) * 5;\n  const y = Math.cos(tempo) * 5;\n  return mover(circ, x, y);\n});')">
+                <pre><code>// Animação circular
+const circ = circulo(2);
+animar((tempo) => {
+  const x = Math.sin(tempo) * 5;
+  const y = Math.cos(tempo) * 5;
+  return mover(circ, x, y);
+});</code></pre>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
