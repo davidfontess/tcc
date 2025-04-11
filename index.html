@@ -9,6 +9,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
     <!-- codemirror mode javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/javascript/javascript.min.js"></script>
+	<!-- tema principal -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/monokai.min.css">
+	<!-- tema secundário (darkMode) -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/dracula.min.css">
 
     <style>
         * {
@@ -26,23 +30,25 @@
         }
 
         .main-container {
-            display: flex;
-            height: 100%;
-            width: 100%;
-            padding: 16px;
-            gap: 16px;
-        }
+			display: flex;
+			height: 100vh;
+			width: 100vw;
+			padding: 16px;
+			gap: 16px;
+			overflow: hidden;
+		}
 
-        .editor-container {
-            width: 50%;
-            height: calc(100% - 32px);
-            display: flex;
-            flex-direction: column;
-        }
+		.editor-container {
+			width: 50%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
 
         .button-container {
-            margin-bottom: 8px;
-        }
+			margin-bottom: 8px;
+			flex-shrink: 0; /* Impede que os botões sejam comprimidos */
+		}
 
         .buttons {
             padding: 8px 12px;
@@ -63,15 +69,15 @@
         }
 
         #editorWrapper {
-            flex-grow: 1;
-            border: 1px solid #ccc;
-        }
+			height: calc(100% - 50px); /* 50px é a altura aproximada dos botões + margens */
+			overflow: auto;
+			border: 1px solid #ccc;
+		}
 
         .CodeMirror {
-            height: 100%;
-            width: 100%;
-            font-size: 16px;
-        }
+			height: auto;
+			min-height: 100%;
+		}
 
         .canvas-container {
             display: flex;
@@ -127,6 +133,69 @@
             color: #333;
             font-size: 16px;
         }
+		
+		.guide-header {
+			position: sticky;
+			top: 0;
+			background: white;
+			padding-bottom: 10px;
+			z-index: 1;
+		}
+
+		.guide-tabs {
+			display: flex;
+			border-bottom: 1px solid #ddd;
+			margin-bottom: 15px;
+		}
+
+		.tab-button {
+			padding: 8px 16px;
+			background: none;
+			border: none;
+			border-bottom: 3px solid transparent;
+			cursor: pointer;
+			font-size: 14px;
+			color: #555;
+		}
+
+		.tab-button:hover {
+			color: #333;
+		}
+
+		.tab-button.active {
+			color: #4CAF50;
+			border-bottom-color: #4CAF50;
+			font-weight: bold;
+		}
+
+		.tab-content {
+			display: none;
+			padding: 5px;
+			animation: fadeIn 0.3s;
+		}
+
+		.tab-content.active {
+			display: block;
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
+
+		.reference-item {
+			margin-bottom: 20px;
+		}
+
+		.reference-item h4 {
+			color: #4CAF50;
+			margin-bottom: 5px;
+		}
+
+		.reference-item p {
+			margin: 5px 0;
+			padding-left: 15px;
+		}
 
         .code-example {
             cursor: pointer;
@@ -148,20 +217,56 @@
             font-family: 'Courier New', monospace;
             font-size: 14px;
         }
+		
+		#aumentar-fonte, #diminuir-fonte {
+			background: #555;
+			color: white;
+			margin-left: 5px;
+			padding: 8px 10px;
+			font-weight: bold;
+		}
+
+		#aumentar-fonte:hover, #diminuir-fonte:hover {
+			background: #666;
+		}
+		
+		#dark-mode-toggle {
+			background: #555;
+			color: white;
+			margin-left: 5px;
+			padding: 8px 12px;
+		}
+
+		/* estilo para quando o dark mode estiver ativo */
+		body.dark-mode {
+			background-color: #282A36;
+		}
+
+		body.dark-mode .canvas-container {
+			background-color: #282A36;
+		}
+
+		body.dark-mode .CodeMirror {
+			background-color: #282a36;
+			color: #f8f8f2;
+		}
     </style>
 </head>
 <body>
     <div class="main-container">
         <!-- editor de código -->
         <div class="editor-container">
-            <div class="button-container">
-                <button id="botao-executar" class="buttons" onclick="executarCodigo()">Executar</button>
-                <button id="botao-parar" class="buttons" onclick="pararAnimacao()">Parar</button>
-            </div>
-            <div id="editorWrapper">
-                <textarea id="codeEditor"></textarea>
-            </div>
-        </div>
+			<div class="button-container">
+				<button id="botao-executar" class="buttons" onclick="executarCodigo()">Executar</button>
+				<button id="botao-parar" class="buttons" onclick="pararTudo()">Apagar</button>
+				<button id="aumentar-fonte" class="buttons" title="Aumentar fonte">A+</button>
+				<button id="diminuir-fonte" class="buttons" title="Diminuir fonte">A-</button>
+				<button id="dark-mode-toggle" class="buttons" title="Alternar tema">🌓 Escuro</button>
+			</div>
+			<div id="editorWrapper">
+				<textarea id="codeEditor"></textarea>
+			</div>
+		</div>
 
         <!-- canvas -->
         <div class="canvas-container">
