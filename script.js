@@ -61,6 +61,16 @@ function pararTudo() {
     });
 }
 
+function toggleGuide() {
+    const guidePanel = document.getElementById("guide-panel");
+    guidePanel.classList.toggle("active");
+    
+    // Se estiver abrindo, mostra a primeira aba
+    if (guidePanel.classList.contains("active")) {
+        document.querySelector('.tab-button').click();
+    }
+}
+
 // Sistema de abas do guia
 function setupGuideTabs() {
     const tabs = document.querySelectorAll('.tab-button');
