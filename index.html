@@ -98,9 +98,27 @@ animar((tempo) => {
 			<h3>O ambiente do Giz</h3>
 			
 			<h2>Parte 1: Primeiros Passos: Figuras do Giz</h2>
-			<h3>Receita dos programas</h3>
+				<h3>Receita dos programas</h3>
+					<p>Os códigos em Giz são pensados para gerarmos imagens, essas imagens são compostas por figuras geométricas de duas dimensões.
+					Podemos desenhar diversas figuras diferentes, inclusive combinar figuras para criar figuras mais complexas.</p>
 			<h3>Figuras Básicas</h3>
+				<p>Antes de irmos para as figuras que requerem um código mais complicado, vamos começar com algo mais simples.
+				Existem três figuras que chamamos de básicas, pois precisam de código bem enxuto para serem desenhadas, portanto, tornando-as as mais fáceis de serem aprendidas.</p>
 			<p>Círculo</p>
+				<p>Vamos começar com o exemplo mais simples possível: um círculo.</p>
+				<p>Para desenhar um círculo precisamos apenas de duas linhas:
+				uma definindo (criando) uma variável que será nosso círculo, e outra pedindo para esse círculo ser desenhado no canvas (a tela quadrada em branco).</p>
+				
+				<div class="code-example" onclick="loadExample('const meuCirculo = circulo(2);\ndesenhar(meuCirculo);')">
+                <pre><code>const meuCirculo = circulo(2);
+desenhar(meuCirculo);</code></pre>
+				</div>
+				
+				<p>Explicação:</p>
+				<p>const meuCirculo = circulo(2) - "circulo(2)" é uma função que cria um objeto que representa um círculo com raio de 2 unidades,
+				esse círculo é guardado numa variável que criamos chamada meuCirculo. Você pode dar o nome que quiser para sua variável, seguindo alguma regras.
+				Além disso, "const" é usado para que esse círculo seja imutável, ou seja, ele seja exatamente daquele jeito pra sempre, e se quiser mudá-lo, terá que criar outra imagem.</p>
+				
 			<p>Retângulo</p>
 			<p>Plano Cartesiano</p>
 			
