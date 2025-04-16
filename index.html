@@ -97,36 +97,233 @@ animar((tempo) => {
 			<h3>Como aprender a programar em Giz</h3>
 			<h3>O ambiente do Giz</h3>
 			
-			<h2>Parte 1: Primeiros Passos: Figuras do Giz</h2>
-				<h3>Receita dos programas</h3>
-					<p>Os códigos em Giz são pensados para gerarmos imagens, essas imagens são compostas por figuras geométricas de duas dimensões.
-					Podemos desenhar diversas figuras diferentes, inclusive combinar figuras para criar figuras mais complexas.</p>
-			<h3>Figuras Básicas</h3>
-				<p>Antes de irmos para as figuras que requerem um código mais complicado, vamos começar com algo mais simples.
-				Existem três figuras que chamamos de básicas, pois precisam de código bem enxuto para serem desenhadas, portanto, tornando-as as mais fáceis de serem aprendidas.</p>
-			<p>Círculo</p>
+			<h2>Parte 1: Primeiros Passos – Figuras do Giz</h2>
+
+			<h3>Receita dos programas</h3>
+				<p>No Giz podemos fazer duas coisas principais: <strong>criar figuras</strong> e <strong>desenhar figuras</strong>. No começo pode parecer que essas duas ações são a mesma coisa, mas não são!</p>
+
+				<p>Imagine que o Giz é como um desenho animado ou uma peça de teatro. Você pode preparar um personagem, imaginar e descrever suas roupas, o jeito como ele fala, como se move... Mas ele só vai aparecer no palco quando o diretor disser: "Ação!"</p>
+
+				<p>No Giz é igual: <strong>criar uma figura</strong> é como preparar o personagem. <strong>Desenhar uma figura</strong> é colocá-lo no palco — ou melhor, na tela.</p>
+
+				<p>Então, lembre-se: <em>só porque você criou uma figura, não quer dizer que ela vai aparecer</em>. Para isso, você precisa dizer ao Giz para desenhá-la.</p>
+
+				<p>Vamos começar aprendendo a criar figuras!</p>
+
+				<h3>Figuras Básicas</h3>
+				<p>Antes de partirmos para figuras mais complexas, vamos começar com algo simples. Existem três figuras que chamamos de básicas, porque precisam de pouco código para aparecer. Por isso, são ótimas para começar.</p>
+
+				<p><strong>Círculo</strong></p>
 				<p>Vamos começar com o exemplo mais simples possível: um círculo.</p>
-				<p>Para desenhar um círculo precisamos apenas de duas linhas:
-				uma definindo (criando) uma variável que será nosso círculo, e outra pedindo para esse círculo ser desenhado no canvas (a tela quadrada em branco).</p>
-				
+
+				<p>Para desenhar um círculo, precisamos de apenas duas linhas de código:  
+				uma para <strong>criar</strong> o círculo, e outra para <strong>desenhá-lo</strong> na tela (também chamada de <em>canvas</em>).</p>
+
 				<div class="code-example" onclick="loadExample('const meuCirculo = circulo(2);\ndesenhar(meuCirculo);')">
-                <pre><code>const meuCirculo = circulo(2);
+				<pre><code>const meuCirculo = circulo(2);
 desenhar(meuCirculo);</code></pre>
 				</div>
+
+				<h4>Explicação:</h4>
+				<p>Na primeira linha, escrevemos <code>const meuCirculo =</code>. A palavra <code>const</code> sempre será usada ao criar figuras (vamos entender mais sobre ela em breve).</p>
+
+				<p><code>meuCirculo</code> é o nome que demos para a figura. Você pode escolher o nome que quiser: <code>circ</code>, <code>circulo1</code>, <code>bola</code>, <code>sol</code>... É você quem decide!</p>
+
+				<p><code>circulo(2)</code> quer dizer que estamos criando um círculo com raio 2. (Logo você entenderá o que significa essa unidade de medida.)</p>
+
+				<p>Resumindo a primeira linha: <code>const meuCirculo = circulo(2);</code> significa algo como:  
+				<strong>"Meu círculo será um círculo com raio de 2 unidades."</strong></p>
+
+				<p>Perceba que usamos <code>const</code> no início e <code>;</code> no final. Essas partes ainda não têm tradução, mas são obrigatórias na criação de figuras.</p>
+
+				<p>Na segunda linha, temos: <code>desenhar(meuCirculo);</code>.  
+				Isso quer dizer: <strong>"Desenhe o meu círculo."</strong></p>
+
+				<p>O comando <code>desenhar</code> sempre será usado uma única vez, ao final do código.  
+				É como o momento em que o diretor grita: <strong>"Ação!"</strong></p>
+
 				
-				<p>Explicação:</p>
-				<p>const meuCirculo = circulo(2) - "circulo(2)" é uma função que cria um objeto que representa um círculo com raio de 2 unidades,
-				esse círculo é guardado numa variável que criamos chamada meuCirculo. Você pode dar o nome que quiser para sua variável, seguindo alguma regras.
-				Além disso, "const" é usado para que esse círculo seja imutável, ou seja, ele seja exatamente daquele jeito pra sempre, e se quiser mudá-lo, terá que criar outra imagem.</p>
-				
-			<p>Retângulo</p>
-			<p>Plano Cartesiano</p>
+			<p><strong>Retângulo</strong></p>
+				<p>Agora vamos criar um retângulo. Assim como o círculo, precisamos de duas linhas: uma para criar e outra para desenhar.</p>
+
+				<div class="code-example" onclick="loadExample('const meuRetangulo = retangulo(2, 4);\ndesenhar(meuRetangulo);')">
+				<pre><code>const meuRetangulo = retangulo(2, 4);
+desenhar(meuRetangulo);</code></pre>
+				</div>
+
+				<h4>Explicação:</h4>
+				<p>Na primeira linha, usamos <code>const meuRetangulo =</code> para dar um nome à figura que vamos criar.</p>
+
+				<p>O nome escolhido aqui foi <code>meuRetangulo</code>, mas você pode usar qualquer nome que quiser, como <code>ret</code>, <code>janela</code>, <code>tijolo</code> ou <code>retangulo1</code>.</p>
+
+				<p>Em seguida, temos <code>retangulo(2, 4)</code>. Isso quer dizer que queremos um retângulo com largura 2 e altura 4. (Mais adiante vamos entender melhor o que essas medidas significam e como o tamanho aparece na tela.)</p>
+
+				<p>Resumindo, essa primeira linha cria um retângulo com tamanho 2 por 4 e dá a ele o nome <strong>meuRetangulo</strong>.</p>
+
+				<p>Na segunda linha, temos <code>desenhar(meuRetangulo);</code>, que é o comando que realmente coloca a figura na tela.  
+				Ou seja: <strong>"Desenhe o meu retângulo!"</strong></p>
+
+				<p>Lembre-se: só criar a figura não é o suficiente — você precisa mandá-la aparecer com o comando <code>desenhar(...)</code>, como se fosse o momento de brilhar no palco!</p>
+
+			<p><strong>Plano Cartesiano</strong></p>
+				<p>Algumas figuras já estão prontas no Giz. Uma delas é o <code>planoCartesiano</code>. Ele nos ajuda a entender melhor onde os desenhos estão sendo feitos, pois mostra linhas que cortam a tela na horizontal e na vertical, dividindo-a em quatro partes.</p>
+
+				<p>Para desenhar o plano cartesiano, não precisamos criar nada antes. Basta usar:</p>
+
+				<div class="code-example" onclick="loadExample('desenhar(planoCartesiano);')">
+				<pre><code>desenhar(planoCartesiano);</code></pre>
+				</div>
+
+				<h4>Explicação:</h4>
+				<p>Como o <code>planoCartesiano</code> já existe, podemos desenhá-lo diretamente. Esse comando mostra na tela as linhas do plano e o ponto central, que é o ponto (0, 0). Ele ajuda bastante quando queremos saber exatamente onde nossas figuras estão sendo desenhadas.</p>
+
+				<p>Agora, se quisermos desenhar uma figura nossa *junto* com o plano cartesiano, podemos usar os dois ao mesmo tempo. Veja o exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const circ = circulo(2);\ndesenhar([circ, planoCartesiano]);')">
+				<pre><code>const circ = circulo(2);
+desenhar([circ, planoCartesiano]);</code></pre>
+				</div>
+
+				<h4>Explicação:</h4>
+				<p>Aqui, criamos um círculo chamado <code>circ</code> e depois pedimos para o Giz desenhar duas coisas ao mesmo tempo: o <code>circ</code> e o <code>planoCartesiano</code>.</p>
+
+				<p>Quando usamos colchetes <code>[...]</code>, estamos dizendo ao Giz: "Desenhe todos esses elementos juntos". Isso é útil quando queremos ver nossas figuras no lugar certo, com a ajuda do plano cartesiano para se localizar.</p>
+
+				<p>Você pode colocar quantas figuras quiser dentro dos colchetes, separadas por vírgula. Assim o Giz desenha todas elas de uma vez!</p>
+
 			
 			<h3>Figuras mais complexas</h3>
-			<p>Polígono</p>
-			<p>Linha</p>
-			<p>Polilinha</p>
-			<p>Texto</p>
+			
+				<p><strong>Figuras um pouquinho mais complexas</strong></p>
+				<p>Agora que já conhecemos as figuras básicas como o círculo e o retângulo, vamos aprender como criar figuras um pouco mais avançadas. Essas figuras precisam de mais informações para serem desenhadas, mas não se preocupe — vamos aprender passo a passo!</p>
+
+				<p>Vamos começar com a <strong>linha</strong>.</p>
+
+			<p><strong>Desenhando linhas</strong></p>
+
+				<p>Outra figura um pouquinho mais complexa, mas muito útil, é a <strong>linha</strong>. Com ela podemos ligar dois pontos no plano, como se estivéssemos usando uma régua.</p>
+
+				<p>Vamos ver um exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const minhaLinha = linha(-5,-5,5,5);\ndesenhar(minhaLinha);')">
+				<pre><code>const minhaLinha = linha(-5,-5,5,5);
+desenhar(minhaLinha);</code></pre>
+				</div>
+
+				<h4>Explicação:</h4>
+
+				<p>No comando <code>linha</code>, precisamos dizer de onde até onde queremos que a linha vá. Os quatro números representam dois pontos:</p>
+
+				<ul>
+				  <li><code>-5, -5</code>: esse é o ponto inicial da linha (mais para a esquerda e para baixo);</li>
+				  <li><code>5, 5</code>: esse é o ponto final da linha (mais para a direita e para cima).</li>
+				</ul>
+
+				<p>Ou seja, estamos ligando o ponto (-5, -5) até o ponto (5, 5).</p>
+
+				<p>Depois, usamos <code>desenhar(minhaLinha);</code> para mostrar a linha na tela.</p>
+
+				<p>Você pode criar linhas na horizontal, na vertical, na diagonal... é só mudar os valores! Linhas são ótimas para criar grades, contornos, e até formar desenhos mais elaborados.</p>
+			
+				<h4>Exercício: Desenhando uma cruz e um X</h4>
+
+				<p>Vamos praticar um pouco mais o uso das linhas! Tente fazer os seguintes desafios:</p>
+
+				<h5>Desafio 1: Uma cruz (+)</h5>
+				<p>Dica: uma cruz é formada por uma linha vertical e outra horizontal que se cruzam no centro.</p>
+
+				<p>Exemplo de solução:</p>
+				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, 0, 5, 0);\nconst linha2 = linha(0, -5, 0, 5);\ndesenhar([linha1, linha2]);')">
+				<pre><code>const linha1 = linha(-5, 0, 5, 0);
+const linha2 = linha(0, -5, 0, 5);
+desenhar([linha1, linha2]);</code></pre>
+				</div>
+
+				<h5>Desafio 2: Um X</h5>
+				<p>Dica: um X é feito com duas linhas diagonais que se cruzam no centro da tela.</p>
+
+				<p>Exemplo de solução:</p>
+				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, -5, 5, 5);\nconst linha2 = linha(-5, 5, 5, -5);\ndesenhar([linha1, linha2]);')">
+				<pre><code>const linha1 = linha(-5, -5, 5, 5);
+const linha2 = linha(-5, 5, 5, -5);
+desenhar([linha1, linha2]);</code></pre>
+				</div>
+
+				<p><strong>Agora é sua vez!</strong> Experimente mudar os números para ver o que acontece. Tente criar outros formatos, como um quadrado usando quatro linhas!</p>
+				
+				<h3>Figuras um pouquinho mais complexas: Polilinha</h3>
+
+			<p>A <strong>polilinha</strong> é como uma figura feita com vários segmentos de linha conectados, formando um caminho. 
+				É muito útil quando queremos desenhar algo que não seja só uma linha reta, como uma montanha, uma seta ou até parte de um desenho mais elaborado.</p>
+
+				<p>Veja este exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const minhaPolilinha = polilinha([[0, 0],[2, 3],[4, 0],[2, 0]]);\ndesenhar(minhaPolilinha);')">
+				<pre><code>const minhaPolilinha = polilinha([[0, 0],[2, 3],[4, 0],[2, 0]]);
+desenhar(minhaPolilinha);</code></pre>
+				</div>
+
+				<p><strong>Explicando:</strong></p>
+				<ul>
+				  <li>A função <code>polilinha([...])</code> recebe uma lista de pontos. Cada ponto é representado por dois números: a posição X e a posição Y.</li>
+				  <li>No nosso exemplo, temos quatro pontos: <code>[0,0]</code>, <code>[2,3]</code>, <code>[4,0]</code> e <code>[2,0]</code>.</li>
+				  <li>O Giz vai ligar todos esses pontos com linhas, uma depois da outra, formando um caminho.</li>
+				</ul>
+
+				<p>Podemos imaginar que estamos "desenhando com o dedo", ligando os pontos em ordem. O resultado parece uma pequena montanha com uma base.</p>
+
+				<p>Você pode usar quantos pontos quiser, e até combinar várias polilinhas para criar formas mais elaboradas. Experimente mudar os pontos ou adicionar mais para ver o que acontece!</p>
+				
+				<p><strong>Polígono</strong></p>
+				<p>O losango é uma figura com quatro lados iguais, parecida com uma pipa. Para desenhá-lo, usamos algo chamado <code>poligono</code>. Com ele, precisamos dizer os pontos que formam os cantos do losango.</p>
+
+				<p>Veja o exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const losangulo = colorir(poligono([[-7,0],[0,5],[7,0],[0,-5]]),\"amarelo\");\ndesenhar(losangulo);')">
+				<pre><code>const losangulo = colorir(poligono([[-7,0],[0,5],[7,0],[0,-5]]),"amarelo");
+desenhar(losangulo);</code></pre>
+				</div>
+
+				<h4>Explicação:</h4>
+				<p>Primeiro usamos o comando <code>poligono</code> e passamos dentro dos parênteses uma lista com quatro pontos. Cada ponto é escrito entre colchetes com dois números: o primeiro número indica a posição horizontal (para a direita ou esquerda) e o segundo indica a posição vertical (para cima ou para baixo).</p>
+
+				<p>Os pontos que usamos aqui são:</p>
+				<ul>
+				  <li><code>[-7, 0]</code>: um ponto mais à esquerda</li>
+				  <li><code>[0, 5]</code>: um ponto no alto, no centro</li>
+				  <li><code>[7, 0]</code>: um ponto mais à direita</li>
+				  <li><code>[0, -5]</code>: um ponto mais abaixo</li>
+				</ul>
+
+				<p>Esses quatro pontos juntos formam o losango.</p>
+
+				<p>Depois usamos o comando <code>colorir(..., "amarelo")</code> para pintar a figura de amarelo. Você pode usar outras cores também, como "vermelho", "azul", "verde", e muitas outras.</p>
+
+				<p>Por fim, usamos o <code>desenhar(...)</code> para mostrar o losango na tela.</p>
+
+				<p>Mesmo sendo um pouco mais trabalhoso, criar figuras com <code>poligono</code> nos dá muito mais liberdade para desenhar o que quisermos!</p>
+
+			<h3>Figuras um pouquinho mais complexas: Texto</h3>
+
+				<p>O Giz também permite desenhar palavras e frases! Para isso, usamos a função <code>texto</code>.</p>
+
+				<p>Veja este exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const meuTexto = texto(\'Olá, GIZ!\', \'16px\', \'vermelho\');\ndesenhar(meuTexto);')">
+				<pre><code>const meuTexto = texto("Olá, GIZ!", "16px", "vermelho");
+desenhar(meuTexto);</code></pre>
+				</div>
+
+				<p><strong>Explicando:</strong></p>
+				<ul>
+				  <li><code>texto("Olá, GIZ!", "16px", "vermelho")</code> cria uma figura com o texto <strong>Olá, GIZ!</strong>, escrito com tamanho de letra <strong>16 pixels</strong> e na cor <strong>vermelha</strong>.</li>
+				  <li>Você pode trocar o que está escrito, o tamanho da letra (ex: "20px", "30px") e a cor (ex: "azul", "verde", "preto").</li>
+				</ul>
+
+				<p>Assim como nas outras figuras, primeiro criamos o texto, depois usamos <code>desenhar</code> para mostrá-lo na tela.</p>
+
+				<p>Experimente mudar a frase, o tamanho e a cor para criar seus próprios títulos e mensagens!</p>
+
 			
 			<h2>Parte 2: Programação funcional</h2>
 			<h3>O que é?</h3>
