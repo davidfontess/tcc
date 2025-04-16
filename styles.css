@@ -1,235 +1,306 @@
-	* {
-		box-sizing: border-box;
-	}
+* {
+    box-sizing: border-box;
+}
 
-	html, body {
-		margin: 0;
-		padding: 0;
-		height: 100vh;
-		width: 100vw;
-		overflow: hidden;
-		font-family: sans-serif;
-		background-color: #f0f0f0;
-	}
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+}
 
-	.main-container {
-		display: flex;
-		height: 100vh;
-		width: 100vw;
-		padding: 16px;
-		gap: 16px;
-		overflow: hidden;
-	}
+.main-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    padding: 16px;
+    gap: 16px;
+    overflow: hidden;
+}
 
-	.editor-container {
-		width: 50%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-	}
+.editor-container {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
-	.button-container {
-		margin-bottom: 8px;
-		flex-shrink: 0; /* Impede que os botões sejam comprimidos */
-	}
+.button-container {
+    margin-bottom: 8px;
+    flex-shrink: 0;
+}
 
-	.buttons {
-		padding: 8px 12px;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
+.buttons {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-	#botao-executar {
-		background: #4CAF50;
-		color: white;
-	}
+#botao-executar {
+    background: #4CAF50;
+    color: white;
+}
 
-	#botao-parar {
-		background: #CC0000;
-		color: white;
-		margin-left: 10px;
-	}
+#botao-parar {
+    background: #CC0000;
+    color: white;
+    margin-left: 10px;
+}
 
-	#editorWrapper {
-		height: calc(100% - 50px); /* 50px é a altura aproximada dos botões + margens */
-		overflow: auto;
-		border: 1px solid #ccc;
-	}
+#editorWrapper {
+    height: calc(100% - 50px);
+    overflow: auto;
+    border: 1px solid #ccc;
+}
 
-	.CodeMirror {
-		height: auto;
-		min-height: 100%;
-	}
+.CodeMirror {
+    height: auto;
+    min-height: 100%;
+}
 
-	.canvas-container {
-		display: flex;
-		align-items: flex-start;
-		justify-content: flex-start;
-		height: 100%;
-		padding-top: 40px;
-	}
+.canvas-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 100%;
+    padding-top: 40px;
+}
 
-	canvas {
-		border: 1px solid black;
-		border-radius: 8px;
-		box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-	}
-	
-	.code-example {
-		cursor: pointer;
-		padding: 8px;
-		margin: 5px 0;
-		background: #f8f8f8;
-		border-left: 3px solid #4CAF50;
-		border-radius: 3px;
-		transition: background 0.2s;
-	}
+canvas {
+    border: 1px solid black;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
 
-	.code-example:hover {
-		background: #e8f5e9;
-	}
+.code-example {
+    cursor: pointer;
+    padding: 8px;
+    margin: 5px 0;
+    background: #f8f8f8;
+    border-left: 3px solid #4CAF50;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
 
-	.code-example pre {
-		margin: 0;
-		white-space: pre-wrap;
-		font-family: 'Courier New', monospace;
-		font-size: 14px;
-	}
-	
-	#aumentar-fonte, #diminuir-fonte {
-		background: #555;
-		color: white;
-		margin-left: 5px;
-		padding: 8px 10px;
-		font-weight: bold;
-	}
+.code-example:hover {
+    background: #e8f5e9;
+}
 
-	#aumentar-fonte:hover, #diminuir-fonte:hover {
-		background: #666;
-	}
-	
-	#dark-mode-toggle {
-		background: #555;
-		color: white;
-		margin-left: 5px;
-		padding: 8px 12px;
-	}
+.code-example pre {
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
 
-	/* estilo para quando o dark mode estiver ativo */
-	body.dark-mode {
-		background-color: #282A36;
-	}
+#aumentar-fonte, #diminuir-fonte {
+    background: #555;
+    color: white;
+    margin-left: 5px;
+    padding: 8px 10px;
+    font-weight: bold;
+}
 
-	body.dark-mode .canvas-container {
-		background-color: #282A36;
-	}
+#aumentar-fonte:hover, #diminuir-fonte:hover {
+    background: #666;
+}
 
-	body.dark-mode .CodeMirror {
-		background-color: #282a36;
-		color: #f8f8f2;
-	}
-	
-	#guide-panel {
-		position: fixed;
-		top: 0;
-		right: calc(-75vw);
-		width: 75vw;
-		height: 100vh;
-		background: white;
-		box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-		transition: right 0.3s ease;
-		padding: 20px;
-		overflow-y: auto;
-		z-index: 900;
-	}
+#dark-mode-toggle {
+    background: #555;
+    color: white;
+    margin-left: 5px;
+    padding: 8px 12px;
+}
 
-	#guide-toggle {
-		position: fixed;
-		top: 20px;
-		right: 20px;
-		z-index: 1000;
-		padding: 8px 16px;
-		background: #4CAF50;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #282A36;
+    color: #f8f8f2;
+}
 
-	#guide-panel.active {
-		right: 0;
-	}
+body.dark-mode .canvas-container {
+    background-color: #282A36;
+}
 
-	.guide-section {
-		margin-bottom: 20px;
-	}
+body.dark-mode .CodeMirror {
+    background-color: #282a36;
+    color: #f8f8f2;
+}
 
-	.guide-section h3 {
-		margin: 10px 0 5px 0;
-		color: #333;
-		font-size: 16px;
-	}
-	
-	.guide-header {
-		position: sticky;
-		top: 0;
-		background: white;
-		padding-bottom: 10px;
-		z-index: 1;
-	}
+body.dark-mode #guide-panel {
+    background-color: #282a36;
+    color: #f8f8f2;
+}
 
-	.guide-tabs {
-		display: flex;
-		border-bottom: 1px solid #ddd;
-		margin-bottom: 15px;
-	}
+body.dark-mode .code-example {
+    background-color: #383a42;
+    color: #f8f8f2;
+}
 
-	.tab-button {
-		padding: 8px 16px;
-		background: none;
-		border: none;
-		border-bottom: 3px solid transparent;
-		cursor: pointer;
-		font-size: 14px;
-		color: #555;
-	}
+body.dark-mode .code-example:hover {
+    background-color: #484a52;
+}
 
-	.tab-button:hover {
-		color: #333;
-	}
+/* Styles do Painel de guia */
+#guide-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-	.tab-button.active {
-		color: #4CAF50;
-		border-bottom-color: #4CAF50;
-		font-weight: bold;
-	}
+#guide-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    z-index: 900;
+    overflow: hidden;
+}
 
-	.tab-content {
-		display: none;
-		padding: 5px;
-		animation: fadeIn 0.3s;
-	}
+#guide-panel.active {
+    display: flex;
+}
 
-	.tab-content.active {
-		display: block;
-	}
+#guide-summary {
+    width: 30%;
+    padding: 20px;
+    border-right: 1px solid #eee;
+    overflow-y: auto;
+}
 
-	@keyframes fadeIn {
-		from { opacity: 0; }
-		to { opacity: 1; }
-	}
+#guide-content {
+    width: 70%;
+    padding: 20px;
+    overflow-y: auto;
+}
 
-	.reference-item {
-		margin-bottom: 20px;
-	}
+.guide-section {
+    display: none;
+}
 
-	.reference-item h4 {
-		color: #4CAF50;
-		margin-bottom: 5px;
-	}
+.guide-section.active {
+    display: block;
+}
 
-	.reference-item p {
-		margin: 5px 0;
-		padding-left: 15px;
-	}
+#summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#summary-list li {
+    padding: 10px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s;
+}
+
+#summary-list li:hover {
+    color: #4CAF50;
+    padding-left: 5px;
+}
+
+#summary-list li.active {
+    font-weight: bold;
+    color: #4CAF50;
+    border-left: 3px solid #4CAF50;
+    padding-left: 10px;
+}
+
+/* Para a responsividade */
+@media (max-width: 768px) {
+    #guide-panel {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    #guide-summary, #guide-content {
+        width: 100%;
+        height: auto;
+    }
+    
+    #guide-summary {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        max-height: 200px;
+    }
+}
+
+/* Animação pra a transição de secções */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.guide-section {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Estilo pro conteúdo dentro de cada seção do guia */
+.guide-section h1 {
+    color: #4CAF50;
+    margin-top: 0;
+}
+
+.guide-section h2 {
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 5px;
+    margin-top: 30px;
+}
+
+.guide-section h3 {
+    margin-top: 20px;
+    color: #555;
+}
+
+.guide-section p {
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+/* pro darkmode dentro do guide panel */
+body.dark-mode #guide-panel {
+    background-color: #282a36;
+    color: #f8f8f2;
+}
+
+body.dark-mode #guide-summary {
+    border-right-color: #444;
+}
+
+body.dark-mode #summary-list li {
+    border-bottom-color: #444;
+}
+
+body.dark-mode #summary-list li:hover {
+    color: #50fa7b;
+}
+
+body.dark-mode #summary-list li.active {
+    color: #50fa7b;
+    border-left-color: #50fa7b;
+}
+
+body.dark-mode .guide-section h1,
+body.dark-mode .guide-section h2 {
+    color: #50fa7b;
+}
+
+body.dark-mode .guide-section h3 {
+    color: #bd93f9;
+}
