@@ -20,17 +20,17 @@
     <div class="main-container">
         <!-- editor de código -->
         <div class="editor-container">
-			<div class="button-container">
-				<button id="botao-executar" class="buttons" onclick="executarCodigo()">Executar</button>
-				<button id="botao-parar" class="buttons" onclick="pararTudo()">Apagar</button>
-				<button id="aumentar-fonte" class="buttons" title="Aumentar fonte">A+</button>
-				<button id="diminuir-fonte" class="buttons" title="Diminuir fonte">A-</button>
-				<button id="dark-mode-toggle" class="buttons" title="Alternar tema">🌓 Escuro</button>
-			</div>
-			<div id="editorWrapper">
-				<textarea id="codeEditor"></textarea>
-			</div>
-		</div>
+            <div class="button-container">
+                <button id="botao-executar" class="buttons" onclick="executarCodigo()">Executar</button>
+                <button id="botao-parar" class="buttons" onclick="pararTudo()">Apagar</button>
+                <button id="aumentar-fonte" class="buttons" title="Aumentar fonte">A+</button>
+                <button id="diminuir-fonte" class="buttons" title="Diminuir fonte">A-</button>
+                <button id="dark-mode-toggle" class="buttons" title="Alternar tema">🌓 Escuro</button>
+            </div>
+            <div id="editorWrapper">
+                <textarea id="codeEditor"></textarea>
+            </div>
+        </div>
 
         <!-- canvas -->
         <div class="canvas-container">
@@ -43,61 +43,55 @@
 
     <!-- painel do guia -->
     <div id="guide-panel">
-        <h2>Exemplos</h2>
-        <p>Clique em um exemplo para carregá-lo no editor:</p>
+        <div id="guide-summary">
+            <h3>Sumário</h3>
+            <ul id="summary-list">
+                <!-- itens serão preenchidos via JavaScript -->
+            </ul>
+        </div>
+        
+        <div id="guide-content">
+            <!-- seção de Introdução -->
+            <div class="guide-section active" id="intro">
+                <h1>Guia do Giz</h1>
+                <h2>Introdução</h2>
+                <h3>Bem vindo ao Giz!</h3>
+                <p>Introdução ao ambiente Giz e como começar.</p>
+            </div>
 
-        <div class="guide-section">
-            <h3>1. Figuras Básicas</h3>
-            <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\ndesenhar(ret);')">
-                <pre><code>// Retângulo
+            <!-- seção de Exemplos -->
+            <div class="guide-section" id="exemplos">
+                <h2>Exemplos</h2>
+                <p>Clique em um exemplo para carregá-lo no editor:</p>
+
+                <div>
+                    <h3>1. Figuras Básicas</h3>
+                    <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\ndesenhar(ret);')">
+                        <pre><code>// Retângulo
 const ret = retangulo(4, 2);
 desenhar(ret);</code></pre>
-            </div>
-            <div class="code-example" onclick="loadExample('const circ = circulo(3);\ndesenhar(circ);')">
-                <pre><code>// Círculo
+                    </div>
+                    <div class="code-example" onclick="loadExample('const circ = circulo(3);\ndesenhar(circ);')">
+                        <pre><code>// Círculo
 const circ = circulo(3);
 desenhar(circ);</code></pre>
-            </div>
-        </div>
+                    </div>
+                </div>
 
-        <div class="guide-section">
-            <h3>2. Transformações</h3>
-            <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retMovido = mover(ret, 2, 3);\ndesenhar(retMovido);')">
-                <pre><code>// Mover figura
+                <div>
+                    <h3>2. Transformações</h3>
+                    <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retMovido = mover(ret, 2, 3);\ndesenhar(retMovido);')">
+                        <pre><code>// Mover figura
 const ret = retangulo(4, 2);
 const retMovido = mover(ret, 2, 3);
 desenhar(retMovido);</code></pre>
+                    </div>
+                </div>
             </div>
-            <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRot = rotacionar(ret, 45);\ndesenhar(retRot);')">
-                <pre><code>// Rotacionar figura
-const ret = retangulo(4, 2);
-const retRot = rotacionar(ret, 45);
-desenhar(retRot);</code></pre>
-            </div>
-        </div>
 
-        <div class="guide-section">
-            <h3>3. Animações</h3>
-            <div class="code-example" onclick="loadExample('const circ = circulo(2);\nanimar((tempo) => {\n  const x = Math.sin(tempo) * 5;\n  const y = Math.cos(tempo) * 5;\n  return mover(circ, x, y);\n});')">
-                <pre><code>// Animação circular
-const circ = circulo(2);
-animar((tempo) => {
-  const x = Math.sin(tempo) * 5;
-  const y = Math.cos(tempo) * 5;
-  return mover(circ, x, y);
-});</code></pre>
-            </div>
-        </div>
-		
-		<div class="guide-section">
-			<h1>Guia do Giz</h1>
-			
-			<h2>Introdução</h2>
-			<h3>Bem gindo ao Giz!</h3>
-			<h3>Como aprender a programar em Giz</h3>
-			<h3>O ambiente do Giz</h3>
-			
-			<h2>Parte 1: Primeiros Passos – Figuras do Giz</h2>
+            <!-- seção parte 1 -->
+            <div class="guide-section" id="part1">
+                <h2>Parte 1: Primeiros Passos – Figuras do Giz</h2>
 
 			<h3>Receita dos programas</h3>
 				<p>No Giz podemos fazer duas coisas principais: <strong>criar figuras</strong> e <strong>desenhar figuras</strong>. No começo pode parecer que essas duas ações são a mesma coisa, mas não são!</p>
@@ -323,30 +317,29 @@ desenhar(meuTexto);</code></pre>
 				<p>Assim como nas outras figuras, primeiro criamos o texto, depois usamos <code>desenhar</code> para mostrá-lo na tela.</p>
 
 				<p>Experimente mudar a frase, o tamanho e a cor para criar seus próprios títulos e mensagens!</p>
+            </div>
 
-			
-			<h2>Parte 2: Programação funcional</h2>
-			<h3>O que é?</h3>
-			<h3>Funções</h3>
-			<h3>Programação funcional no Giz: Transformações</h3>
-			<p>Mover</p>
-			<p>Colorir</p>
-			<p>Rotacionar</p>
-			<p>Redimensionar</p>
-			
-			<h2>Parte 3: Animações</h2>
-			
-			<h2>Parte 4: Interações</h2>
-			
-			<h2>Definição de variáveis?</h2>
-			<h2>Tipos e Expressões/aninhadas?</h2>
-			<h2>Top-down decomposition?</h2>
-			<h2>Reutilização de código?</h2>
-			<h2>Criando nossas próprias funções?</h2>
-			<h2>Escopo?</h2>
-			
-			
-		</div>
+            <!-- seção Parte 2 -->
+            <div class="guide-section" id="part2">
+                <h2>Parte 2: Programação funcional</h2>
+                <h3>O que é?</h3>
+                <h3>Funções</h3>
+                <h3>Programação funcional no Giz: Transformações</h3>
+                <!-- conteúdo da Parte 2 aqui -->
+            </div>
+
+            <!-- seção Parte 3 -->
+            <div class="guide-section" id="part3">
+                <h2>Parte 3: Animações</h2>
+                <!-- conteúdo sobre animações -->
+            </div>
+
+            <!-- seção Parte 4 -->
+            <div class="guide-section" id="part4">
+                <h2>Parte 4: Interações</h2>
+                <!-- conteúdo sobre interações -->
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
