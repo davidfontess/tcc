@@ -183,6 +183,63 @@ document.addEventListener('DOMContentLoaded', () => {
 // Adicionar evento de clique ao botão
 darkModeToggle.addEventListener('click', toggleDarkMode);
 
+// Função para inicializar o sumário
+function setupGuideSections() {
+    const sections = document.querySelectorAll('.guide-section');
+    const summaryList = document.getElementById('summary-list');
+    
+    // Cria itens do sumário
+    sections.forEach(section => {
+        const title = section.querySelector('h1, h2').textContent;
+        const sectionId = section.id;
+        
+        const listItem = document.createElement('li');
+        listItem.textContent = title;
+        listItem.dataset.section = sectionId;
+        
+        listItem.addEventListener('click', () => {
+            showSection(sectionId);
+        });
+        
+        summaryList.appendChild(listItem);
+    });
+    
+    // Mostra apenas a introdução inicialmente
+    showSection('intro');
+}
+
+// Função para mostrar uma seção específica
+function showSection(sectionId) {
+    // Esconde todas as seções
+    document.querySelectorAll('.guide-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Mostra a seção selecionada
+    document.getElementById(sectionId).classList.add('active');
+    
+    // Atualiza o item ativo no sumário
+    document.querySelectorAll('#summary-list li').forEach(item => {
+        item.classList.toggle('active', item.dataset.section === sectionId);
+    });
+}
+
+// Modifica a função toggleGuide para mostrar apenas a introdução
+function toggleGuide() {
+    const guidePanel = document.getElementById('guide-panel');
+    guidePanel.classList.toggle('active');
+    
+    if (guidePanel.classList.contains('active')) {
+        showSection('intro');
+    }
+}
+
+// Inicializa quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+    setupGuideSections();
+    setupGuideTabs(); // Mantenha sua função existente se necessário
+});
+
 //
 //	GIZ
 //
