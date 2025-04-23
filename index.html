@@ -52,42 +52,51 @@
         
         <div id="guide-content">
             <!-- seção de Introdução -->
-            <div class="guide-section active" id="intro">
-                <h1>Guia do Giz</h1>
-                <h2>Introdução</h2>
-                <h3>Bem vindo ao Giz!</h3>
-                <p>Introdução ao ambiente Giz e como começar.</p>
-            </div>
-
-            <!-- seção de Exemplos -->
-            <div class="guide-section" id="exemplos">
-                <h2>Exemplos</h2>
-                <p>Clique em um exemplo para carregá-lo no editor:</p>
-
-                <div>
-                    <h3>1. Figuras Básicas</h3>
-                    <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\ndesenhar(ret);')">
-                        <pre><code>// Retângulo
-const ret = retangulo(4, 2);
-desenhar(ret);</code></pre>
-                    </div>
-                    <div class="code-example" onclick="loadExample('const circ = circulo(3);\ndesenhar(circ);')">
-                        <pre><code>// Círculo
-const circ = circulo(3);
-desenhar(circ);</code></pre>
-                    </div>
-                </div>
-
-                <div>
-                    <h3>2. Transformações</h3>
-                    <div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retMovido = mover(ret, 2, 3);\ndesenhar(retMovido);')">
-                        <pre><code>// Mover figura
-const ret = retangulo(4, 2);
-const retMovido = mover(ret, 2, 3);
-desenhar(retMovido);</code></pre>
-                    </div>
-                </div>
-            </div>
+			<div class="guide-section active" id="intro">
+				<h1>Guia do Giz</h1>
+				<h2>Introdução</h2>
+				<h3>Bem vindo ao Giz!</h3>
+				<h4>O que é Giz?</h4>
+				<p>O Giz é uma plataforma para aprender programação funcional de forma visual, interativa e divertida.</p>
+				<p>Combinando elementos de um ambiente de desenvolvimento com uma interface e um linguajar amigável, os usuários podem aprender a programar enquanto veem, em tempo real, as imagens.</p>
+				<p>O Giz foi projetado pensando especialmente em crianças e adolescentes, por isso o processo de aprendizado deve ser lúdico e visual. 
+				Seu principal objetivo é ensinar conceitos de programação funcional por meio de figuras. Ao invés de focar em estruturas complexas, sintaxe pesada e
+				palavras em inglês, aqui tentamos manter o fluxo de código mais próximo da lógica matemática, assim facilitando a introdução da programação e
+				possibilitando o uso de código como uma forma de expressão criativa.</p>
+				<hr>
+				
+				<h3>O ambiente Giz</h3>
+				<p>Ao fechar este guia, à esquerda, você verá o <strong>editor de código</strong>, onde você digita seus comandos. À direita, temos o <strong>canvas</strong>, onde os desenhos criados pelo seu código serão mostrados.</p>
+				<p>O botão <strong>Executar</strong> "desenha" as imagens criadas com seu código no canvas.</p>
+				<p>O botão <strong>Apagar</strong> apaga as imagens do canvas.</p>
+				<p>Os botões <strong>A+</strong> e <strong>A-</strong> servem para aumentar ou diminuir o tamanho da fonte (as letras que você escreve) do editor.</p>
+				<p>O botão <strong>Claro/Escuro</strong> muda esta página entre o modo claro e o modo escuro, para melhor conforto visual.</p>
+				<p>O botão <strong>Guia</strong> abre este guia, onde você vai encontrar explicações de como fazer tudo que o Giz pode fazer.</p>
+				<p>Dentro do guia, você pode <strong>clicar nos títulos do sumário</strong> para abrir cada parte de conteúdo.</p>
+				<p>Cada seção possui exemplos de código que podem ser <strong>clicados</strong>. Ao clicar, o código é automaticamente colado no editor, pronto para ser testado!</p>
+				<hr>
+				
+				<h3>Como aprender tudo que o Giz pode te ensinar</h3>
+				<h4>Leia o Guia</h4>
+				<p>No guia você encontrará explicações sobre tudo que Giz pode fazer, desde como desenhar uma figura usando apenas uma linha de código até
+				como fazer um jogo simples interativo com teclado. Leia-as com calma, as explicações não usam linguajar rebuscado e palavras difíceis.
+				São pensadas exatamente em como explicar tudo da maneira mais simples possível.</p>
+				<h4>Teste todas as figuras e funcionalidades ensinadas no guia</h4>
+				<p>O guia ensina diversas figuras e várias funções de transformação. Não fique apenas na leitura, clicando nos exemplos clicáveis. Tente escrever seu próprio
+				código do zero. Dessa forma você com certeza aprenderá tudo do Giz.</p>
+				<h4>Mude algo e veja o que acontece!</h4>
+				<p>Toda figura tem seu tamanho, seu raio, etc. Toda função tem algum número que diz o quanto aquela figura mudará, o quanto ela irá aumentar, pra que ponto
+				no plano cartesiano ela irá se mover, que cor ela terá, etc. Tente fazer modificações nesses valores. Assim você verá para que serve cada coisinha no código.</p>
+				<h4>Não tenha medo de errar!</h4>
+				<p>Programação pode não ser a coisa mais fácil do mundo. No começo parece algo muito distante do que estamos acostumados e ao passo que as funções ficam mais
+				complexas e os códigos ficam maiores, pode parecer muita coisa. Não tenha medo de mudar algo no seu código e estragá-lo. O intuito do Giz é que seu aprendizado
+				seja divertido. Mude suas imagens ao seu bel-prazer.</p>
+				<h4>Seja criativo e divirta-se!</h4>
+				<p>Como já foi falado anteriormente, o objetivo do Giz é ensinar programação funcional de uma forma divertida. Então pense no código como uma forma de fazer
+				qualquer coisa que você quiser. Por que não fazer um desenho de algum jogo ou filme que você gosta? Tente desenhar um personagem. Depois você pode tentar
+				animá-lo. Fazer ele interagir com o mouse. As possibilidades são muitas!</p>
+				
+			</div>
 
             <!-- seção parte 1 -->
             <div class="guide-section" id="part1">
@@ -98,11 +107,12 @@ desenhar(retMovido);</code></pre>
 
 				<p>Imagine que o Giz é como um desenho animado ou uma peça de teatro. Você pode preparar um personagem, imaginar e descrever suas roupas, o jeito como ele fala, como se move... Mas ele só vai aparecer no palco quando o diretor disser: "Ação!"</p>
 
-				<p>No Giz é igual: <strong>criar uma figura</strong> é como preparar o personagem. <strong>Desenhar uma figura</strong> é colocá-lo no palco — ou melhor, na tela.</p>
+				<p>No Giz é igual: <strong>criar uma figura</strong> é como preparar o personagem. <strong>Desenhar uma figura</strong> é colocá-lo no palco, ou melhor, na tela.</p>
 
 				<p>Então, lembre-se: <em>só porque você criou uma figura, não quer dizer que ela vai aparecer</em>. Para isso, você precisa dizer ao Giz para desenhá-la.</p>
 
 				<p>Vamos começar aprendendo a criar figuras!</p>
+				<hr>
 
 				<h3>Figuras Básicas</h3>
 				<p>Antes de partirmos para figuras mais complexas, vamos começar com algo simples. Existem três figuras que chamamos de básicas, porque precisam de pouco código para aparecer. Por isso, são ótimas para começar.</p>
@@ -121,7 +131,7 @@ desenhar(meuCirculo);</code></pre>
 				<h4>Explicação:</h4>
 				<p>Na primeira linha, escrevemos <code>const meuCirculo =</code>. A palavra <code>const</code> sempre será usada ao criar figuras (vamos entender mais sobre ela em breve).</p>
 
-				<p><code>meuCirculo</code> é o nome que demos para a figura. Você pode escolher o nome que quiser: <code>circ</code>, <code>circulo1</code>, <code>bola</code>, <code>sol</code>... É você quem decide!</p>
+				<p><code>meuCirculo</code> é o nome que demos para a figura. Você pode escolher o nome que quiser: <code>circ</code>, <code>circulo1</code>, <code>bola</code>, <code>sol</code>... Você quem decide!</p>
 
 				<p><code>circulo(2)</code> quer dizer que estamos criando um círculo com raio 2. (Logo você entenderá o que significa essa unidade de medida.)</p>
 
@@ -133,9 +143,9 @@ desenhar(meuCirculo);</code></pre>
 				<p>Na segunda linha, temos: <code>desenhar(meuCirculo);</code>.  
 				Isso quer dizer: <strong>"Desenhe o meu círculo."</strong></p>
 
-				<p>O comando <code>desenhar</code> sempre será usado uma única vez, ao final do código.  
+				<p>O comando <code>desenhar</code> sempre será usado uma única vez, no fim do código.  
 				É como o momento em que o diretor grita: <strong>"Ação!"</strong></p>
-
+				<hr>
 				
 			<p><strong>Retângulo</strong></p>
 				<p>Agora vamos criar um retângulo. Assim como o círculo, precisamos de duas linhas: uma para criar e outra para desenhar.</p>
@@ -150,17 +160,18 @@ desenhar(meuRetangulo);</code></pre>
 
 				<p>O nome escolhido aqui foi <code>meuRetangulo</code>, mas você pode usar qualquer nome que quiser, como <code>ret</code>, <code>janela</code>, <code>tijolo</code> ou <code>retangulo1</code>.</p>
 
-				<p>Em seguida, temos <code>retangulo(2, 4)</code>. Isso quer dizer que queremos um retângulo com largura 2 e altura 4. (Mais adiante vamos entender melhor o que essas medidas significam e como o tamanho aparece na tela.)</p>
+				<p>Em seguida, temos <code>retangulo(2, 4)</code>. Isso quer dizer que queremos um retângulo com largura 2 e altura 4. (Depois vamos entender melhor o que essas medidas significam e como o tamanho aparece na tela. Não se preocupe com isso agora.)</p>
 
 				<p>Resumindo, essa primeira linha cria um retângulo com tamanho 2 por 4 e dá a ele o nome <strong>meuRetangulo</strong>.</p>
 
 				<p>Na segunda linha, temos <code>desenhar(meuRetangulo);</code>, que é o comando que realmente coloca a figura na tela.  
 				Ou seja: <strong>"Desenhe o meu retângulo!"</strong></p>
 
-				<p>Lembre-se: só criar a figura não é o suficiente — você precisa mandá-la aparecer com o comando <code>desenhar(...)</code>, como se fosse o momento de brilhar no palco!</p>
+				<p>Lembre-se: você não pode só criar a figura, precisa mandá-la aparecer com o comando <code>desenhar(figura)</code>, como se fosse o momento de brilhar no palco!</p>
+				<hr>
 
 			<p><strong>Plano Cartesiano</strong></p>
-				<p>Algumas figuras já estão prontas no Giz. Uma delas é o <code>planoCartesiano</code>. Ele nos ajuda a entender melhor onde os desenhos estão sendo feitos, pois mostra linhas que cortam a tela na horizontal e na vertical, dividindo-a em quatro partes.</p>
+				<p>Algumas figuras já estão prontas no Giz. Uma delas é o <code>planoCartesiano</code>. Ele nos ajuda a entender melhor onde os desenhos estão sendo feitos, nos mostrando pontos (x,y) específicos.</p>
 
 				<p>Para desenhar o plano cartesiano, não precisamos criar nada antes. Basta usar:</p>
 
@@ -171,7 +182,7 @@ desenhar(meuRetangulo);</code></pre>
 				<h4>Explicação:</h4>
 				<p>Como o <code>planoCartesiano</code> já existe, podemos desenhá-lo diretamente. Esse comando mostra na tela as linhas do plano e o ponto central, que é o ponto (0, 0). Ele ajuda bastante quando queremos saber exatamente onde nossas figuras estão sendo desenhadas.</p>
 
-				<p>Agora, se quisermos desenhar uma figura nossa *junto* com o plano cartesiano, podemos usar os dois ao mesmo tempo. Veja o exemplo:</p>
+				<p>Agora, se quisermos desenhar uma figura nossa *junto* com o plano cartesiano, podemos desenhar os dois ao mesmo tempo.</p>
 
 				<div class="code-example" onclick="loadExample('const circ = circulo(2);\ndesenhar([circ, planoCartesiano]);')">
 				<pre><code>const circ = circulo(2);
@@ -181,15 +192,14 @@ desenhar([circ, planoCartesiano]);</code></pre>
 				<h4>Explicação:</h4>
 				<p>Aqui, criamos um círculo chamado <code>circ</code> e depois pedimos para o Giz desenhar duas coisas ao mesmo tempo: o <code>circ</code> e o <code>planoCartesiano</code>.</p>
 
-				<p>Quando usamos colchetes <code>[...]</code>, estamos dizendo ao Giz: "Desenhe todos esses elementos juntos". Isso é útil quando queremos ver nossas figuras no lugar certo, com a ajuda do plano cartesiano para se localizar.</p>
+				<p>Quando usamos colchetes <code>[]</code>, estamos dizendo ao Giz: "Desenhe esses elementos juntos". Dessa forma, conseguimos ver o plano cartesiano e a figura que desenhamos/estamos desenhando. Assim fica mais fácil saber onde é um ponto (x,y).</p>
 
-				<p>Você pode colocar quantas figuras quiser dentro dos colchetes, separadas por vírgula. Assim o Giz desenha todas elas de uma vez!</p>
-
+				<p>Você pode colocar quantas figuras quiser dentro dos colchetes, separadas por vírgula. Assim o Giz desenha todas elas de uma vez. Só tenha em mente que a ordem dessas figuras vai importar. Figuras que estão mais à esquerda em <code>desenhar()</code> ficarão mais atrás na nossa tela.</p>
+				<hr>
 			
-			<h3>Figuras mais complexas</h3>
+			<h3>Figuras um pouquinho mais complexas</h3>
 			
-				<p><strong>Figuras um pouquinho mais complexas</strong></p>
-				<p>Agora que já conhecemos as figuras básicas como o círculo e o retângulo, vamos aprender como criar figuras um pouco mais avançadas. Essas figuras precisam de mais informações para serem desenhadas, mas não se preocupe — vamos aprender passo a passo!</p>
+				<p>Agora que já conhecemos as figuras básicas como o círculo, o retângulo e o plano cartesiano, vamos aprender como criar figuras um pouco mais avançadas. Essas figuras precisam de mais informações para serem desenhadas, mas não se preocupe, vamos aprender passo a passo!</p>
 
 				<p>Vamos começar com a <strong>linha</strong>.</p>
 
@@ -218,10 +228,11 @@ desenhar(minhaLinha);</code></pre>
 				<p>Depois, usamos <code>desenhar(minhaLinha);</code> para mostrar a linha na tela.</p>
 
 				<p>Você pode criar linhas na horizontal, na vertical, na diagonal... é só mudar os valores! Linhas são ótimas para criar grades, contornos, e até formar desenhos mais elaborados.</p>
+				<hr>
 			
 				<h4>Exercício: Desenhando uma cruz e um X</h4>
 
-				<p>Vamos praticar um pouco mais o uso das linhas! Tente fazer os seguintes desafios:</p>
+				<p>Vamos praticar um pouco mais o uso das linhas. Tente fazer os seguintes desafios:</p>
 
 				<h5>Desafio 1: Uma cruz (+)</h5>
 				<p>Dica: uma cruz é formada por uma linha vertical e outra horizontal que se cruzam no centro.</p>
@@ -245,7 +256,7 @@ desenhar([linha1, linha2]);</code></pre>
 
 				<p><strong>Agora é sua vez!</strong> Experimente mudar os números para ver o que acontece. Tente criar outros formatos, como um quadrado usando quatro linhas!</p>
 				
-				<h3>Figuras um pouquinho mais complexas: Polilinha</h3>
+				<h4>Polilinha</h4>
 
 			<p>A <strong>polilinha</strong> é como uma figura feita com vários segmentos de linha conectados, formando um caminho. 
 				É muito útil quando queremos desenhar algo que não seja só uma linha reta, como uma montanha, uma seta ou até parte de um desenho mais elaborado.</p>
@@ -267,13 +278,14 @@ desenhar(minhaPolilinha);</code></pre>
 				<p>Podemos imaginar que estamos "desenhando com o dedo", ligando os pontos em ordem. O resultado parece uma pequena montanha com uma base.</p>
 
 				<p>Você pode usar quantos pontos quiser, e até combinar várias polilinhas para criar formas mais elaboradas. Experimente mudar os pontos ou adicionar mais para ver o que acontece!</p>
+				<hr>
 				
 				<p><strong>Polígono</strong></p>
-				<p>O losango é uma figura com quatro lados iguais, parecida com uma pipa. Para desenhá-lo, usamos algo chamado <code>poligono</code>. Com ele, precisamos dizer os pontos que formam os cantos do losango.</p>
+				<p>O polígono é uma figura geométrica fechada, formada pro segmentos de reta. Um polígono pode ter quantos lados você quiser. Pode ter 3 (ou seja um triângulo), 4 pontos (um retângulo ou quadrado), ou mais. Para desenhá-lo, usamos algo a palavra <code>poligono</code>. Usando ela, precisamos dizer os pontos que formam os cantos do losango.</p>
 
 				<p>Veja o exemplo:</p>
 
-				<div class="code-example" onclick="loadExample('const losangulo = colorir(poligono([[-7,0],[0,5],[7,0],[0,-5]]),\"amarelo\");\ndesenhar(losangulo);')">
+				<div class="code-example" onclick="loadExample('const losangulo = poligono([[-7,0],[0,5],[7,0],[0,-5]]);\ndesenhar(losangulo);')">
 				<pre><code>const losangulo = colorir(poligono([[-7,0],[0,5],[7,0],[0,-5]]),"amarelo");
 desenhar(losangulo);</code></pre>
 				</div>
@@ -291,13 +303,11 @@ desenhar(losangulo);</code></pre>
 
 				<p>Esses quatro pontos juntos formam o losango.</p>
 
-				<p>Depois usamos o comando <code>colorir(..., "amarelo")</code> para pintar a figura de amarelo. Você pode usar outras cores também, como "vermelho", "azul", "verde", e muitas outras.</p>
-
 				<p>Por fim, usamos o <code>desenhar(...)</code> para mostrar o losango na tela.</p>
 
-				<p>Mesmo sendo um pouco mais trabalhoso, criar figuras com <code>poligono</code> nos dá muito mais liberdade para desenhar o que quisermos!</p>
+				<p>Mesmo sendo um pouco mais trabalhoso, criar figuras com <code>poligono</code> nos dá muito mais liberdade para desenhar o que quisermos! Um triângulo, um quadrilátero, um pentágono, um hexágono, e assim por diante.</p>
 
-			<h3>Figuras um pouquinho mais complexas: Texto</h3>
+			<h4>Texto</h4>
 
 				<p>O Giz também permite desenhar palavras e frases! Para isso, usamos a função <code>texto</code>.</p>
 
@@ -316,29 +326,507 @@ desenhar(meuTexto);</code></pre>
 
 				<p>Assim como nas outras figuras, primeiro criamos o texto, depois usamos <code>desenhar</code> para mostrá-lo na tela.</p>
 
-				<p>Experimente mudar a frase, o tamanho e a cor para criar seus próprios títulos e mensagens!</p>
-            </div>
+				<p>Experimente mudar a frase, o tamanho e a cor para criar seus próprios títulos e mensagens! Pode, por exemplo, escrever seu nome!</p>
+			</div>
 
             <!-- seção Parte 2 -->
             <div class="guide-section" id="part2">
-                <h2>Parte 2: Programação funcional</h2>
-                <h3>O que é?</h3>
-                <h3>Funções</h3>
-                <h3>Programação funcional no Giz: Transformações</h3>
-                <!-- conteúdo da Parte 2 aqui -->
+				<h2>Parte 2: Programação Funcional</h2>
+
+				<h3>O que é Programação Funcional?</h3>
+				<p>O nome pode parecer complicado à primeira vista, mas na verdade é mais simples do que parece.</p>
+
+				<p>Programar de forma funcional é como montar peças de LEGO: você cria funções (blocos de código que fazem alguma coisa) e depois junta essas funções para construir algo maior.</p>
+
+				<p>Em vez de mandar o computador fazer um passo de cada vez, como em uma receita de bolo, você diz o que quer montar — e o computador junta as peças para você.</p>
+				<hr>
+
+				<h3>Funções: os blocos mágicos</h3>
+				<p>Uma <strong>função</strong> é como uma máquina. Você coloca uma coisa nela, e ela devolve outra. Por exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const dobro = x => x * 2;\ndesenhar(texto(dobro(4)));')">
+					<pre><code>const dobro = x => x * 2;
+desenhar(texto(dobro(4)));</code></pre>
+				</div>
+
+				<p>Nesse exemplo, criamos uma função chamada <code>dobro</code>. Ela recebe um número (<code>x</code>) e devolve esse número multiplicado por 2.</p>
+				<p>Quando escrevemos <code>dobro(4)</code>, o resultado é <code>8</code>.</p>
+				<hr>
+
+				<h3>Reutilizando funções</h3>
+				<p>O legal de criar funções é que você pode usá-las várias vezes, sempre que quiser. Por exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const metade = x => x / 2;\nconst pequenaBola = circulo(metade(4));\ndesenhar(pequenaBola);')">
+					<pre><code>const metade = x => x / 2;
+const pequenaBola = circulo(metade(4));
+desenhar(pequenaBola);</code></pre>
+				</div>
+
+				<p>A função <code>metade</code> pega um número e devolve a metade dele.  
+				No exemplo, usamos ela para criar um círculo com raio 2 (porque a metade de 4 é 2). Depois, se você precisar, pode chamar metade de novo para fazer essa operação com outros valores e variáveis.</p>
+				<hr>
+
+				<h3>Funções com mais de uma entrada</h3>
+				<p>Você também pode criar funções que recebem mais de um valor. Veja só:</p>
+
+				<div class="code-example" onclick="loadExample('const retanguloPersonalizado = (l, a) => retangulo(l, a);\nconst meuRet = retanguloPersonalizado(3, 5);\ndesenhar(meuRet);')">
+					<pre><code>const retanguloPersonalizado = (l, a) => retangulo(l, a);
+const meuRet = retanguloPersonalizado(3, 5);
+desenhar(meuRet);</code></pre>
+				</div>
+
+				<p>Aqui criamos uma função chamada <code>retanguloPersonalizado</code> que recebe duas entradas: <code>l</code> (largura) e <code>a</code> (altura).</p>
+				<p>Depois usamos essa função para criar um retângulo com largura 3 e altura 5. Percebe que você meio que consegue criar suas próprias formas usando outras formas já pré-existentes no Giz?</p>
+				<hr>
+
+				<h3>Combinando funções com figuras</h3>
+				<p>Funções são ainda mais legais quando usamos elas para transformar figuras! Veja esse exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('const bola = circulo(3);\nconst moverParaDireita = fig => mover(fig, 5, 0);\nconst novaBola = moverParaDireita(bola);\ndesenhar([bola, novaBola]);')">
+					<pre><code>const bola = circulo(3);
+const moverParaDireita = fig => mover(fig, 5, 0);
+const novaBola = moverParaDireita(bola);
+desenhar([bola, novaBola]);</code></pre>
+				</div>
+
+				<p>Nesse exemplo, criamos uma bola e depois usamos uma função para mover ela 5 unidades para a direita.</p>
+				<p>Com isso, temos duas figuras: a original e a nova, movida. E tudo isso graças a uma função!</p>
+				<hr>
+
+				<h3>Compondo figuras</h3>
+				<p>Você pode juntar várias figuras para formar uma composição mais rica. É como montar um desenho com várias peças!</p>
+
+				<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst figurasCompostas = comporFiguras([ret, circulo(3), poligono([[0,0],[2,3],[4,0]])]);\ndesenhar(figurasCompostas);')">
+					<pre><code>const ret = retangulo(4, 2);
+const figurasCompostas = comporFiguras([ret, circulo(3), poligono([[0,0],[2,3],[4,0]])]);
+desenhar(figurasCompostas);</code></pre>
+				</div>
+
+				<p>No exemplo acima, criamos um retângulo, um círculo e um polígono e os juntamos em uma única imagem com <code>comporFiguras</code>.</p>
+				<p>É como desenhar várias partes de um robô: cabeça, corpo, braços... tudo se junta!</p>
+				<hr>
+
+				<h3>Rotacionando figuras</h3>
+				<p>Com a função <code>rotacionar</code>, você pode girar uma figura em torno do seu centro.</p>
+
+				<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRotacionado = rotacionar(ret, 45);\ndesenhar(retRotacionado);')">
+					<pre><code>const ret = retangulo(4, 2);
+const retRotacionado = rotacionar(ret, 45);
+desenhar(retRotacionado);</code></pre>
+				</div>
+
+				<p>Isso é útil para fazer hélices, setas apontando em direções diferentes ou criar efeitos visuais giratórios.</p>
+				<hr>
+
+				<h3>Redimensionando figuras</h3>
+				<p>Quer aumentar ou diminuir uma figura? Use a função <code>redimensionar</code>!</p>
+
+				<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRedimensionado = redimensionar(ret, 2);\ndesenhar(retRedimensionado);')">
+					<pre><code>const ret = retangulo(4, 2);
+const retRedimensionado = redimensionar(ret, 2);
+desenhar(retRedimensionado);</code></pre>
+				</div>
+
+				<p>Nesse exemplo, multiplicamos o tamanho do retângulo por 2. Ele fica com o dobro da largura e da altura.</p>
+				<hr>
+
+				<h3>Colorindo figuras</h3>
+				<p>Você também pode escolher a cor da sua figura com a função <code>colorir</code>. É só dizer qual cor quer!</p>
+
+				<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retColorido = colorir(ret, \"verde\");\ndesenhar(retColorido);')">
+					<pre><code>const ret = retangulo(4, 2);
+const retColorido = colorir(ret, "verde");
+desenhar(retColorido);</code></pre>
+				</div>
+
+				<p>Agora seu desenho pode ganhar vida com cores diferentes. Você pode usar nomes como <code>"vermelho"</code>, <code>"azul"</code>, <code>"amarelo"</code> e muitos outros.</p>
+				<hr>
+
+				<h3>Explorando possibilidades</h3>
+				<p>Você pode combinar todas essas transformações para criar desenhos incríveis. Experimente girar uma figura colorida, redimensionar uma composição inteira ou mover tudo para outra posição!</p>
+
+				<h3>Resumo</h3>
+				<ul>
+					<li>Programação funcional usa funções para transformar dados (ou figuras!)</li>
+					<li>Funções podem ter uma ou mais entradas</li>
+					<li>Você pode usar funções para deixar seu código mais organizado e poderoso</li>
+				</ul>
+
             </div>
 
-            <!-- seção Parte 3 -->
-            <div class="guide-section" id="part3">
-                <h2>Parte 3: Animações</h2>
-                <!-- conteúdo sobre animações -->
-            </div>
+            <!-- seção parte 3 -->
+			<div class="guide-section" id="part3">
+				<h2>Parte 3: Animações – Dando Vida às Figuras</h2>
 
-            <!-- seção Parte 4 -->
-            <div class="guide-section" id="part4">
-                <h2>Parte 4: Interações</h2>
-                <!-- conteúdo sobre interações -->
-            </div>
+				<h3>Movimento no Giz</h3>
+				<p>Até agora, criamos figuras que ficam paradas na tela. Mas e se quisermos que elas se movimentem? Que tal fazer um círculo andar de um lado para o outro, ou um retângulo subir e descer?</p>
+
+				<p>No Giz, podemos criar <strong>animações</strong> usando uma função especial chamada <code>animar</code>.</p>
+
+				<p>O segredo está em uma palavra nova: <code>t</code>. Essa letrinha representa o tempo que passou desde o início da animação. Conforme o tempo passa, o valor de <code>t</code> vai aumentando. E é isso que usamos para movimentar as figuras!</p>
+
+				<h4>Exemplo básico: um círculo que anda</h4>
+
+				<div class="code-example" onclick="loadExample('animar(t => {\n  const bola = circulo(2).mover(t, 0);\n  return bola;\n});')">
+				<pre><code>animar(t => {
+const bola = circulo(2).mover(t, 0);
+return bola;
+});</code></pre>
+				</div>
+
+				<h4>Explicação:</h4>
+				<p>Vamos entender esse código passo a passo:</p>
+
+				<ul>
+				  <li><code>animar(...)</code> é o comando que inicia a animação.</li>
+				  <li>Entre parênteses, usamos <code>t => { ... }</code>. Isso significa: "quando o tempo for <code>t</code>, faça o seguinte...".</li>
+				  <li>Dentro das chaves, criamos uma figura: <code>circulo(2)</code>. Depois usamos <code>.mover(t, 0)</code> para fazer esse círculo andar para a direita conforme o tempo passa.</li>
+				  <li>Por fim, usamos <code>return bola;</code> para dizer qual figura será desenhada em cada momento da animação.</li>
+				</ul>
+
+				<p>O resultado é um círculo que vai deslizando para a direita com o passar do tempo!</p>
+
+				<h4>Movimento em outras direções</h4>
+				<p>Se quisermos que a figura suba, basta mudar o valor de <code>y</code> em vez de <code>x</code>.</p>
+
+				<div class="code-example" onclick="loadExample('animar(t => {\n  const bola = circulo(2).mover(0, t);\n  return bola;\n});')">
+				<pre><code>animar(t => {
+const bola = circulo(2).mover(0, t);
+return bola;
+});</code></pre>
+				</div>
+
+				<p>Agora o círculo vai subir em linha reta! E se quiser andar na diagonal? Use os dois valores ao mesmo tempo:</p>
+
+				<div class="code-example" onclick="loadExample('animar(t => {\n  const bola = circulo(2).mover(t, t);\n  return bola;\n});')">
+				<pre><code>animar(t => {
+const bola = circulo(2).mover(t, t);
+return bola;
+});</code></pre>
+				</div>
+				<hr>
+
+				<h3>Outros movimentos</h3>
+
+				<p>Você pode usar contas com <code>t</code> para criar movimentos mais interessantes. Por exemplo, se usar <code>Math.sin(t)</code>, o objeto vai balançar como se estivesse em uma onda.</p>
+
+				<div class="code-example" onclick="loadExample('animar(t => {\n  const bola = circulo(2).mover(Math.sin(t), 0);\n  return bola;\n});')">
+				<pre><code>animar(t => {
+const bola = circulo(2).mover(Math.sin(t), 0);
+return bola;
+});</code></pre>
+				</div>
+
+				<p>Com <code>Math.cos(t)</code> e <code>Math.sin(t)</code> juntos, podemos fazer um círculo se mover em círculos!</p>
+
+				<div class="code-example" onclick="loadExample('animar(t => {\n  const bola = circulo(2).mover(Math.cos(t)*5, Math.sin(t)*5);\n  return bola;\n});')">
+				<pre><code>animar(t => {
+const bola = circulo(2).mover(Math.cos(t)*5, Math.sin(t)*5);
+return bola;
+});</code></pre>
+				</div>
+
+				<p>Esse código faz a figura girar em uma trajetória circular com raio 5.</p>
+				<hr>
+
+				<h3>Dica final</h3>
+				<p>Você pode animar qualquer figura, e pode até juntar várias! É só criar várias figuras dentro da função e retornar todas juntas em um <code>[...]</code>.</p>
+
+				<div class="code-example" onclick="loadExample('animar(t => {\n  const bola1 = circulo(2).mover(t, 0);\n  const bola2 = circulo(2).mover(-t, 0);\n  return [bola1, bola2];\n});')">
+				<pre><code>animar(t => {
+const bola1 = circulo(2).mover(t, 0);
+const bola2 = circulo(2).mover(-t, 0);
+return [bola1, bola2];
+});</code></pre>
+				</div>
+
+				<p>As possibilidades são infinitas: você pode criar jogos, cenas divertidas ou até mesmo contar uma história com figuras em movimento!</p>
+
+				<p>Agora que você já sabe animar suas criações, que tal tentar inventar uma cena com vários personagens se movendo?</p>
+			</div>
+
+            <!-- seção parte 4 -->
+			<div class="guide-section" id="part4">
+				<h2>Parte 4: Interatividade – Respondendo ao Usuário</h2>
+
+				<h3>Vamos deixar tudo mais interativo!</h3>
+				<p>Você já aprendeu a criar figuras e até animar elas com o tempo. Agora chegou a hora de dar mais um passo: <strong>fazer o programa responder ao que o usuário faz</strong>!</p>
+
+				<p>Com a função <code>interagir</code>, seu programa pode escutar o que a pessoa está fazendo — como mover o mouse, clicar ou apertar uma tecla — e mudar o que está desenhando em tempo real!</p>
+				<hr>
+
+				<h3>Conhecendo o "estado"</h3>
+				<p>Para lidar com interações, precisamos guardar informações. Por exemplo, onde está o personagem? Ou se ele está pulando?</p>
+
+				<p>Essas informações ficam em algo que chamamos de <strong>estado</strong>. O estado é um conjunto de dados que seu programa pode usar, mudar e desenhar.</p>
+				<hr>
+
+				<h3>Um exemplo simples: seguindo o mouse</h3>
+				<p>Vamos ver um exemplo onde um círculo segue a posição do mouse:</p>
+
+				<div class="code-example" onclick="loadExample('interagir([0,0], (estado, evento) => evento.tipo === \"movimento\" ? evento.posicao : estado,\nestado => circulo(2).mover(...estado));')">
+					<pre><code>interagir(
+[0, 0],
+(estado, evento) => evento.tipo === "movimento" ? evento.posicao : estado,
+estado => circulo(2).mover(...estado)
+);</code></pre>
+				</div>
+
+				<h3>Explicação:</h3>
+				<ul>
+					<li><code>[0, 0]</code> é o estado inicial (posição x e y do círculo).</li>
+					<li>A função do meio diz como atualizar o estado. Se o tipo de evento for <code>"movimento"</code>, a nova posição será a posição do mouse.</li>
+					<li>A última função desenha o círculo na posição atual do estado.</li>
+				</ul>
+				<hr>
+
+				<h3>Outros tipos de evento</h3>
+				<p>Você pode detectar outros eventos também! Aqui estão os principais:</p>
+
+				<ul>
+					<li><code>"movimento"</code>: o mouse foi movido</li>
+					<li><code>"clique"</code>: o mouse foi clicado</li>
+					<li><code>"tecla"</code>: alguma tecla foi apertada</li>
+				</ul>
+
+				<h3>Exemplo com clique: mudar de cor</h3>
+				<p>Vamos fazer um círculo que muda de cor a cada clique:</p>
+
+				<div class="code-example" onclick="loadExample('interagir(\n  \"vermelho\",\n  (cor, evento) => evento.tipo === \"clique\" ? (cor === \"vermelho\" ? \"azul\" : \"vermelho\") : cor,\n  cor => colorir(circulo(2), cor)\n);')">
+					<pre><code>interagir(
+"vermelho",
+(cor, evento) => evento.tipo === "clique" ? (cor === "vermelho" ? "azul" : "vermelho") : cor,
+cor => colorir(circulo(2), cor)
+);</code></pre>
+				</div>
+
+				<p>Assim, toda vez que você clicar na tela, o círculo troca de cor entre vermelho e azul!</p>
+
+				<h3>Usando o teclado</h3>
+				<p>Você pode usar as teclas para controlar uma figura. Veja esse exemplo:</p>
+
+				<div class="code-example" onclick="loadExample('interagir(\n  [0, 0],\n  (pos, evento) => {\n    if (evento.tipo !== \"tecla\") return pos;\n    const [x, y] = pos;\n    if (evento.tecla === \"ArrowRight\") return [x + 1, y];\n    if (evento.tecla === \"ArrowLeft\") return [x - 1, y];\n    if (evento.tecla === \"ArrowUp\") return [x, y + 1];\n    if (evento.tecla === \"ArrowDown\") return [x, y - 1];\n    return pos;\n  },\n  pos => circulo(2).mover(...pos)\n);')">
+					<pre><code>interagir(
+[0, 0],
+(pos, evento) => {
+if (evento.tipo !== "tecla") return pos;
+const [x, y] = pos;
+if (evento.tecla === "ArrowRight") return [x + 1, y];
+if (evento.tecla === "ArrowLeft") return [x - 1, y];
+if (evento.tecla === "ArrowUp") return [x, y + 1];
+if (evento.tecla === "ArrowDown") return [x, y - 1];
+return pos;
+},
+pos => circulo(2).mover(...pos)
+);</code></pre>
+				</div>
+
+				<p>Use as setas do teclado para mover o círculo pela tela!</p>
+				<hr>
+
+				<h3>Resumo</h3>
+				<ul>
+					<li><code>interagir</code> permite criar programas que respondem a ações do usuário</li>
+					<li>Você usa um <strong>estado</strong> para guardar informações</li>
+					<li>Eventos como <code>movimento</code>, <code>clique</code> e <code>tecla</code> podem mudar o estado</li>
+					<li>Com isso, seus programas ficam vivos e interativos!</li>
+				</ul>
+			</div>
+
+			
+			<!-- seção de Exemplos -->
+			<div class="guide-section" id="exemplos">
+				<h2>Exemplos</h2>
+				<p>Clique em um exemplo para carregá-lo no editor:</p>
+
+				<div>
+					<h3>1. Figuras Básicas</h3>
+					<div class="code-example" onclick="loadExample('desenhar(planoCartesiano);')">
+						<pre><code>// 1. DESENHAR O PLANO CARTESIANO
+desenhar(planoCartesiano);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\ndesenhar(ret);')">
+						<pre><code>// 2. DESENHAR UM RETÂNGULO
+const ret = retangulo(4, 2);
+desenhar(ret);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const circ = circulo(3);\ndesenhar(circ);')">
+						<pre><code>// 3. DESENHAR UM CÍRCULO
+const circ = circulo(3);
+desenhar(circ);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const poli = poligono([[0, 0], [2, 3], [4, 0]]);\ndesenhar(poli);')">
+						<pre><code>// 4. DESENHAR UM POLÍGONO
+const poli = poligono([[0, 0], [2, 3], [4, 0]]);
+desenhar(poli);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const plinha = polilinha([[0, 0], [2, 3], [4, 0]]);\ndesenhar(plinha);')">
+						<pre><code>// 5. DESENHAR UMA POLILINHA
+const plinha = polilinha([[0, 0], [2, 3], [4, 0]]);
+desenhar(plinha);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const lin = linha(0, 0, 4, 4);\ndesenhar(lin);')">
+						<pre><code>// 6. DESENHAR UMA LINHA
+const lin = linha(0, 0, 4, 4);
+desenhar(lin);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const txt = texto(\"Olá, Mundo!\", \"16px\", \"vermelho\");\ndesenhar(txt);')">
+						<pre><code>// 7. DESENHAR TEXTO
+const txt = texto("Olá, Mundo!", "16px", "vermelho");
+desenhar(txt);</code></pre>
+					</div>
+				</div>
+
+				<div>
+					<h3>2. Transformações</h3>
+					<div class="code-example" onclick="loadExample('colorirFundo(\"azul\");')">
+						<pre><code>// 8. COLORIR O FUNDO
+colorirFundo("azul");</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst figurasCompostas = comporFiguras([ret, circulo(3), poligono([[0,0],[2,3],[4,0]])]);\ndesenhar(figurasCompostas);')">
+						<pre><code>// 9. COMPOR FIGURAS
+const ret = retangulo(4, 2);
+const figurasCompostas = comporFiguras([ret, circulo(3), poligono([[0,0],[2,3],[4,0]])]);
+desenhar(figurasCompostas);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retMovido = mover(ret, 2, 3);\ndesenhar(retMovido);')">
+						<pre><code>// 10. MOVER FIGURAS
+const ret = retangulo(4, 2);
+const retMovido = mover(ret, 2, 3);
+desenhar(retMovido);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRotacionado = rotacionar(ret, 45);\ndesenhar(retRotacionado);')">
+						<pre><code>// 11. ROTACIONAR FIGURAS
+const ret = retangulo(4, 2);
+const retRotacionado = rotacionar(ret, 45);
+desenhar(retRotacionado);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retRedimensionado = redimensionar(ret, 2);\ndesenhar(retRedimensionado);')">
+						<pre><code>// 12. REDIMENSIONAR FIGURAS
+const ret = retangulo(4, 2);
+const retRedimensionado = redimensionar(ret, 2);
+desenhar(retRedimensionado);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const ret = retangulo(4, 2);\nconst retColorido = colorir(ret, \"verde\");\ndesenhar(retColorido);')">
+						<pre><code>// 13. COLORIR FIGURAS
+const ret = retangulo(4, 2);
+const retColorido = colorir(ret, "verde");
+desenhar(retColorido);</code></pre>
+					</div>
+				</div>
+
+				<div>
+					<h3>3. Animações</h3>
+					<div class="code-example" onclick="loadExample('const circ = circulo(1);\nanimar((tempo) => {\n    return mover(circ, tempo, 0);\n});')">
+						<pre><code>// ANIMAÇÃO #1 (Movimento horizontal)
+const circ = circulo(1);
+animar((tempo) => {
+	return mover(circ, tempo, 0);
+});</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const circ = circulo(1);\nanimar((tempo) => {\n    return mover(circ, 0, Math.sin(tempo) * 3);\n});')">
+						<pre><code>// ANIMAÇÃO #2 (Oscilação vertical)
+const circ = circulo(1);
+animar((tempo) => {
+	return mover(circ, 0, Math.sin(tempo) * 3);
+});</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const sol = circulo(1.5, \"amarelo\");\nconst terra = circulo(0.5, \"azul\");\nanimar((tempo) => {\n    const terraAnimada = mover(\n        terra,\n        Math.cos(tempo * 0.5) * 5,\n        Math.sin(tempo * 0.5) * 5\n    );\n    return comporFiguras([sol, terraAnimada]);\n});')">
+						<pre><code>// ANIMAÇÃO #3 (Sistema solar)
+const sol = circulo(1.5, "amarelo");
+const terra = circulo(0.5, "azul");
+animar((tempo) => {
+	const terraAnimada = mover(
+		terra,
+		Math.cos(tempo * 0.5) * 5,
+		Math.sin(tempo * 0.5) * 5
+	);
+	return comporFiguras([sol, terraAnimada]);
+});</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const triangulo = poligono([[0,1], [-1,-1], [1,-1]]);\nanimar((tempo) => {\n    return colorir(\n        redimensionar(\n            triangulo,\n            1 + Math.sin(tempo)/2\n        ),\n        tempo % 2 < 1 ? \"vermelho\" : \"azul\"\n    );\n});')">
+						<pre><code>// ANIMAÇÃO #4 (Pulsação)
+const triangulo = poligono([[0,1], [-1,-1], [1,-1]]);
+animar((tempo) => {
+	return colorir(
+		redimensionar(
+			triangulo,
+			1 + Math.sin(tempo)/2
+		),
+		tempo % 2 < 1 ? "vermelho" : "azul"
+	);
+});</code></pre>
+					</div>
+				</div>
+
+				<div>
+					<h3>4. Interações</h3>
+					<div class="code-example" onclick="loadExample('const meuRetangulo = retangulo(2, 1, 0, 0);\nconst mundoInicial = { x: 0, y: 0 };\nconst idTempo = (t, mundo) => mundo;\nconst mudEvt = (evt, mundo) => {\n    switch (evt) {\n        case \"ArrowRight\":\n            return { ...mundo, x: mundo.x + 1 };\n        case \"ArrowLeft\":\n            return { ...mundo, x: mundo.x - 1 };\n        case \"ArrowUp\":\n            return { ...mundo, y: mundo.y + 1 };\n        case \"ArrowDown\":\n            return { ...mundo, y: mundo.y - 1 };\n        default:\n            return mundo;\n    }\n};\nconst apresentaMundo = (mundo) => {\n    return mover(retangulo(3, 1), mundo.x, mundo.y);\n};\ninteragir(mundoInicial, idTempo, mudEvt, apresentaMundo);')">
+						<pre><code>// INTERAÇÃO #1 (Controle simples)
+const meuRetangulo = retangulo(2, 1, 0, 0);
+const mundoInicial = { x: 0, y: 0 };
+const idTempo = (t, mundo) => mundo;
+const mudEvt = (evt, mundo) => {
+	switch (evt) {
+		case "ArrowRight":
+			return { ...mundo, x: mundo.x + 1 };
+		case "ArrowLeft":
+			return { ...mundo, x: mundo.x - 1 };
+		case "ArrowUp":
+			return { ...mundo, y: mundo.y + 1 };
+		case "ArrowDown":
+			return { ...mundo, y: mundo.y - 1 };
+		default:
+			return mundo;
+	}
+};
+const apresentaMundo = (mundo) => {
+	return mover(retangulo(3, 1), mundo.x, mundo.y);
+};
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);</code></pre>
+					</div>
+					<div class="code-example" onclick="loadExample('const mundoInicial = {\n    x: 0, \n    y: 0,\n    vx: 0,\n    vy: 0,\n    aceleracao: 0.02\n};\nconst idTempo = (t, mundo) => {\n    return {\n        ...mundo,\n        x: mundo.x + mundo.vx,\n        y: mundo.y + mundo.vy\n    };\n};\nconst mudEvt = (evt, mundo) => {\n    switch(evt) {\n        case \"ArrowLeft\":\n            return { ...mundo, vx: mundo.vx - mundo.aceleracao };\n        case \"ArrowRight\":\n            return { ...mundo, vx: mundo.vx + mundo.aceleracao }; \n        case \"ArrowUp\":\n            return { ...mundo, vy: mundo.vy + mundo.aceleracao };\n        case \"ArrowDown\":\n            return { ...mundo, vy: mundo.vy - mundo.aceleracao };\n        default:\n            return mundo;\n    }\n};\nconst apresentaMundo = (mundo) => {\n    return mover(\n        colorir(circulo(0.8), \"vermelho\"),\n        mundo.x,\n        mundo.y\n    );\n};\ninteragir(mundoInicial, idTempo, mudEvt, apresentaMundo);')">
+						<pre><code>// INTERAÇÃO FÍSICA #1 (Movimento com inércia)
+const mundoInicial = {
+	x: 0, 
+	y: 0,
+	vx: 0,
+	vy: 0,
+	aceleracao: 0.02
+};
+const idTempo = (t, mundo) => {
+	return {
+		...mundo,
+		x: mundo.x + mundo.vx,
+		y: mundo.y + mundo.vy
+	};
+};
+const mudEvt = (evt, mundo) => {
+	switch(evt) {
+		case "ArrowLeft":
+			return { ...mundo, vx: mundo.vx - mundo.aceleracao };
+		case "ArrowRight":
+			return { ...mundo, vx: mundo.vx + mundo.aceleracao }; 
+		case "ArrowUp":
+			return { ...mundo, vy: mundo.vy + mundo.aceleracao };
+		case "ArrowDown":
+			return { ...mundo, vy: mundo.vy - mundo.aceleracao };
+		default:
+			return mundo;
+	}
+};
+const apresentaMundo = (mundo) => {
+	return mover(
+		colorir(circulo(0.8), "vermelho"),
+		mundo.x,
+		mundo.y
+	);
+};
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);</code></pre>
+					</div>
+				</div>
+			</div>
+			
         </div>
     </div>
 
