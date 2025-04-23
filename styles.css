@@ -210,16 +210,14 @@ body.dark-mode .code-example:hover {
     transition: all 0.2s;
 }
 
+/* Efeito hover - muda cor */
 #summary-list li:hover {
     color: #4CAF50;
-    padding-left: 5px;
 }
 
+/* Item ativo - destaque visual */
 #summary-list li.active {
-    font-weight: bold;
     color: #4CAF50;
-    border-left: 3px solid #4CAF50;
-    padding-left: 10px;
 }
 
 /* Para a responsividade */
@@ -239,16 +237,6 @@ body.dark-mode .code-example:hover {
         border-bottom: 1px solid #eee;
         max-height: 200px;
     }
-}
-
-/* Animação pra a transição de secções */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-.guide-section {
-    animation: fadeIn 0.3s ease-out;
 }
 
 /* Estilo pro conteúdo dentro de cada seção do guia */
