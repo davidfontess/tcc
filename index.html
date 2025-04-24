@@ -145,6 +145,19 @@ desenhar(meuCirculo);</code></pre>
 
 				<p>O comando <code>desenhar</code> sempre será usado uma única vez, no fim do código.  
 				É como o momento em que o diretor grita: <strong>"Ação!"</strong></p>
+				
+				<p><strong>Útil</strong> existe uma forma de escrever coisas no código que serão ignoradas pelo nosso programa.
+				Pode até parecer inútil, mas e se você quiser fazer alguma anotação para lembrar depois?</p>
+				
+				<div class="code-example" onclick="loadExample('const meuCirculo = circulo(2);\ndesenhar(meuCirculo);')">
+				<pre><code>// criando e desenhando um círculo
+const meuCirculo = circulo(2);
+desenhar(meuCirculo);</code></pre>
+				</div>
+				
+				<p>Quando começamos uma linha com <code>//</code> aquela linha inteirinha é ignorada pelo programa. Chamamos isso de comentário.
+				Podemos usar esse comentário para várias coisas, eventualmente aqui no Giz usaremos para explicar direto no código cada parte dele.</p>
+
 				<hr>
 				
 			<p><strong>Retângulo</strong></p>
@@ -547,80 +560,171 @@ return [bola1, bola2];
 
             <!-- seção parte 4 -->
 			<div class="guide-section" id="part4">
-				<h2>Parte 4: Interatividade – Respondendo ao Usuário</h2>
+			  <h2>Parte 4: Interatividade – Respondendo ao Usuário</h2>
 
-				<h3>Vamos deixar tudo mais interativo!</h3>
-				<p>Você já aprendeu a criar figuras e até animar elas com o tempo. Agora chegou a hora de dar mais um passo: <strong>fazer o programa responder ao que o usuário faz</strong>!</p>
+			  <h3>Vamos deixar tudo mais interativo!</h3>
+			  <p>Você já aprendeu a criar figuras e até animar elas com o tempo. Agora chegou a hora de dar mais um passo: <strong>fazer o programa responder ao que o usuário faz</strong>!</p>
 
-				<p>Com a função <code>interagir</code>, seu programa pode escutar o que a pessoa está fazendo, como mover o mouse, clicar ou apertar uma tecla, e mudar o que está desenhando em tempo real!</p>
-				<hr>
+			  <p>Com a função <code>interagir</code>, seu programa pode escutar o que a pessoa está fazendo, como mover o mouse, clicar ou apertar uma tecla, e mudar o que está desenhando em tempo real!</p>
+			  <hr>
 
-				<h3>Conhecendo o "estado"</h3>
-				<p>Para lidar com interações, precisamos guardar informações. Por exemplo, onde está o personagem? O que ele está fazendo?</p>
+			  <h3>Conhecendo o "estado"</h3>
+			  <p>Para lidar com interações, precisamos guardar informações. Por exemplo, onde está o personagem? O que ele está fazendo?</p>
 
-				<p>Essas informações ficam em algo que chamamos de <strong>estado</strong>. O estado é um conjunto de dados que seu programa pode usar, mudar e desenhar.</p>
-				<hr>
+			  <p>Essas informações ficam em algo que chamamos de <strong>estado</strong>. O estado é um conjunto de dados que seu programa pode usar, mudar e desenhar.</p>
+			  <hr>
 
-				<h3>Um exemplo simples: seguindo o mouse</h3>
-				<p>Vamos ver um exemplo onde um círculo segue a posição do mouse:</p>
+			  <h3>Um exemplo simples: seguindo o mouse</h3>
+			  <p>Vamos ver um exemplo onde um círculo segue a posição do mouse:</p>
 
-				<div class="code-example" onclick="loadExample('interagir(\n  [0, 0],\n  (estado, evento) => evento.tipo === \"movimento\" ? evento.posicao : estado,\n  estado => desenhar(mover(circulo(2), estado[0], estado[1]))\n);')">
-					<pre><code>// Círculo que segue o mouse
-interagir(
-  [0, 0],
-  (estado, evento) => evento.tipo === "movimento" ? evento.posicao : estado,
-  estado => desenhar(mover(circulo(2), estado[0], estado[1]))
-);</code></pre>
+			  <div class="code-example" data-code='// Círculo segue o mouse
+const mundoInicial = { x: 0, y: 0 };
+
+const idTempo = (t, mundo) => mundo;
+
+const mudEvt = (evt, mundo) => {
+  if (evt.tipo === "movimento") {
+    return { x: evt.posicao[0], y: evt.posicao[1] };
+  }
+  return mundo;
+};
+
+const apresentaMundo = (mundo) => {
+  return mover(circulo(1), mundo.x, mundo.y);
+};
+
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);'><pre><code>// Círculo segue o mouse
+const mundoInicial = { x: 0, y: 0 };
+
+const idTempo = (t, mundo) => mundo;
+
+const mudEvt = (evt, mundo) => {
+  if (evt.tipo === "movimento") {
+    return { x: evt.posicao[0], y: evt.posicao[1] };
+  }
+  return mundo;
+};
+
+const apresentaMundo = (mundo) => {
+  return mover(circulo(1), mundo.x, mundo.y);
+};
+
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);
+				</code></pre>
 				</div>
 
-				<h3>Explicação:</h3>
-				<ul>
-					<li><code>[0, 0]</code> é o estado inicial (posição x e y do círculo).</li>
-					<li>A função do meio diz como atualizar o estado. Se o tipo de evento for <code>"movimento"</code>, a nova posição será a posição do mouse.</li>
-					<li>A última função desenha o círculo na posição atual do estado.</li>
-				</ul>
-				<hr>
+			  <h3>Exemplo com clique: mudar de cor</h3>
+			  <p>Vamos fazer um círculo que muda de cor a cada clique:</p>
 
-				<h3>Outros tipos de evento</h3>
-				<p>Você pode detectar outros eventos também! Aqui estão os principais:</p>
+			  <div class="code-example" data-code='// Círculo muda de cor ao clicar
+const mundoInicial = { 
+    cor: "vermelho" 
+};
 
-				<ul>
-					<li><code>"movimento"</code>: o mouse foi movido</li>
-					<li><code>"clique"</code>: o mouse foi clicado</li>
-					<li><code>"tecla"</code>: alguma tecla foi apertada</li>
-				</ul>
+// função que atualiza o estado com o tempo (não faz nada neste exemplo)
+const idTempo = (tempo, mundo) => {
+    return mundo; // Mantém o estado inalterado
+};
 
-				<h3>Exemplo com clique: mudar de cor</h3>
-				<p>Vamos fazer um círculo que muda de cor a cada clique:</p>
+// função que trata os eventos do usuário
+const mudEvt = (evento, mundo) => {
+    // verifica se foi um clique do mouse (botão esquerdo)
+    if (evento === "clickLeft") {
+        // alterna entre vermelho e azul
+        return {
+            cor: mundo.cor === "vermelho" ? "azul" : "vermelho"
+        };
+    }
+    return mundo; // retorna o estado inalterado para outros eventos
+};
 
-				<div class="code-example" onclick="loadExample('interagir(\n  \"vermelho\",\n  (cor, evento) => evento.tipo === \"clique\" ? (cor === \"vermelho\" ? \"azul\" : \"vermelho\") : cor,\n  cor => colorir(circulo(2), cor)\n);')">
-					<pre><code>interagir(
-"vermelho",
-(cor, evento) => evento.tipo === "clique" ? (cor === "vermelho" ? "azul" : "vermelho") : cor,
-cor => colorir(circulo(2), cor)
-);</code></pre>
+// função que converte o estado em figura para desenhar
+const apresentaMundo = (mundo) => {
+    return colorir(circulo(2),mundo.cor);
+};
+
+// inicia a interação
+interagir(mundoInicial,idTempo,mudEvt, apresentaMundo);
+'>
+				<pre><code>// Círculo muda de cor ao clicar
+const mundoInicial = { 
+    cor: "vermelho" 
+};
+
+// função que atualiza o estado com o tempo (não faz nada neste exemplo)
+const idTempo = (tempo, mundo) => {
+    return mundo; // Mantém o estado inalterado
+};
+
+// função que trata os eventos do usuário
+const mudEvt = (evento, mundo) => {
+    // verifica se foi um clique do mouse (botão esquerdo)
+    if (evento === "clickLeft") {
+        // alterna entre vermelho e azul
+        return {
+            cor: mundo.cor === "vermelho" ? "azul" : "vermelho"
+        };
+    }
+    return mundo; // retorna o estado inalterado para outros eventos
+};
+
+// função que converte o estado em figura para desenhar
+const apresentaMundo = (mundo) => {
+    return colorir(circulo(2),mundo.cor);
+};
+
+// inicia a interação
+interagir(mundoInicial,idTempo,mudEvt, apresentaMundo);
+				</code></pre>
 				</div>
-
-				<p>Assim, toda vez que você clicar na tela, o círculo troca de cor entre vermelho e azul!</p>
 
 				<h3>Usando o teclado</h3>
 				<p>Você pode usar as teclas para controlar uma figura. Veja esse exemplo:</p>
 
-				<div class="code-example" onclick="loadExample('interagir(\n  [0, 0],\n  (pos, evento) => {\n    if (evento.tipo !== \"tecla\") return pos;\n    const [x, y] = pos;\n    if (evento.tecla === \"ArrowRight\") return [x + 1, y];\n    if (evento.tecla === \"ArrowLeft\") return [x - 1, y];\n    if (evento.tecla === \"ArrowUp\") return [x, y + 1];\n    if (evento.tecla === \"ArrowDown\") return [x, y - 1];\n    return pos;\n  },\n  pos => circulo(2).mover(...pos)\n);')">
-					<pre><code>interagir(
-[0, 0],
-(pos, evento) => {
-if (evento.tipo !== "tecla") return pos;
-const [x, y] = pos;
-if (evento.tecla === "ArrowRight") return [x + 1, y];
-if (evento.tecla === "ArrowLeft") return [x - 1, y];
-if (evento.tecla === "ArrowUp") return [x, y + 1];
-if (evento.tecla === "ArrowDown") return [x, y - 1];
-return pos;
-},
-pos => circulo(2).mover(...pos)
-);</code></pre>
-				</div>
+				<div class="code-example" data-code='const meuRetangulo = retangulo(2, 1, 0, 0);
+const mundoInicial = { x: 0, y: 0 };
+const idTempo = (t, mundo) => mundo;
+const mudEvt = (evt, mundo) => {
+	switch (evt) {
+		case "ArrowRight":
+			return { ...mundo, x: mundo.x + 1 };
+		case "ArrowLeft":
+			return { ...mundo, x: mundo.x - 1 };
+		case "ArrowUp":
+			return { ...mundo, y: mundo.y + 1 };
+		case "ArrowDown":
+			return { ...mundo, y: mundo.y - 1 };
+		default:
+			return mundo;
+	}
+};
+const apresentaMundo = (mundo) => {
+	return mover(retangulo(3, 1), mundo.x, mundo.y);
+};
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);'>
+  <pre><code>// controlando com as setas do teclado
+const meuRetangulo = retangulo(2, 1, 0, 0);
+const mundoInicial = { x: 0, y: 0 };
+const idTempo = (t, mundo) => mundo;
+const mudEvt = (evt, mundo) => {
+	switch (evt) {
+		case "ArrowRight":
+			return { ...mundo, x: mundo.x + 1 };
+		case "ArrowLeft":
+			return { ...mundo, x: mundo.x - 1 };
+		case "ArrowUp":
+			return { ...mundo, y: mundo.y + 1 };
+		case "ArrowDown":
+			return { ...mundo, y: mundo.y - 1 };
+		default:
+			return mundo;
+	}
+};
+const apresentaMundo = (mundo) => {
+	return mover(retangulo(3, 1), mundo.x, mundo.y);
+};
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);</code></pre>
+					</div>
 
 				<p>Use as setas do teclado para mover o círculo pela tela!</p>
 				<hr>
@@ -733,8 +837,17 @@ animar((tempo) => {
 	return mover(circ, 0, Math.sin(tempo) * 3);
 });</code></pre>
 					</div>
-					<div class="code-example" onclick="loadExample('const sol = circulo(1.5, \"amarelo\");\nconst terra = circulo(0.5, \"azul\");\nanimar((tempo) => {\n    const terraAnimada = mover(\n        terra,\n        Math.cos(tempo * 0.5) * 5,\n        Math.sin(tempo * 0.5) * 5\n    );\n    return comporFiguras([sol, terraAnimada]);\n});')">
-						<pre><code>// ANIMAÇÃO #3 (Sistema solar)
+					<div class="code-example" data-code='const sol = circulo(1.5, "amarelo");
+const terra = circulo(0.5, "azul");
+animar((tempo) => {
+	const terraAnimada = mover(
+		terra,
+		Math.cos(tempo * 0.5) * 5,
+		Math.sin(tempo * 0.5) * 5
+	);
+	return comporFiguras([sol, terraAnimada]);
+});'>
+  <pre><code>// ANIMAÇÃO #3 (Sistema solar)
 const sol = circulo(1.5, "amarelo");
 const terra = circulo(0.5, "azul");
 animar((tempo) => {
@@ -763,8 +876,28 @@ animar((tempo) => {
 
 				<div>
 					<h3>4. Interações</h3>
-					<div class="code-example" onclick="loadExample('const meuRetangulo = retangulo(2, 1, 0, 0);\nconst mundoInicial = { x: 0, y: 0 };\nconst idTempo = (t, mundo) => mundo;\nconst mudEvt = (evt, mundo) => {\n    switch (evt) {\n        case \"ArrowRight\":\n            return { ...mundo, x: mundo.x + 1 };\n        case \"ArrowLeft\":\n            return { ...mundo, x: mundo.x - 1 };\n        case \"ArrowUp\":\n            return { ...mundo, y: mundo.y + 1 };\n        case \"ArrowDown\":\n            return { ...mundo, y: mundo.y - 1 };\n        default:\n            return mundo;\n    }\n};\nconst apresentaMundo = (mundo) => {\n    return mover(retangulo(3, 1), mundo.x, mundo.y);\n};\ninteragir(mundoInicial, idTempo, mudEvt, apresentaMundo);')">
-						<pre><code>// INTERAÇÃO #1 (Controle simples)
+					<div class="code-example" data-code='const meuRetangulo = retangulo(2, 1, 0, 0);
+const mundoInicial = { x: 0, y: 0 };
+const idTempo = (t, mundo) => mundo;
+const mudEvt = (evt, mundo) => {
+	switch (evt) {
+		case "ArrowRight":
+			return { ...mundo, x: mundo.x + 1 };
+		case "ArrowLeft":
+			return { ...mundo, x: mundo.x - 1 };
+		case "ArrowUp":
+			return { ...mundo, y: mundo.y + 1 };
+		case "ArrowDown":
+			return { ...mundo, y: mundo.y - 1 };
+		default:
+			return mundo;
+	}
+};
+const apresentaMundo = (mundo) => {
+	return mover(retangulo(3, 1), mundo.x, mundo.y);
+};
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);'>
+  <pre><code>// INTERAÇÃO #1 (Controle simples)
 const meuRetangulo = retangulo(2, 1, 0, 0);
 const mundoInicial = { x: 0, y: 0 };
 const idTempo = (t, mundo) => mundo;
@@ -787,8 +920,44 @@ const apresentaMundo = (mundo) => {
 };
 interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);</code></pre>
 					</div>
-					<div class="code-example" onclick="loadExample('const mundoInicial = {\n    x: 0, \n    y: 0,\n    vx: 0,\n    vy: 0,\n    aceleracao: 0.02\n};\nconst idTempo = (t, mundo) => {\n    return {\n        ...mundo,\n        x: mundo.x + mundo.vx,\n        y: mundo.y + mundo.vy\n    };\n};\nconst mudEvt = (evt, mundo) => {\n    switch(evt) {\n        case \"ArrowLeft\":\n            return { ...mundo, vx: mundo.vx - mundo.aceleracao };\n        case \"ArrowRight\":\n            return { ...mundo, vx: mundo.vx + mundo.aceleracao }; \n        case \"ArrowUp\":\n            return { ...mundo, vy: mundo.vy + mundo.aceleracao };\n        case \"ArrowDown\":\n            return { ...mundo, vy: mundo.vy - mundo.aceleracao };\n        default:\n            return mundo;\n    }\n};\nconst apresentaMundo = (mundo) => {\n    return mover(\n        colorir(circulo(0.8), \"vermelho\"),\n        mundo.x,\n        mundo.y\n    );\n};\ninteragir(mundoInicial, idTempo, mudEvt, apresentaMundo);')">
-						<pre><code>// INTERAÇÃO FÍSICA #1 (Movimento com inércia)
+
+					<div class="code-example" data-code='const mundoInicial = {
+	x: 0, 
+	y: 0,
+	vx: 0,
+	vy: 0,
+	aceleracao: 0.02
+};
+const idTempo = (t, mundo) => {
+	return {
+		...mundo,
+		x: mundo.x + mundo.vx,
+		y: mundo.y + mundo.vy
+	};
+};
+const mudEvt = (evt, mundo) => {
+	switch(evt) {
+		case "ArrowLeft":
+			return { ...mundo, vx: mundo.vx - mundo.aceleracao };
+		case "ArrowRight":
+			return { ...mundo, vx: mundo.vx + mundo.aceleracao }; 
+		case "ArrowUp":
+			return { ...mundo, vy: mundo.vy + mundo.aceleracao };
+		case "ArrowDown":
+			return { ...mundo, vy: mundo.vy - mundo.aceleracao };
+		default:
+			return mundo;
+	}
+};
+const apresentaMundo = (mundo) => {
+	return mover(
+		colorir(circulo(0.8), "vermelho"),
+		mundo.x,
+		mundo.y
+	);
+};
+interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);'>
+  <pre><code>// INTERAÇÃO FÍSICA #1 (Movimento com inércia)
 const mundoInicial = {
 	x: 0, 
 	y: 0,
@@ -825,7 +994,8 @@ const apresentaMundo = (mundo) => {
 	);
 };
 interagir(mundoInicial, idTempo, mudEvt, apresentaMundo);</code></pre>
-					</div>
+				</div>
+
 				</div>
 			</div>
 			
