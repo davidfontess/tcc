@@ -508,7 +508,7 @@ return bola;
 
 				<h3>Outros movimentos</h3>
 
-				<p>Você pode usar contas com <code>t</code> para criar movimentos mais interessantes. Por exemplo, se usar <code>Math.sin(t)</code>, o objeto vai balançar como se estivesse em uma onda.</p>
+				<p>Você pode usar contas com <code>t</code> para criar movimentos mais interessantes. Por exemplo, se usar <code>Math.sin(t)</code>, o objeto vai se mover como se estivesse em uma onda.</p>
 
 				<div class="code-example" onclick="loadExample('animar(t => {\n  const bola = circulo(2).mover(Math.sin(t), 0);\n  return bola;\n});')">
 				<pre><code>animar(t => {
@@ -552,11 +552,11 @@ return [bola1, bola2];
 				<h3>Vamos deixar tudo mais interativo!</h3>
 				<p>Você já aprendeu a criar figuras e até animar elas com o tempo. Agora chegou a hora de dar mais um passo: <strong>fazer o programa responder ao que o usuário faz</strong>!</p>
 
-				<p>Com a função <code>interagir</code>, seu programa pode escutar o que a pessoa está fazendo — como mover o mouse, clicar ou apertar uma tecla — e mudar o que está desenhando em tempo real!</p>
+				<p>Com a função <code>interagir</code>, seu programa pode escutar o que a pessoa está fazendo, como mover o mouse, clicar ou apertar uma tecla, e mudar o que está desenhando em tempo real!</p>
 				<hr>
 
 				<h3>Conhecendo o "estado"</h3>
-				<p>Para lidar com interações, precisamos guardar informações. Por exemplo, onde está o personagem? Ou se ele está pulando?</p>
+				<p>Para lidar com interações, precisamos guardar informações. Por exemplo, onde está o personagem? O que ele está fazendo?</p>
 
 				<p>Essas informações ficam em algo que chamamos de <strong>estado</strong>. O estado é um conjunto de dados que seu programa pode usar, mudar e desenhar.</p>
 				<hr>
@@ -564,11 +564,12 @@ return [bola1, bola2];
 				<h3>Um exemplo simples: seguindo o mouse</h3>
 				<p>Vamos ver um exemplo onde um círculo segue a posição do mouse:</p>
 
-				<div class="code-example" onclick="loadExample('interagir([0,0], (estado, evento) => evento.tipo === \"movimento\" ? evento.posicao : estado,\nestado => circulo(2).mover(...estado));')">
-					<pre><code>interagir(
-[0, 0],
-(estado, evento) => evento.tipo === "movimento" ? evento.posicao : estado,
-estado => circulo(2).mover(...estado)
+				<div class="code-example" onclick="loadExample('interagir(\n  [0, 0],\n  (estado, evento) => evento.tipo === \"movimento\" ? evento.posicao : estado,\n  estado => desenhar(mover(circulo(2), estado[0], estado[1]))\n);')">
+					<pre><code>// Círculo que segue o mouse
+interagir(
+  [0, 0],
+  (estado, evento) => evento.tipo === "movimento" ? evento.posicao : estado,
+  estado => desenhar(mover(circulo(2), estado[0], estado[1]))
 );</code></pre>
 				</div>
 
@@ -637,6 +638,7 @@ pos => circulo(2).mover(...pos)
 			<!-- seção de Exemplos -->
 			<div class="guide-section" id="exemplos">
 				<h2>Exemplos</h2>
+				<p>Aqui temos vários exemplos para mostrar cada figura, cada transformação, como fazer animações e interações.</p>
 				<p>Clique em um exemplo para carregá-lo no editor:</p>
 
 				<div>
