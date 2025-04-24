@@ -32,7 +32,6 @@ function executarCodigo() {
 }
 
 // função para parar tudo (animação, interação e limpar canvas)
-// função para parar tudo (animação, interação e limpar canvas)
 function pararTudo() {
     // para a animação se estiver rodando
     if (animacaoAtual) {
@@ -61,13 +60,17 @@ function pararTudo() {
     });
 }
 
+let ultimaSecaoAtiva = 'intro';
+
 function toggleGuide() {
     const guidePanel = document.getElementById("guide-panel");
-    guidePanel.classList.toggle("active");
-    
-    // Se estiver abrindo, mostra a primeira aba
-    if (guidePanel.classList.contains("active")) {
-        document.querySelector('.tab-button').click();
+
+    const ativo = guidePanel.classList.toggle("active");
+
+    if (ativo) {
+        const evitarScroll = localStorage.getItem('evitouScroll') === 'true';
+        showSection(ultimaSecaoAtiva, !evitarScroll);
+        localStorage.removeItem('evitouScroll'); // limpa o flag
     }
 }
 
@@ -97,11 +100,13 @@ document.addEventListener('DOMContentLoaded', setupGuideTabs);
 
 // pra os exemplos do guia serem clicáveis
 function loadExample(code) {
-	// limpa o editor e insere o novo código
-	editor.setValue(code);
-	
-	// opcional: fecha o painel do guia após seleção
-	document.getElementById("guide-panel").classList.remove("active");
+    editor.setValue(code);
+    
+    // Fecha o guia, mas NÃO rola para o topo quando reabrir
+    document.getElementById("guide-panel").classList.remove("active");
+    
+    // Salva o estado dizendo que foi um clique de exemplo
+    localStorage.setItem('evitouScroll', 'true');
 }
 	
 // função para parar a animação e limpar o canvas
@@ -169,17 +174,6 @@ function toggleDarkMode() {
     localStorage.setItem('darkMode', darkMode);
 }
 
-// verificar escolha salva ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-    const savedMode = localStorage.getItem('darkMode');
-    if (savedMode === 'true') {
-        darkMode = true;
-        editor.setOption('theme', 'dracula');
-        body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️ Claro';
-    }
-});
-
 // Adicionar evento de clique ao botão
 darkModeToggle.addEventListener('click', toggleDarkMode);
 
@@ -209,35 +203,71 @@ function setupGuideSections() {
 }
 
 // Função para mostrar uma seção específica
-function showSection(sectionId) {
+function showSection(sectionId, scrollToTop = true) {
+    ultimaSecaoAtiva = sectionId;
+
     // Esconde todas as seções
     document.querySelectorAll('.guide-section').forEach(section => {
         section.classList.remove('active');
     });
-    
-    // Mostra a seção selecionada
-    document.getElementById(sectionId).classList.add('active');
-    
-    // Atualiza o item ativo no sumário
+
+    const targetSection = document.getElementById(sectionId);
+    targetSection.classList.add('active');
+
+    // Só faz scroll se for permitido
+    if (scrollToTop) {
+        setTimeout(() => {
+            targetSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }, 50);
+    }
+
+    // Atualiza item ativo no sumário
     document.querySelectorAll('#summary-list li').forEach(item => {
         item.classList.toggle('active', item.dataset.section === sectionId);
     });
 }
 
-// Modifica a função toggleGuide para mostrar apenas a introdução
-function toggleGuide() {
-    const guidePanel = document.getElementById('guide-panel');
-    guidePanel.classList.toggle('active');
-    
-    if (guidePanel.classList.contains('active')) {
-        showSection('intro');
-    }
-}
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const target = document.querySelector(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+});
 
-// Inicializa quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
+    setupGuideTabs();
     setupGuideSections();
-    setupGuideTabs(); // Mantenha sua função existente se necessário
+    
+    // Aplica preferências do tema
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode === 'true') {
+        darkMode = true;
+        editor.setOption('theme', 'dracula');
+        body.classList.add('dark-mode');
+        darkModeToggle.textContent = '☀️ Claro';
+    }
+
+    // Aplica o tamanho de fonte
+    atualizarFonte(tamanhoFonte);
+
+    // Inicializa seção do guia
+    setTimeout(() => {
+        document.getElementById('guide-panel').classList.add('active');
+        const secaoInicial = localStorage.getItem('ultimaSecaoAtiva') || 'intro';
+        showSection(secaoInicial);
+    }, 100);
+
+    // Eventos nos exemplos com data-code
+    document.querySelectorAll('.code-example').forEach(div => {
+        div.addEventListener('click', () => {
+            const code = div.getAttribute('data-code').replace(/\\n/g, '\n');
+            loadExample(code);
+        });
+    });
 });
 
 //
