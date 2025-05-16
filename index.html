@@ -22,7 +22,7 @@
         <div class="editor-container">
             <div class="button-container">
                 <button id="botao-executar" class="buttons" onclick="executarCodigo()">Executar</button>
-                <button id="botao-parar" class="buttons" onclick="pararTudo()">Parar</button>
+                <button id="botao-parar" class="buttons" onclick="pararTudo()">Apagar</button>
                 <button id="aumentar-fonte" class="buttons" title="Aumentar fonte">A+</button>
                 <button id="diminuir-fonte" class="buttons" title="Diminuir fonte">A-</button>
                 <button id="dark-mode-toggle" class="buttons" title="Alternar tema">🌓 Escuro</button>
@@ -240,7 +240,7 @@ desenhar(minhaLinha);</code></pre>
 
 				<p>Depois, usamos <code>desenhar(minhaLinha);</code> para mostrar a linha na tela.</p>
 
-				<p>Você pode criar linhas na horizontal, na vertical, na diagonal... é só mudar os valores! Linhas são ótimas para criar grades, contornos, e até formar desenhos mais elaborados.</p>
+				<p>Você pode criar linhas na horizontal, na vertical, na diagonal... é só mudar os valores dos pontos extremos! Linhas são ótimas para criar grades, contornos, e até formar desenhos mais elaborados.</p>
 				<hr>
 			
 				<h4>Exercício: Desenhando uma cruz e um X</h4>
@@ -349,9 +349,11 @@ desenhar(meuTexto);</code></pre>
 				<h3>O que é Programação Funcional?</h3>
 				<p>O nome pode parecer complicado à primeira vista, mas na verdade é mais simples do que parece.</p>
 
-				<p>Programar de forma funcional é como montar peças de LEGO: você cria funções (blocos de código que fazem alguma coisa) e depois junta essas funções para construir algo maior.</p>
+				<p>O ponto principal da programação funcional é focar no que deve ser feito. Para isso, programamos sequências de funções que tranformam dados. Na programação funcional possuimos <strong>funções puras</strong>, ou seja,
+				 fornecendo a mesma entrada, sempre teremos o mesmo resultado. Dessa forma, baseado na entrada, conseguimos prever a execução do código e evitar problemas.
+				 Além disso, após serem criadas, variáveis, funções e dados em geral não podem ser modificados. Chamamos esse conceito de <strong>Imutabilidade.</strong>
+				 Ademais, funções porem ser tratadas como um valor como qualquer outro e até mesmo usadas como argumento ou a saída de outras funções.</p>
 
-				<p>Em vez de mandar o computador fazer um passo de cada vez, como em uma receita de bolo, você diz o que quer montar — e o computador junta as peças para você.</p>
 				<hr>
 
 				<h3>Funções: os blocos mágicos</h3>
@@ -369,10 +371,13 @@ desenhar(texto(dobro(4)));</code></pre>
 				<h3>Reutilizando funções</h3>
 				<p>O legal de criar funções é que você pode usá-las várias vezes, sempre que quiser. Por exemplo:</p>
 
-				<div class="code-example" onclick="loadExample('const metade = x => x / 2;\nconst pequenaBola = circulo(metade(4));\ndesenhar(pequenaBola);')">
+				<div class="code-example" onclick="loadExample('const metade = x => x / 2;\nconst raio = 8;\nconst bola = circulo(metade(raio));\nconst bolaMenor = colorir(circulo(metade(metade(raio))),&quot;azul&quot;);\nconst duasBolas = comporFiguras([bola, bolaMenor]);\ndesenhar(duasBolas);')">
 					<pre><code>const metade = x => x / 2;
-const pequenaBola = circulo(metade(4));
-desenhar(pequenaBola);</code></pre>
+const raio = 8;
+const bola = circulo(metade(raio));
+const bolaMenor = colorir(circulo(metade(metade(raio))),"azul");
+const duasBolas = comporFiguras([bola, bolaMenor]);
+desenhar(duasBolas);</code></pre>
 				</div>
 
 				<p>A função <code>metade</code> pega um número e devolve a metade dele.  
@@ -382,11 +387,30 @@ desenhar(pequenaBola);</code></pre>
 				<h3>Funções com mais de uma entrada</h3>
 				<p>Você também pode criar funções que recebem mais de um valor. Veja só:</p>
 
-				<div class="code-example" onclick="loadExample('const retanguloPersonalizado = (l, a) => retangulo(l, a);\nconst meuRet = retanguloPersonalizado(3, 5);\ndesenhar(meuRet);')">
-					<pre><code>const retanguloPersonalizado = (l, a) => retangulo(l, a);
-const meuRet = retanguloPersonalizado(3, 5);
-desenhar(meuRet);</code></pre>
-				</div>
+				<div class="code-example" onclick="loadExample('const desenharCarro = () => {\n  const capo = mover(colorir(retangulo(3,2),&quot;azul&quot;),0,1);\n  const base = colorir(retangulo(6,2),&quot;azul&quot;);\n  const roda = mover(circulo(1),-1.5,-1.5);\n  const roda2 = mover(circulo(1),1.5,-1.5);\n  const carro = comporFiguras([capo,base,roda,roda2]); \n  return carro;\n};\n\nconst conjuntoDeCarros = comporFiguras([\n    desenharCarro(),\n    mover(desenharCarro(),0,5),\n    mover(desenharCarro(),0,-5),\n    mover(desenharCarro(),-7,0),\n    mover(desenharCarro(),7,0),\n    mover(desenharCarro(),-7,5),\n    mover(desenharCarro(),-7,-5),\n    mover(desenharCarro(),7,5),\n    mover(desenharCarro(),7,-5)\n]);\n\ndesenhar(conjuntoDeCarros);')">
+    <pre><code>const desenharCarro = () => {
+  const capo = mover(colorir(retangulo(3,2),"azul"),0,1);
+  const base = colorir(retangulo(6,2),"azul");
+  const roda = mover(circulo(1),-1.5,-1.5);
+  const roda2 = mover(circulo(1),1.5,-1.5);
+  const carro = comporFiguras([capo,base,roda,roda2]); 
+  return carro;
+};
+
+const conjuntoDeCarros = comporFiguras([
+    desenharCarro(),
+    mover(desenharCarro(),0,5),
+    mover(desenharCarro(),0,-5),
+    mover(desenharCarro(),-7,0),
+    mover(desenharCarro(),7,0),
+    mover(desenharCarro(),-7,5),
+    mover(desenharCarro(),-7,-5),
+    mover(desenharCarro(),7,5),
+    mover(desenharCarro(),7,-5)
+]);
+
+desenhar(conjuntoDeCarros);</code></pre>
+</div>
 
 				<p>Aqui criamos uma função chamada <code>retanguloPersonalizado</code> que recebe duas entradas: <code>l</code> (largura) e <code>a</code> (altura).</p>
 				<p>Depois usamos essa função para criar um retângulo com largura 3 e altura 5. Percebe que você consegue criar suas próprias formas usando outras formas já pré-existentes no Giz?</p>
