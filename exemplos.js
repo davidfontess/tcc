@@ -4,6 +4,31 @@ const losangulo = colorir(poligono([[-7,0],[0,5],[7,0],[0,-5]]),"amarelo");
 const bola = colorir(circulo(3),"azul");
 desenhar([quadrado,losangulo,bola]);
 
+// REUTILIZANDO FUNÇÕES
+const desenharCarro = () => {
+const capo = mover(colorir(retangulo(3,2),"azul"),0,1);
+const base = colorir(retangulo(6,2),"azul");
+const roda = mover(circulo(1),-1.5,-1.5);
+const roda2 = mover(circulo(1),1.5,-1.5);
+const carro = comporFiguras([capo,base,roda,roda2]); 
+return carro;
+};
+
+const conjuntoDeCarros = comporFiguras([
+    desenharCarro(),
+    mover(desenharCarro(),0,5),
+    mover(desenharCarro(),0,-5),
+    mover(desenharCarro(),-7,0),
+    mover(desenharCarro(),7,0),
+    mover(desenharCarro(),-7,5),
+    mover(desenharCarro(),-7,-5),
+    mover(desenharCarro(),7,5),
+    mover(desenharCarro(),7,-5)
+]);
+
+desenhar(conjuntoDeCarros);
+
+
 // ANIMAÇÃO #1
 const circ = circulo(1);
 animar((tempo) => {
