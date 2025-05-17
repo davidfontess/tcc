@@ -197,17 +197,16 @@ desenhar(meuRetangulo);</code></pre>
 
 				<p>Agora, se quisermos desenhar uma figura nossa *junto* com o plano cartesiano, podemos desenhar os dois ao mesmo tempo.</p>
 
-				<div class="code-example" onclick="loadExample('const circ = circulo(2);\ndesenhar([circ, planoCartesiano]);')">
+				<div class="code-example" onclick="loadExample('const circ = circulo(2);\nconst circComPlano = comporFiguras([circ,planoCartesiano]);\ndesenhar(circComPlano);')">
 				<pre><code>const circ = circulo(2);
-desenhar([circ, planoCartesiano]);</code></pre>
+const circComPlano = comporFiguras([circ,planoCartesiano]);
+desenhar(circComPlano);</code></pre>
 				</div>
 
 				<h4>Explicação:</h4>
-				<p>Aqui, criamos um círculo chamado <code>circ</code> e depois pedimos para o Giz desenhar duas coisas ao mesmo tempo: o <code>circ</code> e o <code>planoCartesiano</code>.</p>
+				<p>Primeiro criamos um círculo de raio = 2 chamado circ, depois criamos uma figura composta que combina a figura planoCartesiano 
+                    com circ. Por fim pedimos para o Giz desenhar a figura composta.</p>
 
-				<p>Quando usamos colchetes <code>[]</code>, estamos dizendo ao Giz: "Desenhe esses elementos juntos". Dessa forma, conseguimos ver o plano cartesiano e a figura que desenhamos/estamos desenhando. Assim fica mais fácil saber onde é um ponto (x,y).</p>
-
-				<p>Você pode colocar quantas figuras quiser dentro dos colchetes, separadas por vírgula. Assim o Giz desenha todas elas de uma vez. Só tenha em mente que a ordem dessas figuras vai importar. Figuras que estão mais à esquerda em <code>desenhar()</code> ficarão mais atrás na nossa tela.</p>
 				<hr>
 			
 			<h3>Figuras um pouquinho mais complexas</h3>
@@ -251,20 +250,22 @@ desenhar(minhaLinha);</code></pre>
 				<p>Dica: uma cruz é formada por uma linha vertical e outra horizontal que se cruzam no centro.</p>
 
 				<p>Exemplo de solução:</p>
-				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, 0, 5, 0);\nconst linha2 = linha(0, -5, 0, 5);\ndesenhar([linha1, linha2]);')">
+				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, 0, 5, 0);\nconst linha2 = linha(0, -5, 0, 5);\nconst linhasCompostas = comporFiguras([linha1,linha2]);\ndesenhar(linhasCompostas);')">
 				<pre><code>const linha1 = linha(-5, 0, 5, 0);
 const linha2 = linha(0, -5, 0, 5);
-desenhar([linha1, linha2]);</code></pre>
+const linhasCompostas = comporFiguras([linha1,linha2]);
+desenhar(linhasCompostas);</code></pre>
 				</div>
 
 				<h5>Desafio 2: Um X</h5>
 				<p>Dica: um X é feito com duas linhas diagonais que se cruzam no centro da tela.</p>
 
 				<p>Exemplo de solução:</p>
-				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, -5, 5, 5);\nconst linha2 = linha(-5, 5, 5, -5);\ndesenhar([linha1, linha2]);')">
+				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, -5, 5, 5);\nconst linha2 = linha(-5, 5, 5, -5);\nconst linhasCompostas = comporFiguras([linha1,linha2]);\ndesenhar(linhasCompostas);')">
 				<pre><code>const linha1 = linha(-5, -5, 5, 5);
 const linha2 = linha(-5, 5, 5, -5);
-desenhar([linha1, linha2]);</code></pre>
+const linhasCompostas = comporFiguras([linha1,linha2]);
+desenhar(linhasCompostas);</code></pre>
 				</div>
 
 				<p><strong>Agora é sua vez!</strong> Experimente mudar os números para ver o que acontece. Tente criar outros formatos, como um quadrado usando quatro linhas!</p>
@@ -349,7 +350,7 @@ desenhar(meuTexto);</code></pre>
 				<h3>O que é Programação Funcional?</h3>
 				<p>O nome pode parecer complicado à primeira vista, mas na verdade é mais simples do que parece.</p>
 
-				<p>O ponto principal da programação funcional é focar no que deve ser feito. Para isso, programamos sequências de funções que tranformam dados. Na programação funcional possuimos <strong>funções puras</strong>, ou seja,
+				<p>Programação funcional é um paradigma de programação que trata código de uma forma mais matemática. Para isso, programamos sequências de funções que tranformam dados. Na programação funcional possuimos <strong>funções puras</strong>, ou seja,
 				 fornecendo a mesma entrada, sempre teremos o mesmo resultado. Dessa forma, baseado na entrada, conseguimos prever a execução do código e evitar problemas.
 				 Além disso, após serem criadas, variáveis, funções e dados em geral não podem ser modificados. Chamamos esse conceito de <strong>Imutabilidade.</strong>
 				 Ademais, funções porem ser tratadas como um valor como qualquer outro e até mesmo usadas como argumento ou a saída de outras funções.</p>
@@ -577,15 +578,25 @@ animar((tempo) => {
 
 			  <p>Com a função <code>interagir</code>, seu programa pode escutar o que a pessoa está fazendo, como mover o mouse, clicar ou apertar uma tecla, e mudar o que está desenhando em tempo real!</p>
 			  <hr>
+                
+                <h3>Interagir</h3>
+                <p>A função interagir permite criar interatividade entre figuras e o mouse ou o teclado. Ela possui 5 parâmetros:
+                     <strong>mundoInicial</strong>: estado inicial do objeto que é manipulado. <strong>idTempo</strong>: atualiza o estado com base no decorrer do tempo. 
+                     <strong>mudEvt</strong>: atualiza o estado com base em eventos (teclado e/ou mouse). <strong>apresentaMundo</strong>: converte o estado em figura. 
+                     <strong>mostrarPlano</strong>: mostrar ou ocultar o plano cartesiano (opcional).
+                </p>
+                <hr>
 
 			  <h3>Conhecendo o "estado"</h3>
 			  <p>Para lidar com interações, precisamos guardar informações. Por exemplo, onde está o personagem? O que ele está fazendo?</p>
 
 			  <p>Essas informações ficam em algo que chamamos de <strong>estado</strong>. O estado é um conjunto de dados que seu programa pode usar, mudar e desenhar.</p>
+              <p>Quando o programa começa, o valor do estado é mundoInicial, fornecido pelo usuário ao chamar a função, e depois, vai mudando ao longo do tempo através de 
+                duas funções principais: idTempo, que muda o estado com base no tempo decorrido, e mudEvt, que muda o estado com base em cliques ou pressionar de teclas.</p>
 			  <hr>
 
-			  <h3>Um exemplo simples: seguindo o mouse</h3>
-			  <p>Vamos ver um exemplo onde um círculo segue a posição do mouse:</p>
+			  <h3>Um exemplo simples: arrastando o mouse</h3>
+			  <p>Vamos ver um exemplo onde um círculo é arrastado pelo mouse. Clique e segure no círculo para arrastá-lo.</p>
 
 			  <div class="code-example" data-code='// Círculo segue o mouse
 const mundoInicial = { x: 0, y: 0 };
