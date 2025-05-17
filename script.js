@@ -692,19 +692,31 @@ const interagir = (mundoInicial, idTempo, mudEvt, apresentaMundo, mostrarPlano =
 
 //método desenhar atualizado para centralizar figuras na origem (0,0)
 const desenhar = (figuraOuLista) => {
-	stage.removeAllChildren(); // limpa o canvas uma vez
-	
-	// converte para array se for uma única figura
-	const figuras = Array.isArray(figuraOuLista) ? figuraOuLista : [figuraOuLista];
-	
-	// desenha todas as figuras
-	figuras.forEach(figura => {
-		if (figura instanceof FiguraComposta) {
-			figura.figuras.forEach(f => desenharFigura(f));
-		} else {
-			desenharFigura(figura);
-		}
-	});
+    stage.removeAllChildren(); // limpa o canvas uma vez
+    
+    // verifica se foi passado um array que não é uma FiguraComposta
+    if (Array.isArray(figuraOuLista)) {
+        // verifica se algum elemento do array não é uma instância de Figura
+        const temElementosInvalidos = figuraOuLista.some(f => !(f instanceof Figura));
+        
+        if (temElementosInvalidos || figuraOuLista.length > 1) {
+            throw new Error("Para desenhar múltiplas figuras, use comporFiguras() primeiro. Exemplo:\n" +
+                           "const grupo = comporFiguras([circulo(2), retangulo(3,4)]);\n" +
+                           "desenhar(grupo);");
+        }
+    }
+    
+    // converte para array se for uma única figura
+    const figuras = Array.isArray(figuraOuLista) ? figuraOuLista : [figuraOuLista];
+    
+    // desenha todas as figuras
+    figuras.forEach(figura => {
+        if (figura instanceof FiguraComposta) {
+            figura.figuras.forEach(f => desenharFigura(f));
+        } else {
+            desenharFigura(figura);
+        }
+    });
 };
 
 
