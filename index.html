@@ -22,10 +22,10 @@
         <div class="editor-container">
             <div class="button-container">
                 <button id="botao-executar" class="buttons" onclick="executarCodigo()">Executar</button>
-                <button id="botao-parar" class="buttons" onclick="pararTudo()">Apagar</button>
+                <button id="botao-parar" class="buttons" onclick="pararTudo()">Parar</button>
                 <button id="aumentar-fonte" class="buttons" title="Aumentar fonte">A+</button>
                 <button id="diminuir-fonte" class="buttons" title="Diminuir fonte">A-</button>
-                <button id="dark-mode-toggle" class="buttons" title="Alternar tema">🌓 Escuro</button>
+                <button id="dark-mode-toggle" class="buttons" title="Alternar tema">Escuro</button>
             </div>
             <div id="editorWrapper">
                 <textarea id="codeEditor"></textarea>
@@ -39,7 +39,7 @@
     </div>
 
     <!-- botão do guia -->
-    <button id="guide-toggle" class="buttons" onclick="toggleGuide()">Guia</button>
+    <button id="guide-toggle" class="buttons" onclick="toggleGuide()">Fechar Guia</button>
 
     <!-- painel do guia -->
     <div id="guide-panel">
@@ -57,34 +57,34 @@
 				<h2>Introdução</h2>
 				<h3>Bem vindo ao Giz!</h3>
 				<h4>O que é Giz?</h4>
-				<p>O Giz é uma plataforma para aprender programação funcional de forma visual, interativa e divertida.
-				 A linguagem de programação do Giz é Javascritpt. No entanto, programas Giz são funcionais puros, pois apenas utilizam  a faceta funcional de Javascript.</p>
+				<p>Giz é uma plataforma web que ensina programação funcional de forma visual, interativa e divertida.
+				 A linguagem de programação do Giz é JavaScript, no entanto, programas Giz são funcionais puros, pois apenas utilizam a faceta funcional de JavaScript.</p>
 				<p>Combinando elementos de um ambiente de desenvolvimento com uma interface, os usuários podem aprender 
 				a programar criando imagens, animações e programas funcionais reativos como, por exemplo, jogos. 
 				Os programas funcionais podem ser executads imediatamente após escritos apenas apertando um botão.</p>
-				<p>O Giz foi projetado pensando especialmente em crianças e adolescentes, por isso o processo de aprendizado deve ser lúdico e visual. 
-				Seu principal objetivo é ensinar conceitos de programação funcional por meio de programas que manipulam figuras e criam animações. Ao invés de focar em estruturas complexas, sintaxe pesada e
-				palavras em inglês, este guia tenta apresentar os códigos mais próximos da matemática básica ensinada nas escolas, assim facilitando a introdução da programação e
+				<p>O Giz foi projetado especialmente para crianças e adolescentes, por isso o processo de aprendizado é lúdico e visual. 
+				Seu principal objetivo é ensinar conceitos de programação funcional por meio de programas que manipulam figuras e criam animações. Ao invés de focar em estruturas e sintaxe complexas e
+				palavras em inglês, este guia tenta apresentar os códigos mais próximos da matemática básica ensinada nas escolas, assim facilitando a introdução de programação e
 				possibilitando o uso de código como uma forma de expressão criativa.</p>
 				<hr>
 				
 				<h3>O ambiente Giz</h3>
-				<p>Ao fechar este guia, à esquerda, você verá o <strong>editor de código</strong>, onde você digita seus comandos. À direita, temos o <strong>canvas</strong>, onde os desenhos criados pelo seu código serão mostrados.</p>
+				<p>Ao fechar este guia, à esquerda, você verá o <strong>editor de código</strong>, onde você digita seus comandos. À direita, temos o <strong>canvas</strong>, onde os desenhos criados pelo seu código irão aparecer.</p>
 				<p>O botão <strong>Executar</strong> excuta o programa escrito no editor e, como consequência, apresenta direto no canvas a imagem especificada no programa .</p>
-				<p>O botão <strong>Apagar</strong> interrompe a execução do programa, apagando a imagem do canvas.</p>
+				<p>O botão <strong>Parar</strong> interrompe a execução do programa, apagando a imagem do canvas.</p>
 				<p>Os botões <strong>A+</strong> e <strong>A-</strong> servem para aumentar ou diminuir o tamanho da fonte (as letras que você escreve) do editor.</p>
 				<p>O botão <strong>Claro/Escuro</strong> muda esta página entre o modo claro e o modo escuro, para melhor conforto visual.</p>
-				<p>O botão <strong>Guia</strong> abre este guia, onde você vai encontrar explicações de como fazer tudo que o Giz pode fazer.</p>
-				<p>Dentro do guia, você pode <strong>clicar nos títulos do sumário</strong> para abrir cada parte de conteúdo.</p>
-				<p>Cada seção possui exemplos de código que podem ser <strong>clicados</strong>. Ao clicar, o código é automaticamente colado no editor, pronto para ser executado!</p>
-				<p>Para fechar o guia, basta clicar no botão verde "Guia" no canto superior direito da tela.</p>
+				<p>O botão <strong>Abrir Guia/Fechar Guia</strong> abre e fecha este guia, onde você vai encontrar explicações de como fazer tudo que o Giz pode fazer.</p>
+				<p>Dentro do guia, você pode clicar nos títulos do sumário para abrir cada parte de conteúdo.</p>
+				<p>Cada seção possui exemplos de código que podem ser clicados. Ao clicar, o código é automaticamente colado no editor, pronto para ser executado!</p>
+				<p>Para fechar o guia, basta clicar no botão verde "Fechar Guia" no canto superior direito da tela.</p>
 				<hr>
 				
 				<h3>Como aprender tudo que o Giz pode te ensinar</h3>
 				<h4>Leia o Guia</h4>
 				<p>No guia você encontrará explicações sobre tudo que Giz pode fazer, desde como desenhar uma figura usando apenas uma linha de código até
-				como fazer um jogo simples interativo com teclado. Leia-as com calma, as explicações não usam lingagem rebuscada e nem palavras difíceis.
-				São pensadas exatamente em como explicar tudo da maneira mais simples possível.</p>
+				como fazer um jogo simples interativo com teclado. Leia-as com calma, as explicações não usam lingagem rebuscada, nem palavras difíceis.
+				São pensadas exatamente para explicar tudo da maneira mais simples possível.</p>
 				<p>Ademais, o guia ensina como construir figuras elaboradas a partir de figuras simples, como linhas, círculos e retângulos, 
 				e transformações como translações, escalamentos e rotações, diversas figuras e várias funções de transformação.</p>
 				<h4>Teste todas as funcionalidades ensinadas no guia</h4>
@@ -96,7 +96,7 @@
 				<h4>Não tenha medo de errar!</h4>
 				<p>Programação pode não ser a coisa mais fácil do mundo. No começo parece algo muito distante do que estamos acostumados e ao passo que as funções ficam mais
 				complexas e os códigos ficam maiores, pode parecer muita coisa. Não tenha medo de mudar algo no seu código e estragá-lo. O intuito do Giz é que seu aprendizado
-				seja divertido. Mude suas imagens ao seu bel-prazer.</p>
+				seja divertido. Mude suas imagens como quiser.</p>
 				<h4>Seja criativo e divirta-se!</h4>
 				<p>Como já foi falado anteriormente, o objetivo do Giz é ensinar programação funcional de uma forma divertida. Então pense no código como uma forma de fazer
 				qualquer coisa que você quiser. Que tal programar um jogo? Tente desenhar um personagem. Depois você pode tentar
@@ -197,16 +197,17 @@ desenhar(meuRetangulo);</code></pre>
 
 				<p>Agora, se quisermos desenhar uma figura nossa *junto* com o plano cartesiano, podemos desenhar os dois ao mesmo tempo.</p>
 
-				<div class="code-example" onclick="loadExample('const circ = circulo(2);\nconst circComPlano = comporFiguras([circ,planoCartesiano]);\ndesenhar(circComPlano);')">
+				<div class="code-example" onclick="loadExample('const circ = circulo(2);\ndesenhar([circ, planoCartesiano]);')">
 				<pre><code>const circ = circulo(2);
-const circComPlano = comporFiguras([circ,planoCartesiano]);
-desenhar(circComPlano);</code></pre>
+desenhar([circ, planoCartesiano]);</code></pre>
 				</div>
 
 				<h4>Explicação:</h4>
-				<p>Primeiro criamos um círculo de raio = 2 chamado circ, depois criamos uma figura composta que combina a figura planoCartesiano 
-                    com circ. Por fim pedimos para o Giz desenhar a figura composta.</p>
+				<p>Aqui, criamos um círculo chamado <code>circ</code> e depois pedimos para o Giz desenhar duas coisas ao mesmo tempo: o <code>circ</code> e o <code>planoCartesiano</code>.</p>
 
+				<p>Quando usamos colchetes <code>[]</code>, estamos dizendo ao Giz: "Desenhe esses elementos juntos". Dessa forma, conseguimos ver o plano cartesiano e a figura que desenhamos/estamos desenhando. Assim fica mais fácil saber onde é um ponto (x,y).</p>
+
+				<p>Você pode colocar quantas figuras quiser dentro dos colchetes, separadas por vírgula. Assim o Giz desenha todas elas de uma vez. Só tenha em mente que a ordem dessas figuras vai importar. Figuras que estão mais à esquerda em <code>desenhar()</code> ficarão mais atrás na nossa tela.</p>
 				<hr>
 			
 			<h3>Figuras um pouquinho mais complexas</h3>
@@ -250,22 +251,20 @@ desenhar(minhaLinha);</code></pre>
 				<p>Dica: uma cruz é formada por uma linha vertical e outra horizontal que se cruzam no centro.</p>
 
 				<p>Exemplo de solução:</p>
-				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, 0, 5, 0);\nconst linha2 = linha(0, -5, 0, 5);\nconst linhasCompostas = comporFiguras([linha1,linha2]);\ndesenhar(linhasCompostas);')">
+				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, 0, 5, 0);\nconst linha2 = linha(0, -5, 0, 5);\ndesenhar([linha1, linha2]);')">
 				<pre><code>const linha1 = linha(-5, 0, 5, 0);
 const linha2 = linha(0, -5, 0, 5);
-const linhasCompostas = comporFiguras([linha1,linha2]);
-desenhar(linhasCompostas);</code></pre>
+desenhar([linha1, linha2]);</code></pre>
 				</div>
 
 				<h5>Desafio 2: Um X</h5>
 				<p>Dica: um X é feito com duas linhas diagonais que se cruzam no centro da tela.</p>
 
 				<p>Exemplo de solução:</p>
-				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, -5, 5, 5);\nconst linha2 = linha(-5, 5, 5, -5);\nconst linhasCompostas = comporFiguras([linha1,linha2]);\ndesenhar(linhasCompostas);')">
+				<div class="code-example" onclick="loadExample('const linha1 = linha(-5, -5, 5, 5);\nconst linha2 = linha(-5, 5, 5, -5);\ndesenhar([linha1, linha2]);')">
 				<pre><code>const linha1 = linha(-5, -5, 5, 5);
 const linha2 = linha(-5, 5, 5, -5);
-const linhasCompostas = comporFiguras([linha1,linha2]);
-desenhar(linhasCompostas);</code></pre>
+desenhar([linha1, linha2]);</code></pre>
 				</div>
 
 				<p><strong>Agora é sua vez!</strong> Experimente mudar os números para ver o que acontece. Tente criar outros formatos, como um quadrado usando quatro linhas!</p>
@@ -350,7 +349,7 @@ desenhar(meuTexto);</code></pre>
 				<h3>O que é Programação Funcional?</h3>
 				<p>O nome pode parecer complicado à primeira vista, mas na verdade é mais simples do que parece.</p>
 
-				<p>Programação funcional é um paradigma de programação que trata código de uma forma mais matemática. Para isso, programamos sequências de funções que tranformam dados. Na programação funcional possuimos <strong>funções puras</strong>, ou seja,
+				<p>O ponto principal da programação funcional é focar no que deve ser feito. Para isso, programamos sequências de funções que tranformam dados. Na programação funcional possuimos <strong>funções puras</strong>, ou seja,
 				 fornecendo a mesma entrada, sempre teremos o mesmo resultado. Dessa forma, baseado na entrada, conseguimos prever a execução do código e evitar problemas.
 				 Além disso, após serem criadas, variáveis, funções e dados em geral não podem ser modificados. Chamamos esse conceito de <strong>Imutabilidade.</strong>
 				 Ademais, funções porem ser tratadas como um valor como qualquer outro e até mesmo usadas como argumento ou a saída de outras funções.</p>
@@ -399,7 +398,7 @@ desenhar(duasBolas);</code></pre>
 };
 
 const conjuntoDeCarros = comporFiguras([
-    desenharCarro(),
+	desenharCarro(),
     mover(desenharCarro(),0,5),
     mover(desenharCarro(),0,-5),
     mover(desenharCarro(),-7,0),
@@ -578,25 +577,15 @@ animar((tempo) => {
 
 			  <p>Com a função <code>interagir</code>, seu programa pode escutar o que a pessoa está fazendo, como mover o mouse, clicar ou apertar uma tecla, e mudar o que está desenhando em tempo real!</p>
 			  <hr>
-                
-                <h3>Interagir</h3>
-                <p>A função interagir permite criar interatividade entre figuras e o mouse ou o teclado. Ela possui 5 parâmetros:
-                     <strong>mundoInicial</strong>: estado inicial do objeto que é manipulado. <strong>idTempo</strong>: atualiza o estado com base no decorrer do tempo. 
-                     <strong>mudEvt</strong>: atualiza o estado com base em eventos (teclado e/ou mouse). <strong>apresentaMundo</strong>: converte o estado em figura. 
-                     <strong>mostrarPlano</strong>: mostrar ou ocultar o plano cartesiano (opcional).
-                </p>
-                <hr>
 
 			  <h3>Conhecendo o "estado"</h3>
 			  <p>Para lidar com interações, precisamos guardar informações. Por exemplo, onde está o personagem? O que ele está fazendo?</p>
 
 			  <p>Essas informações ficam em algo que chamamos de <strong>estado</strong>. O estado é um conjunto de dados que seu programa pode usar, mudar e desenhar.</p>
-              <p>Quando o programa começa, o valor do estado é mundoInicial, fornecido pelo usuário ao chamar a função, e depois, vai mudando ao longo do tempo através de 
-                duas funções principais: idTempo, que muda o estado com base no tempo decorrido, e mudEvt, que muda o estado com base em cliques ou pressionar de teclas.</p>
 			  <hr>
 
-			  <h3>Um exemplo simples: arrastando o mouse</h3>
-			  <p>Vamos ver um exemplo onde um círculo é arrastado pelo mouse. Clique e segure no círculo para arrastá-lo.</p>
+			  <h3>Um exemplo simples: seguindo o mouse</h3>
+			  <p>Vamos ver um exemplo onde um círculo segue a posição do mouse:</p>
 
 			  <div class="code-example" data-code='// Círculo segue o mouse
 const mundoInicial = { x: 0, y: 0 };
