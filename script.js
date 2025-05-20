@@ -64,15 +64,20 @@ let ultimaSecaoAtiva = 'intro';
 
 function toggleGuide() {
     const guidePanel = document.getElementById("guide-panel");
+    const guideToggle = document.getElementById("guide-toggle");
 
     const ativo = guidePanel.classList.toggle("active");
 
     if (ativo) {
         const evitarScroll = localStorage.getItem('evitouScroll') === 'true';
         showSection(ultimaSecaoAtiva, !evitarScroll);
-        localStorage.removeItem('evitouScroll'); // limpa o flag
+        localStorage.removeItem('evitouScroll');
+        guideToggle.textContent = 'Fechar Guia';
+    } else {
+        guideToggle.textContent = 'Abrir Guia';
     }
 }
+
 
 // Sistema de abas do guia
 function setupGuideTabs() {
@@ -162,12 +167,12 @@ function toggleDarkMode() {
         // ativar modo dracula (escuro)
         editor.setOption('theme', 'dracula');
         body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️ Claro';
+        darkModeToggle.textContent = 'Claro';
     } else {
         // voltar para o tema padrão (claro)
         editor.setOption('theme', 'default');
         body.classList.remove('dark-mode');
-        darkModeToggle.textContent = '🌓 Escuro';
+        darkModeToggle.textContent = 'Escuro';
     }
     
     // Salvar preferência no localStorage
@@ -248,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         darkMode = true;
         editor.setOption('theme', 'dracula');
         body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️ Claro';
+        darkModeToggle.textContent = 'Claro';
     }
 
     // Aplica o tamanho de fonte
@@ -692,31 +697,19 @@ const interagir = (mundoInicial, idTempo, mudEvt, apresentaMundo, mostrarPlano =
 
 //método desenhar atualizado para centralizar figuras na origem (0,0)
 const desenhar = (figuraOuLista) => {
-    stage.removeAllChildren(); // limpa o canvas uma vez
-    
-    // verifica se foi passado um array que não é uma FiguraComposta
-    if (Array.isArray(figuraOuLista)) {
-        // verifica se algum elemento do array não é uma instância de Figura
-        const temElementosInvalidos = figuraOuLista.some(f => !(f instanceof Figura));
-        
-        if (temElementosInvalidos || figuraOuLista.length > 1) {
-            throw new Error("Para desenhar múltiplas figuras, use comporFiguras() primeiro. Exemplo:\n" +
-                           "const grupo = comporFiguras([circulo(2), retangulo(3,4)]);\n" +
-                           "desenhar(grupo);");
-        }
-    }
-    
-    // converte para array se for uma única figura
-    const figuras = Array.isArray(figuraOuLista) ? figuraOuLista : [figuraOuLista];
-    
-    // desenha todas as figuras
-    figuras.forEach(figura => {
-        if (figura instanceof FiguraComposta) {
-            figura.figuras.forEach(f => desenharFigura(f));
-        } else {
-            desenharFigura(figura);
-        }
-    });
+	stage.removeAllChildren(); // limpa o canvas uma vez
+	
+	// converte para array se for uma única figura
+	const figuras = Array.isArray(figuraOuLista) ? figuraOuLista : [figuraOuLista];
+	
+	// desenha todas as figuras
+	figuras.forEach(figura => {
+		if (figura instanceof FiguraComposta) {
+			figura.figuras.forEach(f => desenharFigura(f));
+		} else {
+			desenharFigura(figura);
+		}
+	});
 };
 
 
