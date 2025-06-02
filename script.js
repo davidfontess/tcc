@@ -1,7 +1,7 @@
 // inicializa o codemirror
 const editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
     mode: 'javascript',
-    theme: 'default',  // Certifique-se que está usando o tema correto
+    theme: 'default',
     lineNumbers: true,
     indentUnit: 4,
     tabSize: 4,
